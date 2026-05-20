@@ -1,0 +1,22 @@
+# Ignore everything in the repository root by default.
+/*
+
+# Keep the ignore rules themselves.
+!/.gitignore
+
+# Keep the application project.
+!/MBappe/
+!/MBappe/**
+!/MBappe.sln
+
+# Keep the required TT document.
+!/TT.docx
+
+# Ignore generated and local files inside the project.
+**/bin/
+**/obj/
+**/.DS_Store
+**/*.user
+**/*.suo
+**/*.userosscache
+**/*.sln.docstates
