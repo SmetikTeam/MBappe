@@ -2,10 +2,14 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
-using System.Linq;
 using Avalonia.Markup.Xaml;
+using MBappe.Services;
 using MBappe.ViewModels;
 using MBappe.Views;
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MBappe;
 
@@ -16,13 +20,12 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public override async void OnFrameworkInitializationCompleted()
     {
+        await TestAuthModule();
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
-            DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainWindowViewModel(),
@@ -32,16 +35,16 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    private void DisableAvaloniaDataAnnotationValidation()
+    private static async Task TestAuthModule()
     {
-        // Get an array of plugins to remove
-        var dataValidationPluginsToRemove =
-            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
+        var result = await AppServices.AuthService.LoginAsync("admin", "12345");
 
-        // remove each entry found
-        foreach (var plugin in dataValidationPluginsToRemove)
+        Debug.WriteLine(result.Message);
+
+        if (result.Success && result.User is not null)
         {
-            BindingPlugins.DataValidators.Remove(plugin);
+            Debug.WriteLine($"Пользователь: {result.User.FullName}");
+            Debug.WriteLine($"Роль: {result.User.Role}");
         }
     }
 }
