@@ -4,19 +4,22 @@ public enum AuditActionType
 {
     UserLoginSuccess,
     UserLoginFailed,
-    UserRegistered,
+    UserRegistrationSuccess,
+    UserRegistrationFailed,
     UserLogout,
 
     UserCreated,
     UserUpdated,
-    UserDeleted,
-
-    RoleChanged,
+    UserBlocked,
+    UserUnblocked,
+    UserRoleChanged,
 
     DataViewed,
     DataCreated,
     DataUpdated,
     DataDeleted,
+
+    AccessDenied,
 
     SystemError
 }

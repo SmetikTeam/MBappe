@@ -117,7 +117,7 @@ public class AuthService
         if (validationError is not null)
         {
             await _auditLogService.LogAsync(
-                AuditActionType.UserRegistered,
+                AuditActionType.UserRegistrationFailed,
                 false,
                 "Неудачная попытка регистрации",
                 validationError,
@@ -134,7 +134,7 @@ public class AuthService
         if (loginAlreadyExists is not null)
         {
             await _auditLogService.LogAsync(
-                AuditActionType.UserRegistered,
+                AuditActionType.UserRegistrationFailed,
                 false,
                 "Неудачная попытка регистрации",
                 "Пользователь с таким логином уже существует",
@@ -148,7 +148,7 @@ public class AuthService
         if (emailAlreadyExists is not null)
         {
             await _auditLogService.LogAsync(
-                AuditActionType.UserRegistered,
+                AuditActionType.UserRegistrationFailed,
                 false,
                 "Неудачная попытка регистрации",
                 "Пользователь с такой почтой уже существует",
@@ -175,7 +175,7 @@ public class AuthService
         await _userRepository.AddAsync(user);
 
         await _auditLogService.LogAsync(
-            AuditActionType.UserRegistered,
+            AuditActionType.UserRegistrationSuccess,
             true,
             "Пользователь успешно зарегистрирован",
             $"Создан пользователь с ролью {user.Role}",
