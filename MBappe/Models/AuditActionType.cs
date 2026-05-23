@@ -1,12 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace MBappe.Models;
 
-namespace MBappe.Models
+public enum AuditActionType
 {
-    internal class AuditActionType
-    {
-    }
+    UserLoginSuccess,
+    UserLoginFailed,
+    UserRegistered,
+    UserLogout,
+
+    UserCreated,
+    UserUpdated,
+    UserDeleted,
+
+    RoleChanged,
+
+    DataViewed,
+    DataCreated,
+    DataUpdated,
+    DataDeleted,
+
+    SystemError
 }

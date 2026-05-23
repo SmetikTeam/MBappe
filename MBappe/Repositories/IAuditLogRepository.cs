@@ -1,12 +1,16 @@
-﻿using System;
+﻿using MBappe.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MBappe.Repositories
+namespace MBappe.Repositories;
+
+public interface IAuditLogRepository
 {
-    internal interface IAuditLogRepository
-    {
-    }
+    Task AddAsync(AuditLogEntry entry);
+
+    Task<IReadOnlyList<AuditLogEntry>> GetAllAsync();
+
+    Task<IReadOnlyList<AuditLogEntry>> GetByUserLoginAsync(string login);
+
+    Task<IReadOnlyList<AuditLogEntry>> GetByActionTypeAsync(AuditActionType actionType);
 }

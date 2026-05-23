@@ -11,32 +11,72 @@ public class AuthService
     private readonly IUserRepository _userRepository;
     private readonly PasswordHasher _passwordHasher;
     private readonly SessionService _sessionService;
+    private readonly AuditLogService _auditLogService;
 
     public AuthService(
         IUserRepository userRepository,
         PasswordHasher passwordHasher,
-        SessionService sessionService)
+        SessionService sessionService,
+        AuditLogService auditLogService)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _sessionService = sessionService;
+        _auditLogService = auditLogService;
     }
 
     public async Task<AuthResult> LoginAsync(string login, string password)
     {
         if (string.IsNullOrWhiteSpace(login))
+        {
+            await _auditLogService.LogAsync(
+                AuditActionType.UserLoginFailed,
+                false,
+                "Неудачная попытка входа",
+                "Логин не был введен");
+
             return AuthResult.Fail("Введите логин");
+        }
 
         if (string.IsNullOrWhiteSpace(password))
-            return AuthResult.Fail("Введите пароль");
+        {
+            await _auditLogService.LogAsync(
+                AuditActionType.UserLoginFailed,
+                false,
+                "Неудачная попытка входа",
+                "Пароль не был введен",
+                login: login.Trim());
 
-        var user = await _userRepository.GetByLoginAsync(login.Trim());
+            return AuthResult.Fail("Введите пароль");
+        }
+
+        var normalizedLogin = login.Trim();
+
+        var user = await _userRepository.GetByLoginAsync(normalizedLogin);
 
         if (user is null)
+        {
+            await _auditLogService.LogAsync(
+                AuditActionType.UserLoginFailed,
+                false,
+                "Неудачная попытка входа",
+                "Пользователь с таким логином не найден",
+                login: normalizedLogin);
+
             return AuthResult.Fail("Пользователь с таким логином не найден");
+        }
 
         if (!user.IsActive)
+        {
+            await _auditLogService.LogAsync(
+                AuditActionType.UserLoginFailed,
+                false,
+                "Неудачная попытка входа",
+                "Аккаунт пользователя заблокирован",
+                user: user);
+
             return AuthResult.Fail("Аккаунт заблокирован");
+        }
 
         var passwordIsValid = _passwordHasher.VerifyPassword(
             password,
@@ -44,12 +84,28 @@ public class AuthService
             user.PasswordHash);
 
         if (!passwordIsValid)
+        {
+            await _auditLogService.LogAsync(
+                AuditActionType.UserLoginFailed,
+                false,
+                "Неудачная попытка входа",
+                "Введен неверный пароль",
+                user: user);
+
             return AuthResult.Fail("Неверный пароль");
+        }
 
         user.LastLoginAt = DateTime.Now;
         await _userRepository.UpdateAsync(user);
 
         _sessionService.StartSession(user);
+
+        await _auditLogService.LogAsync(
+            AuditActionType.UserLoginSuccess,
+            true,
+            "Пользователь успешно вошел в систему",
+            $"Роль пользователя: {user.Role}",
+            user: user);
 
         return AuthResult.Ok(user, $"Добро пожаловать, {user.FullName}");
     }
@@ -59,25 +115,55 @@ public class AuthService
         var validationError = ValidateRegisterRequest(request);
 
         if (validationError is not null)
-            return AuthResult.Fail(validationError);
+        {
+            await _auditLogService.LogAsync(
+                AuditActionType.UserRegistered,
+                false,
+                "Неудачная попытка регистрации",
+                validationError,
+                login: request.Login?.Trim());
 
-        var loginAlreadyExists = await _userRepository.GetByLoginAsync(request.Login.Trim());
+            return AuthResult.Fail(validationError);
+        }
+
+        var normalizedLogin = request.Login.Trim();
+        var normalizedEmail = request.Email.Trim();
+
+        var loginAlreadyExists = await _userRepository.GetByLoginAsync(normalizedLogin);
 
         if (loginAlreadyExists is not null)
-            return AuthResult.Fail("Пользователь с таким логином уже существует");
+        {
+            await _auditLogService.LogAsync(
+                AuditActionType.UserRegistered,
+                false,
+                "Неудачная попытка регистрации",
+                "Пользователь с таким логином уже существует",
+                login: normalizedLogin);
 
-        var emailAlreadyExists = await _userRepository.GetByEmailAsync(request.Email.Trim());
+            return AuthResult.Fail("Пользователь с таким логином уже существует");
+        }
+
+        var emailAlreadyExists = await _userRepository.GetByEmailAsync(normalizedEmail);
 
         if (emailAlreadyExists is not null)
+        {
+            await _auditLogService.LogAsync(
+                AuditActionType.UserRegistered,
+                false,
+                "Неудачная попытка регистрации",
+                "Пользователь с такой почтой уже существует",
+                login: normalizedLogin);
+
             return AuthResult.Fail("Пользователь с такой почтой уже существует");
+        }
 
         var salt = _passwordHasher.GenerateSalt();
         var hash = _passwordHasher.HashPassword(request.Password, salt);
 
         var user = new AppUser
         {
-            Login = request.Login.Trim(),
-            Email = request.Email.Trim(),
+            Login = normalizedLogin,
+            Email = normalizedEmail,
             FullName = request.FullName.Trim(),
             PasswordSalt = salt,
             PasswordHash = hash,
@@ -88,11 +174,23 @@ public class AuthService
 
         await _userRepository.AddAsync(user);
 
+        await _auditLogService.LogAsync(
+            AuditActionType.UserRegistered,
+            true,
+            "Пользователь успешно зарегистрирован",
+            $"Создан пользователь с ролью {user.Role}",
+            user: user);
+
         return AuthResult.Ok(user, "Пользователь успешно зарегистрирован");
     }
 
-    public void Logout()
+    public async Task LogoutAsync()
     {
+        await _auditLogService.LogAsync(
+            AuditActionType.UserLogout,
+            true,
+            "Пользователь вышел из системы");
+
         _sessionService.EndSession();
     }
 
