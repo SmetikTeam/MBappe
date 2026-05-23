@@ -21,4 +21,10 @@ public static class AppServices
         PasswordHasher,
         SessionService,
         AuditLogService);
+
+    public static UserManagementService UserManagementService { get; } = new UserManagementService(
+        UserRepository,
+        PasswordHasher,
+        SessionService,
+        AuditLogService);
 }

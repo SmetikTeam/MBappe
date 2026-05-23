@@ -16,6 +16,13 @@ public class InMemoryUserRepository : IUserRepository
         SeedUsers();
     }
 
+    public Task<AppUser?> GetByIdAsync(Guid id)
+    {
+        var user = _users.FirstOrDefault(u => u.Id == id);
+
+        return Task.FromResult(user);
+    }
+
     public Task<AppUser?> GetByLoginAsync(string login)
     {
         var user = _users.FirstOrDefault(u =>
