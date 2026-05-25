@@ -1,0 +1,120 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MBappe.ViewModels.Shell"
+             x:Class="MBappe.Views.Shell.MainShellView"
+             x:DataType="vm:MainShellViewModel">
+    <Grid Background="{StaticResource AppBackgroundBrush}"
+          RowDefinitions="Auto,*">
+        <Border Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrushSoft}"
+                BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="Auto,*,Auto"
+                  Margin="26,16">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="12"
+                            VerticalAlignment="Center">
+                    <Border Width="38"
+                            Height="38"
+                            Background="{StaticResource AccentSoftBrush}">
+                        <TextBlock Text="MB"
+                                   Foreground="{StaticResource AccentBrush}"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel>
+                        <TextBlock Text="MBappe"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Text="Управление персоналом"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2"
+                            Orientation="Horizontal"
+                            Spacing="14"
+                            VerticalAlignment="Center">
+                    <Border Width="38"
+                            Height="38"
+                            Background="{StaticResource SurfaceAltBrush}">
+                        <TextBlock Text="{Binding UserInitials}"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel MinWidth="170"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="{Binding CurrentUserName}"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding CurrentUserRole}"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"/>
+                    </StackPanel>
+                    <Button Content="Выйти"
+                            Classes="subtle"
+                            Command="{Binding LogoutCommand}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1"
+              ColumnDefinitions="270,*">
+            <Border Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="0,0,1,0"
+                    Padding="14">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBlock Text="Разделы"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               Margin="10,4,0,12"/>
+                    <ListBox Grid.Row="1"
+                             ItemsSource="{Binding NavigationItems}"
+                             SelectedItem="{Binding SelectedNavigationItem}"
+                             Background="Transparent"
+                             BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:NavigationItemViewModel">
+                                <Grid ColumnDefinitions="42,*"
+                                      Margin="0,3"
+                                      MinHeight="58">
+                                    <Border Background="{StaticResource SurfaceAltBrush}"
+                                            Width="34"
+                                            Height="34"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Code}"
+                                                   Foreground="{StaticResource InkBrush}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Title}"
+                                                   Foreground="{StaticResource InkBrush}"
+                                                   FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding Description}"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <ContentControl Grid.Column="1"
+                            Content="{Binding CurrentPage}"/>
+        </Grid>
+    </Grid>
+</UserControl>

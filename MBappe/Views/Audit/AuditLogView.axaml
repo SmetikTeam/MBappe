@@ -1,0 +1,108 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MBappe.ViewModels.Audit"
+             x:Class="MBappe.Views.Audit.AuditLogView"
+             x:DataType="vm:AuditLogViewModel">
+    <Grid RowDefinitions="Auto,*"
+          Margin="32">
+        <Grid ColumnDefinitions="*,Auto">
+            <StackPanel Spacing="6">
+                <TextBlock Text="Журнал действий"
+                           Foreground="{StaticResource InkBrush}"
+                           FontSize="28"
+                           FontWeight="SemiBold"/>
+                <TextBlock Text="События авторизации, доступа и администрирования"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           FontSize="14"/>
+            </StackPanel>
+            <Button Grid.Column="1"
+                    Content="Обновить"
+                    Classes="subtle"
+                    Command="{Binding RefreshCommand}"
+                    VerticalAlignment="Center"/>
+        </Grid>
+
+        <Border Grid.Row="1"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrushSoft}"
+                BorderThickness="1"
+                Margin="0,24,0,0">
+            <Grid RowDefinitions="Auto,*">
+                <Grid ColumnDefinitions="170,150,150,110,*"
+                      Background="{StaticResource SurfaceAltBrush}"
+                      Margin="16,12">
+                    <TextBlock Text="Время"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="1"
+                               Text="Пользователь"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="2"
+                               Text="Событие"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="3"
+                               Text="Статус"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="4"
+                               Text="Описание"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+                </Grid>
+
+                <ListBox Grid.Row="1"
+                         ItemsSource="{Binding Entries}"
+                         BorderThickness="0"
+                         Background="Transparent">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:AuditLogRowViewModel">
+                            <Grid ColumnDefinitions="170,150,150,110,*"
+                                  MinHeight="62"
+                                  Margin="16,9">
+                                <TextBlock Text="{Binding CreatedAtText}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding UserText}"
+                                               Foreground="{StaticResource InkBrush}"
+                                               FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding RoleText}"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding ActionText}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           VerticalAlignment="Center"
+                                           TextWrapping="Wrap"/>
+                                <TextBlock Grid.Column="3"
+                                           Text="{Binding ResultText}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="4"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Message}"
+                                               Foreground="{StaticResource InkBrush}"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Details}"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
