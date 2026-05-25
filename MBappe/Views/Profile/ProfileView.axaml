@@ -1,0 +1,126 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MBappe.ViewModels.Profile"
+             x:Class="MBappe.Views.Profile.ProfileView"
+             x:DataType="vm:ProfileViewModel">
+    <ScrollViewer>
+        <Grid RowDefinitions="Auto,*"
+              Margin="32">
+            <StackPanel Spacing="6">
+                <TextBlock Text="Профиль сотрудника"
+                           Foreground="{StaticResource InkBrush}"
+                           FontSize="28"
+                           FontWeight="SemiBold"/>
+                <TextBlock Text="Основные данные личного кабинета"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           FontSize="14"/>
+            </StackPanel>
+
+            <Grid Grid.Row="1"
+                  ColumnDefinitions="280,*"
+                  Margin="0,26,0,0">
+                <Border Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1"
+                        Padding="24"
+                        Margin="0,0,18,0">
+                    <StackPanel Spacing="16"
+                                HorizontalAlignment="Stretch">
+                        <Border Width="96"
+                                Height="96"
+                                Background="{StaticResource AccentSoftBrush}"
+                                HorizontalAlignment="Left">
+                            <TextBlock Text="{Binding Initials}"
+                                       Foreground="{StaticResource AccentBrush}"
+                                       FontSize="28"
+                                       FontWeight="SemiBold"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="{Binding User.FullName}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontSize="22"
+                                       FontWeight="SemiBold"
+                                       TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding RoleTitle}"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
+                        </StackPanel>
+                        <Border Background="{StaticResource AccentSoftBrush}"
+                                Padding="12">
+                            <TextBlock Text="{Binding StatusTitle}"
+                                       Foreground="{StaticResource AccentBrush}"
+                                       FontWeight="SemiBold"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1"
+                        Padding="24">
+                    <Grid ColumnDefinitions="180,*"
+                          RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                        <TextBlock Text="ФИО"
+                                   Foreground="{StaticResource MutedTextBrush}"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding User.FullName}"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontWeight="SemiBold"/>
+
+                        <TextBlock Grid.Row="1"
+                                   Text="Логин"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   Margin="0,16,0,0"/>
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding User.Login}"
+                                   Foreground="{StaticResource InkBrush}"
+                                   Margin="0,16,0,0"/>
+
+                        <TextBlock Grid.Row="2"
+                                   Text="Почта"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   Margin="0,16,0,0"/>
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="1"
+                                   Text="{Binding User.Email}"
+                                   Foreground="{StaticResource InkBrush}"
+                                   Margin="0,16,0,0"/>
+
+                        <TextBlock Grid.Row="3"
+                                   Text="Роль"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   Margin="0,16,0,0"/>
+                        <TextBlock Grid.Row="3"
+                                   Grid.Column="1"
+                                   Text="{Binding RoleTitle}"
+                                   Foreground="{StaticResource InkBrush}"
+                                   Margin="0,16,0,0"/>
+
+                        <TextBlock Grid.Row="4"
+                                   Text="Создан"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   Margin="0,16,0,0"/>
+                        <TextBlock Grid.Row="4"
+                                   Grid.Column="1"
+                                   Text="{Binding CreatedAtText}"
+                                   Foreground="{StaticResource InkBrush}"
+                                   Margin="0,16,0,0"/>
+
+                        <TextBlock Grid.Row="5"
+                                   Text="Последний вход"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   Margin="0,16,0,0"/>
+                        <TextBlock Grid.Row="5"
+                                   Grid.Column="1"
+                                   Text="{Binding LastLoginText}"
+                                   Foreground="{StaticResource InkBrush}"
+                                   Margin="0,16,0,0"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

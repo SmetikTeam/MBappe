@@ -1,0 +1,134 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MBappe.ViewModels.Auth"
+             x:Class="MBappe.Views.Auth.RegisterView"
+             x:DataType="vm:RegisterViewModel">
+    <Grid Background="{StaticResource AppBackgroundBrush}"
+          ColumnDefinitions="1.05*,0.95*">
+        <Border Background="{StaticResource InkBrush}"
+                Padding="56">
+            <StackPanel Spacing="20"
+                        VerticalAlignment="Center"
+                        MaxWidth="480">
+                <TextBlock Text="MBappe"
+                           Foreground="White"
+                           FontSize="44"
+                           FontWeight="SemiBold"/>
+                <TextBlock Text="Создайте учетную запись для входа в личный кабинет сотрудника."
+                           Foreground="#D8E1E8"
+                           FontSize="18"
+                           LineHeight="26"
+                           TextWrapping="Wrap"/>
+                <Border Background="#23313D"
+                        Padding="18"
+                        Margin="0,24,0,0">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Что потребуется"
+                                   Foreground="#95A5B3"
+                                   FontSize="12"/>
+                        <TextBlock Text="ФИО, логин, рабочая почта и пароль. Новый аккаунт получает роль сотрудника."
+                                   Foreground="White"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="#1C2A35"
+                        Padding="18">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="После создания"
+                                   Foreground="#95A5B3"
+                                   FontSize="12"/>
+                        <TextBlock Text="Войдите с новым логином. Администратор или HR-специалист сможет изменить данные учетной записи."
+                                   Foreground="#D8E1E8"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Column="1">
+            <Grid Margin="64">
+                <Border MaxWidth="460"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                    <StackPanel Spacing="14">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Новый аккаунт"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontSize="30"
+                                       FontWeight="SemiBold"/>
+                            <TextBlock Text="Укажите данные для создания учетной записи."
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       FontSize="14"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="7">
+                            <TextBlock Text="ФИО"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       FontSize="13"/>
+                            <TextBox Text="{Binding FullName}"
+                                     Watermark="Иван Петров"/>
+                        </StackPanel>
+
+                        <Grid ColumnDefinitions="*,*">
+                            <StackPanel Spacing="7"
+                                        Margin="0,0,8,0">
+                                <TextBlock Text="Логин"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           FontSize="13"/>
+                                <TextBox Text="{Binding Login}"
+                                         Watermark="employee"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1"
+                                        Spacing="7"
+                                        Margin="8,0,0,0">
+                                <TextBlock Text="Почта"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           FontSize="13"/>
+                                <TextBox Text="{Binding Email}"
+                                         Watermark="employee@mbappe.local"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,*">
+                            <StackPanel Spacing="7"
+                                        Margin="0,0,8,0">
+                                <TextBlock Text="Пароль"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           FontSize="13"/>
+                                <TextBox Text="{Binding Password, Mode=TwoWay}"
+                                         PasswordChar="*"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1"
+                                        Spacing="7"
+                                        Margin="8,0,0,0">
+                                <TextBlock Text="Подтверждение"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           FontSize="13"/>
+                                <TextBox Text="{Binding ConfirmPassword, Mode=TwoWay}"
+                                         PasswordChar="*"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="{Binding StatusMessage}"
+                                   Foreground="{StaticResource ErrorBrush}"
+                                   FontSize="13"
+                                   TextWrapping="Wrap"/>
+
+                        <Button Content="Зарегистрировать"
+                                Classes="primary"
+                                Command="{Binding RegisterCommand}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"/>
+
+                        <Button Content="Вернуться ко входу"
+                                Classes="subtle"
+                                Command="{Binding BackToLoginCommand}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

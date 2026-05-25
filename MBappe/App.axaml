@@ -5,11 +5,46 @@
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
+    <Application.Resources>
+        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F4F7F9"/>
+        <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="SurfaceAltBrush" Color="#EEF3F6"/>
+        <SolidColorBrush x:Key="BorderBrushSoft" Color="#D8E1E8"/>
+        <SolidColorBrush x:Key="InkBrush" Color="#17212B"/>
+        <SolidColorBrush x:Key="MutedTextBrush" Color="#617083"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#1F7A6B"/>
+        <SolidColorBrush x:Key="AccentSoftBrush" Color="#DDF1ED"/>
+        <SolidColorBrush x:Key="WarningBrush" Color="#A15C14"/>
+        <SolidColorBrush x:Key="ErrorBrush" Color="#B42318"/>
+    </Application.Resources>
+
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
   
     <Application.Styles>
         <FluentTheme />
+        <Style Selector="TextBox, ComboBox">
+            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="Padding" Value="10,7"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="MinHeight" Value="36"/>
+            <Setter Property="Padding" Value="14,7"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
+        </Style>
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+        </Style>
+        <Style Selector="Button.subtle">
+            <Setter Property="Background" Value="{StaticResource SurfaceAltBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}"/>
+        </Style>
     </Application.Styles>
 </Application>

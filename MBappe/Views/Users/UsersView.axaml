@@ -1,0 +1,324 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MBappe.ViewModels.Users"
+             x:Class="MBappe.Views.Users.UsersView"
+             x:DataType="vm:UsersViewModel">
+    <Grid RowDefinitions="Auto,*"
+          Margin="32">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+            <StackPanel Spacing="6">
+                <TextBlock Text="Сотрудники"
+                           Foreground="{StaticResource InkBrush}"
+                           FontSize="28"
+                           FontWeight="SemiBold"/>
+                <TextBlock Text="Учетные записи, роли и доступ к системе"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           FontSize="14"/>
+            </StackPanel>
+            <Button Grid.Column="1"
+                    Content="Новый сотрудник"
+                    Classes="primary"
+                    Command="{Binding OpenCreateFormCommand}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"/>
+            <Button Grid.Column="2"
+                    Content="Редактировать"
+                    Classes="subtle"
+                    Command="{Binding OpenEditFormCommand}"
+                    IsEnabled="{Binding HasSelectedUser}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"/>
+            <Button Grid.Column="3"
+                    Content="Обновить"
+                    Classes="subtle"
+                    Command="{Binding RefreshCommand}"
+                    VerticalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,360"
+              Margin="0,24,0,0">
+            <Border Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Margin="0,0,18,0">
+                <Grid RowDefinitions="Auto,*">
+                    <Grid ColumnDefinitions="2*,1.1*,1.4*,1.1*,1"
+                          Background="{StaticResource SurfaceAltBrush}"
+                          Margin="16,12">
+                        <TextBlock Text="Сотрудник"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="Роль"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="2"
+                                   Text="Почта"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="3"
+                                   Text="Статус"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                    </Grid>
+
+                    <ListBox Grid.Row="1"
+                             ItemsSource="{Binding Users}"
+                             SelectedItem="{Binding SelectedUser}"
+                             BorderThickness="0"
+                             Background="Transparent">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:UserRowViewModel">
+                                <Grid ColumnDefinitions="2*,1.1*,1.4*,1.1*,1"
+                                      MinHeight="58"
+                                      Margin="16,9">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding FullName}"
+                                                   Foreground="{StaticResource InkBrush}"
+                                                   FontWeight="SemiBold"
+                                                   TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding Login}"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding RoleTitle}"
+                                               Foreground="{StaticResource InkBrush}"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding Email}"
+                                               Foreground="{StaticResource InkBrush}"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Column="3"
+                                               Text="{Binding StatusTitle}"
+                                               Foreground="{StaticResource AccentBrush}"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="1"
+                  RowDefinitions="Auto,*">
+                <Border Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1"
+                        Padding="18">
+                    <StackPanel Spacing="13">
+                        <TextBlock Text="Действия"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding SelectedUserCaption}"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="13"
+                                   TextWrapping="Wrap"/>
+
+                        <Grid ColumnDefinitions="*,*">
+                            <Button Content="Заблокировать"
+                                    Classes="subtle"
+                                    Command="{Binding BlockSelectedCommand}"
+                                    IsEnabled="{Binding HasSelectedUser}"
+                                    Margin="0,0,6,0"/>
+                            <Button Grid.Column="1"
+                                    Content="Разблокировать"
+                                    Classes="subtle"
+                                    Command="{Binding UnblockSelectedCommand}"
+                                    IsEnabled="{Binding HasSelectedUser}"
+                                    Margin="6,0,0,0"/>
+                        </Grid>
+                        <TextBlock Text="{Binding StatusMessage}"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="13"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <ScrollViewer Grid.Row="1"
+                              Margin="0,18,0,0">
+                    <StackPanel Spacing="18">
+                        <Border Background="{StaticResource SurfaceBrush}"
+                                BorderBrush="{StaticResource BorderBrushSoft}"
+                                BorderThickness="1"
+                                Padding="18"
+                                IsVisible="{Binding IsEditFormVisible}">
+                            <StackPanel Spacing="11">
+                                <TextBlock Text="Редактирование"
+                                           Foreground="{StaticResource InkBrush}"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding SelectedUserCaption}"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           FontSize="13"
+                                           TextWrapping="Wrap"/>
+
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="ФИО"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                    <TextBox Text="{Binding EditFullName}"/>
+                                </StackPanel>
+
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="Почта"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                    <TextBox Text="{Binding EditEmail}"/>
+                                </StackPanel>
+
+                                <StackPanel Spacing="6"
+                                            IsVisible="{Binding CanChangeRoles}">
+                                    <TextBlock Text="Роль"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                    <ComboBox ItemsSource="{Binding RoleOptions}"
+                                              SelectedItem="{Binding SelectedEditRole}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:RoleOption">
+                                                <TextBlock Text="{Binding Title}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <Border Background="#FFF4F2"
+                                        BorderBrush="{StaticResource ErrorBrush}"
+                                        BorderThickness="1"
+                                        Padding="10"
+                                        IsVisible="{Binding HasEditFormMessage}">
+                                    <TextBlock Text="{Binding EditFormMessage}"
+                                               Foreground="{StaticResource ErrorBrush}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"
+                                               TextWrapping="Wrap"/>
+                                </Border>
+
+                                <Grid ColumnDefinitions="*,*">
+                                    <Button Content="Сохранить"
+                                            Classes="primary"
+                                            Command="{Binding SaveSelectedCommand}"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            Margin="0,0,6,0"/>
+                                    <Button Grid.Column="1"
+                                            Content="Отмена"
+                                            Classes="subtle"
+                                            Command="{Binding CloseUserFormCommand}"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            Margin="6,0,0,0"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{StaticResource SurfaceBrush}"
+                                BorderBrush="{StaticResource BorderBrushSoft}"
+                                BorderThickness="1"
+                                Padding="18"
+                                IsVisible="{Binding IsCreateFormVisible}">
+                            <StackPanel Spacing="11">
+                                <TextBlock Text="Новый сотрудник"
+                                           Foreground="{StaticResource InkBrush}"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"/>
+
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="ФИО"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                    <TextBox Text="{Binding NewFullName}"/>
+                                </StackPanel>
+
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="Логин"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                    <TextBox Text="{Binding NewLogin}"/>
+                                </StackPanel>
+
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="Почта"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                    <TextBox Text="{Binding NewEmail}"/>
+                                </StackPanel>
+
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="Роль"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                    <ComboBox ItemsSource="{Binding RoleOptions}"
+                                              SelectedItem="{Binding SelectedRole}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:RoleOption">
+                                                <TextBlock Text="{Binding Title}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <Grid ColumnDefinitions="*,*">
+                                    <StackPanel Spacing="6"
+                                                Margin="0,0,6,0">
+                                        <TextBlock Text="Пароль"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                        <TextBox Text="{Binding NewPassword, Mode=TwoWay}"
+                                                 PasswordChar="*"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1"
+                                                Spacing="6"
+                                                Margin="6,0,0,0">
+                                        <TextBlock Text="Повтор"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                        <TextBox Text="{Binding NewConfirmPassword, Mode=TwoWay}"
+                                                 PasswordChar="*"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Border Background="#FFF4F2"
+                                        BorderBrush="{StaticResource ErrorBrush}"
+                                        BorderThickness="1"
+                                        Padding="10"
+                                        IsVisible="{Binding HasCreateFormMessage}">
+                                    <TextBlock Text="{Binding CreateFormMessage}"
+                                               Foreground="{StaticResource ErrorBrush}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"
+                                               TextWrapping="Wrap"/>
+                                </Border>
+
+                                <Grid ColumnDefinitions="*,*">
+                                    <Button Content="Создать"
+                                            Classes="primary"
+                                            Command="{Binding CreateUserCommand}"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            Margin="0,0,6,0"/>
+                                    <Button Grid.Column="1"
+                                            Content="Отмена"
+                                            Classes="subtle"
+                                            Command="{Binding CloseUserFormCommand}"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            Margin="6,0,0,0"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MBappe.ViewModels"
+             x:Class="MBappe.Views.ModulePlaceholderView"
+             x:DataType="vm:ModulePlaceholderViewModel">
+    <ScrollViewer>
+        <Grid RowDefinitions="Auto,*"
+              Margin="32">
+            <StackPanel Spacing="6">
+                <TextBlock Text="{Binding Title}"
+                           Foreground="{StaticResource InkBrush}"
+                           FontSize="28"
+                           FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding Subtitle}"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           FontSize="14"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <ItemsControl Grid.Row="1"
+                          ItemsSource="{Binding Features}"
+                          Margin="0,26,0,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FeatureItemViewModel">
+                        <Border Background="{StaticResource SurfaceBrush}"
+                                BorderBrush="{StaticResource BorderBrushSoft}"
+                                BorderThickness="1"
+                                Padding="20"
+                                Margin="0,0,0,12">
+                            <Grid ColumnDefinitions="42,*">
+                                <Border Width="32"
+                                        Height="32"
+                                        Background="{StaticResource AccentSoftBrush}">
+                                    <TextBlock Text="•"
+                                               Foreground="{StaticResource AccentBrush}"
+                                               FontSize="20"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Grid.Column="1"
+                                            Spacing="4">
+                                    <TextBlock Text="{Binding Title}"
+                                               Foreground="{StaticResource InkBrush}"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Caption}"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

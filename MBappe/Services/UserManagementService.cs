@@ -172,6 +172,11 @@ public class UserManagementService
         return UserOperationResult.Ok(user, "Роль пользователя изменена");
     }
 
+    public bool CanChangeUserRoles()
+    {
+        return _sessionService.HasRole(UserRole.Administrator);
+    }
+
     public async Task<UserOperationResult> BlockUserAsync(Guid userId)
     {
         if (!CanManageUsers())
