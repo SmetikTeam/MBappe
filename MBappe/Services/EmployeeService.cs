@@ -2,6 +2,7 @@ using MBappe.Common;
 using MBappe.Models;
 using MBappe.Repositories;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MBappe.Services;
@@ -172,58 +173,48 @@ public class EmployeeService
 
     public async Task<EmployeeOperationResult> DismissEmployeeAsync(Guid employeeId)
     {
-        if (!CanManageEmployees())
-            return await AccessDeniedAsync("Попытка уволить сотрудника", "Недостаточно прав для увольнения сотрудника");
-
-        var employee = await _employeeRepository.GetByIdAsync(employeeId);
-
-        if (employee is null)
-            return EmployeeOperationResult.Fail("Профиль сотрудника не найден");
-
-        if (employee.Status == EmployeeStatus.Dismissed)
-            return EmployeeOperationResult.Fail("Сотрудник уже уволен");
-
-        employee.Status = EmployeeStatus.Dismissed;
-        employee.DismissalDate = DateTime.Today;
-        employee.UpdatedAt = DateTime.Now;
-
-        await _employeeRepository.UpdateAsync(employee);
-
-        await _auditLogService.LogAsync(
-            AuditActionType.EmployeeDismissed,
-            true,
-            "Сотрудник уволен",
-            $"Табельный номер: {employee.PersonnelNumber}");
-
-        return EmployeeOperationResult.Ok(employee, "Сотрудник уволен");
+        return await ChangeEmployeeStatusAsync(employeeId, EmployeeStatus.Dismissed);
     }
 
     public async Task<EmployeeOperationResult> RestoreEmployeeAsync(Guid employeeId)
     {
+        return await ChangeEmployeeStatusAsync(employeeId, EmployeeStatus.Active);
+    }
+
+    public async Task<EmployeeOperationResult> ChangeEmployeeStatusAsync(Guid employeeId, EmployeeStatus status)
+    {
         if (!CanManageEmployees())
-            return await AccessDeniedAsync("Попытка восстановить сотрудника", "Недостаточно прав для восстановления сотрудника");
+            return await AccessDeniedAsync("Попытка изменить статус сотрудника", "Недостаточно прав для изменения статуса сотрудника");
 
         var employee = await _employeeRepository.GetByIdAsync(employeeId);
 
         if (employee is null)
             return EmployeeOperationResult.Fail("Профиль сотрудника не найден");
 
-        if (employee.Status != EmployeeStatus.Dismissed)
-            return EmployeeOperationResult.Fail("Сотрудник не уволен");
+        if (employee.Status == status)
+            return EmployeeOperationResult.Fail("У сотрудника уже установлен выбранный статус");
 
-        employee.Status = EmployeeStatus.Active;
-        employee.DismissalDate = null;
+        var oldStatus = employee.Status;
+        employee.Status = status;
+        employee.DismissalDate = status == EmployeeStatus.Dismissed ? DateTime.Today : null;
         employee.UpdatedAt = DateTime.Now;
 
         await _employeeRepository.UpdateAsync(employee);
 
-        await _auditLogService.LogAsync(
-            AuditActionType.EmployeeRestored,
-            true,
-            "Сотрудник восстановлен",
-            $"Табельный номер: {employee.PersonnelNumber}");
+        var actionType = status switch
+        {
+            EmployeeStatus.Dismissed => AuditActionType.EmployeeDismissed,
+            EmployeeStatus.Active when oldStatus == EmployeeStatus.Dismissed => AuditActionType.EmployeeRestored,
+            _ => AuditActionType.EmployeeUpdated
+        };
 
-        return EmployeeOperationResult.Ok(employee, "Сотрудник восстановлен");
+        await _auditLogService.LogAsync(
+            actionType,
+            true,
+            "Изменен статус сотрудника",
+            $"Табельный номер: {employee.PersonnelNumber}, старый статус: {oldStatus}, новый статус: {status}");
+
+        return EmployeeOperationResult.Ok(employee, $"Статус изменен: {FormatStatus(status)}");
     }
 
     private async Task<string?> ValidateCreateRequestAsync(CreateEmployeeRequest request)
@@ -254,7 +245,9 @@ public class EmployeeService
             request.Position,
             request.Department,
             request.ManagerEmployeeId,
-            request.Email);
+            request.Email,
+            request.Phone,
+            null);
     }
 
     private async Task<string?> ValidateUpdateRequestAsync(UpdateEmployeeRequest request, EmployeeProfile employee)
@@ -270,7 +263,9 @@ public class EmployeeService
             request.Position,
             request.Department,
             request.ManagerEmployeeId,
-            request.Email);
+            request.Email,
+            request.Phone,
+            employee.Id);
     }
 
     private async Task<string?> ValidateEmployeeFieldsAsync(
@@ -278,7 +273,9 @@ public class EmployeeService
         string position,
         string department,
         Guid? managerEmployeeId,
-        string email)
+        string email,
+        string phone,
+        Guid? employeeId)
     {
         if (string.IsNullOrWhiteSpace(fullName))
             return "Введите ФИО";
@@ -295,15 +292,61 @@ public class EmployeeService
         if (!email.Contains('@'))
             return "Некорректная почта";
 
+        if (!IsValidPhone(phone))
+            return "Некорректный телефон. Используйте цифры, пробелы, скобки, дефисы и +";
+
         if (managerEmployeeId is not null)
         {
+            if (managerEmployeeId == employeeId)
+                return "Сотрудник не может быть собственным руководителем";
+
             var manager = await _employeeRepository.GetByIdAsync(managerEmployeeId.Value);
 
             if (manager is null)
                 return "Указанный руководитель не найден";
+
+            var managerUser = await _userRepository.GetByIdAsync(manager.UserId);
+
+            if (managerUser is null)
+                return "Учетная запись руководителя не найдена";
+
+            if (managerUser.Role is not (UserRole.HrSpecialist or UserRole.Manager))
+                return "Руководителем можно назначить только HR-специалиста или руководителя";
         }
 
         return null;
+    }
+
+    private static bool IsValidPhone(string phone)
+    {
+        if (string.IsNullOrWhiteSpace(phone))
+            return true;
+
+        var normalized = phone.Trim();
+
+        if (normalized.Any(symbol => !char.IsDigit(symbol) && symbol is not '+' and not ' ' and not '(' and not ')' and not '-' and not '.'))
+            return false;
+
+        if (normalized.Count(symbol => symbol == '+') > 1)
+            return false;
+
+        if (normalized.Contains('+') && normalized[0] != '+')
+            return false;
+
+        var digitsCount = normalized.Count(char.IsDigit);
+        return digitsCount is >= 10 and <= 15;
+    }
+
+    private static string FormatStatus(EmployeeStatus status)
+    {
+        return status switch
+        {
+            EmployeeStatus.Active => "Активен",
+            EmployeeStatus.OnVacation => "В отпуске",
+            EmployeeStatus.SickLeave => "На больничном",
+            EmployeeStatus.Dismissed => "Уволен",
+            _ => status.ToString()
+        };
     }
 
     private async Task<EmployeeOperationResult> AccessDeniedAsync(string details, string message)

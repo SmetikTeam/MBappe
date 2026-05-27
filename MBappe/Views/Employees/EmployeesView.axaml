@@ -44,104 +44,58 @@
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
                     Margin="0,0,18,0">
-                <Grid RowDefinitions="Auto,*">
-                    <Grid ColumnDefinitions="0.9*,1.4*,1.3*,1.2*,1.3*,1*,0.9*,0.9*"
-                          Background="{StaticResource SurfaceAltBrush}"
-                          Margin="16,12">
-                        <TextBlock Text="Таб. номер"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="1"
-                                   Text="ФИО"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="2"
-                                   Text="Должность"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="3"
-                                   Text="Отдел"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="4"
-                                   Text="Почта"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="5"
-                                   Text="Телефон"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="6"
-                                   Text="Прием"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="7"
-                                   Text="Статус"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                    </Grid>
-
-                    <ListBox Grid.Row="1"
-                             ItemsSource="{Binding Employees}"
+                <Grid>
+                    <ListBox ItemsSource="{Binding Employees}"
                              SelectedItem="{Binding SelectedEmployee}"
                              BorderThickness="0"
-                             Background="Transparent">
+                             Background="Transparent"
+                             Margin="12">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="vm:EmployeeRowViewModel">
-                                <Grid ColumnDefinitions="0.9*,1.4*,1.3*,1.2*,1.3*,1*,0.9*,0.9*"
-                                      MinHeight="62"
-                                      Margin="16,9">
-                                    <TextBlock Text="{Binding PersonnelNumber}"
-                                               Foreground="{StaticResource InkBrush}"
-                                               FontWeight="SemiBold"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"/>
-                                    <TextBlock Grid.Column="1"
-                                               Text="{Binding FullName}"
-                                               Foreground="{StaticResource InkBrush}"
-                                               FontWeight="SemiBold"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"/>
-                                    <TextBlock Grid.Column="2"
-                                               Text="{Binding Position}"
-                                               Foreground="{StaticResource InkBrush}"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"/>
-                                    <TextBlock Grid.Column="3"
-                                               Text="{Binding Department}"
-                                               Foreground="{StaticResource InkBrush}"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"/>
-                                    <TextBlock Grid.Column="4"
-                                               Text="{Binding Email}"
-                                               Foreground="{StaticResource InkBrush}"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"/>
-                                    <TextBlock Grid.Column="5"
-                                               Text="{Binding Phone}"
-                                               Foreground="{StaticResource InkBrush}"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"/>
-                                    <TextBlock Grid.Column="6"
-                                               Text="{Binding HireDateText}"
-                                               Foreground="{StaticResource InkBrush}"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"/>
-                                    <TextBlock Grid.Column="7"
-                                               Text="{Binding StatusTitle}"
-                                               Foreground="{StaticResource AccentBrush}"
-                                               FontWeight="SemiBold"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"/>
-                                </Grid>
+                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
+                                        BorderThickness="0,0,0,1"
+                                        Padding="12">
+                                    <Grid ColumnDefinitions="1.7*,1.35*,0.75*"
+                                          MinHeight="74">
+                                        <StackPanel VerticalAlignment="Center"
+                                                    Spacing="4">
+                                            <TextBlock Text="{Binding FullName}"
+                                                       Foreground="{StaticResource InkBrush}"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding PersonnelNumber}"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="12"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="3"
+                                                    Margin="10,0">
+                                            <TextBlock Text="{Binding Position}"
+                                                       Foreground="{StaticResource InkBrush}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Department}"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="12"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="3">
+                                            <TextBlock Text="{Binding StatusTitle}"
+                                                       Foreground="{StaticResource AccentBrush}"
+                                                       FontWeight="SemiBold"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding HireDateText}"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="12"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -149,7 +103,7 @@
             </Border>
 
             <Grid Grid.Column="1"
-                  RowDefinitions="Auto,*">
+                  RowDefinitions="Auto,Auto,*">
                 <Border Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
@@ -174,20 +128,24 @@
                                    TextWrapping="Wrap"
                                    IsVisible="{Binding IsReadOnlyEmployeeAccess}"/>
 
-                        <StackPanel Orientation="Horizontal"
-                                    Spacing="10"
-                                    IsVisible="{Binding CanShowEmployeeActions}">
-                            <Button Content="Уволить"
-                                    Classes="danger"
-                                    Command="{Binding DismissSelectedCommand}"
+                        <Grid ColumnDefinitions="*,Auto"
+                              IsVisible="{Binding CanShowEmployeeActions}">
+                            <ComboBox ItemsSource="{Binding StatusOptions}"
+                                      SelectedItem="{Binding SelectedStatus}"
+                                      Margin="0,0,10,0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:EmployeeStatusOption">
+                                        <TextBlock Text="{Binding Title}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Grid.Column="1"
+                                    Content="Применить"
+                                    Classes="success"
+                                    Command="{Binding ApplyStatusCommand}"
                                     HorizontalContentAlignment="Center"
                                     Width="132"/>
-                            <Button Content="Восстановить"
-                                    Classes="success"
-                                    Command="{Binding RestoreSelectedCommand}"
-                                    HorizontalContentAlignment="Center"
-                                    Width="172"/>
-                        </StackPanel>
+                        </Grid>
                         <Border Background="{StaticResource AccentSoftBrush}"
                                 BorderBrush="{StaticResource AccentBrush}"
                                 BorderThickness="1"
@@ -202,7 +160,140 @@
                     </StackPanel>
                 </Border>
 
-                <ScrollViewer Grid.Row="1"
+                <Border Grid.Row="1"
+                        Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1"
+                        Padding="18"
+                        Margin="0,18,0,0"
+                        IsVisible="{Binding CanShowEmployeeDetails}">
+                    <StackPanel Spacing="13">
+                        <TextBlock Text="Карточка сотрудника"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"/>
+
+                        <Grid ColumnDefinitions="130,*"
+                              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            <TextBlock Text="ФИО"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding SelectedEmployee.FullName}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontWeight="SemiBold"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Grid.Row="1"
+                                       Text="Табельный"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedEmployee.PersonnelNumber}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       Margin="0,10,0,0"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Grid.Row="2"
+                                       Text="Должность"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="2"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedEmployee.Position}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       Margin="0,10,0,0"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Grid.Row="3"
+                                       Text="Отдел"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="3"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedEmployee.Department}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       Margin="0,10,0,0"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Grid.Row="4"
+                                       Text="Руководитель"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="4"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedEmployee.ManagerTitle}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       Margin="0,10,0,0"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Grid.Row="5"
+                                       Text="Почта"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="5"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedEmployee.Email}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       Margin="0,10,0,0"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Grid.Row="6"
+                                       Text="Телефон"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="6"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedEmployee.Phone}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       Margin="0,10,0,0"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Grid.Row="7"
+                                       Text="Принят"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="7"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedEmployee.HireDateText}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       Margin="0,10,0,0"/>
+
+                            <TextBlock Grid.Row="8"
+                                       Text="Уволен"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="8"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedEmployee.DismissalDateText}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       Margin="0,10,0,0"/>
+
+                            <TextBlock Grid.Row="9"
+                                       Text="Статус"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="9"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedEmployee.StatusTitle}"
+                                       Foreground="{StaticResource AccentBrush}"
+                                       FontWeight="SemiBold"
+                                       Margin="0,10,0,0"/>
+
+                            <TextBlock Grid.Row="10"
+                                       Text="Обновлен"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="10"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedEmployee.UpdatedAtText}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       Margin="0,10,0,0"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <ScrollViewer Grid.Row="2"
                               Margin="0,18,0,0">
                     <StackPanel Spacing="18">
                         <Border Background="{StaticResource SurfaceBrush}"

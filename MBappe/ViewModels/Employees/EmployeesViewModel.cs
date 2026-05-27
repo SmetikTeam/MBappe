@@ -16,6 +16,7 @@ public partial class EmployeesViewModel : ViewModelBase
 {
     private readonly EmployeeService _employeeService;
     private readonly UserManagementService _userManagementService;
+    private IReadOnlyDictionary<Guid, AppUser> _usersById = new Dictionary<Guid, AppUser>();
 
     [ObservableProperty]
     private ObservableCollection<EmployeeRowViewModel> employees = [];
@@ -55,6 +56,9 @@ public partial class EmployeesViewModel : ViewModelBase
 
     [ObservableProperty]
     private EmployeeManagerOption? selectedEditManager;
+
+    [ObservableProperty]
+    private EmployeeStatusOption selectedStatus = EmployeeStatusOption.All[0];
 
     [ObservableProperty]
     private string newPersonnelNumber = string.Empty;
@@ -104,6 +108,10 @@ public partial class EmployeesViewModel : ViewModelBase
 
     public bool CanShowActionPrompt => CanManageEmployees && HasNoSelectedEmployee;
 
+    public bool CanShowEmployeeDetails => HasSelectedEmployee && !IsCreateFormVisible && !IsEditFormVisible;
+
+    public IReadOnlyList<EmployeeStatusOption> StatusOptions { get; } = EmployeeStatusOption.All;
+
     public string SelectedEmployeeCaption => SelectedEmployee is null
         ? "Сотрудник не выбран"
         : $"{SelectedEmployee.FullName} · {SelectedEmployee.PersonnelNumber}";
@@ -144,16 +152,18 @@ public partial class EmployeesViewModel : ViewModelBase
         }
 
         Employees = new ObservableCollection<EmployeeRowViewModel>(
-            result.Employees.Select(employee => new EmployeeRowViewModel(employee)));
+            result.Employees.Select(employee => new EmployeeRowViewModel(
+                employee,
+                result.Employees.FirstOrDefault(manager => manager.Id == employee.ManagerEmployeeId))));
 
         SelectedEmployee = selectedEmployeeId is null
             ? null
             : Employees.FirstOrDefault(employee => employee.Employee.Id == selectedEmployeeId.Value);
 
-        UpdateManagerOptions();
-
         if (CanManageEmployees)
             await LoadAvailableUsersAsync();
+
+        UpdateManagerOptions();
     }
 
     [RelayCommand]
@@ -163,11 +173,13 @@ public partial class EmployeesViewModel : ViewModelBase
             return;
 
         ClearCreateForm();
+        SelectedEmployee = null;
         IsCreateFormVisible = true;
         IsEditFormVisible = false;
         StatusMessage = string.Empty;
         EditFormMessage = string.Empty;
         await LoadAvailableUsersAsync();
+        UpdateManagerOptions();
 
         if (AvailableUserOptions.Count == 0)
             CreateFormMessage = "Нет учетных записей без профиля сотрудника";
@@ -191,10 +203,11 @@ public partial class EmployeesViewModel : ViewModelBase
         EditDepartment = employee.Department;
         EditEmail = employee.Email;
         EditPhone = employee.Phone;
-        SelectedEditManager = ManagerOptions.FirstOrDefault(option => option.EmployeeId == employee.ManagerEmployeeId)
-            ?? ManagerOptions[0];
         IsEditFormVisible = true;
         IsCreateFormVisible = false;
+        UpdateManagerOptions();
+        SelectedEditManager = ManagerOptions.FirstOrDefault(option => option.EmployeeId == employee.ManagerEmployeeId)
+            ?? ManagerOptions[0];
         StatusMessage = string.Empty;
         CreateFormMessage = string.Empty;
         EditFormMessage = string.Empty;
@@ -296,7 +309,7 @@ public partial class EmployeesViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task DismissSelectedAsync()
+    private async Task ApplyStatusAsync()
     {
         if (!CanManageEmployees)
             return;
@@ -308,7 +321,7 @@ public partial class EmployeesViewModel : ViewModelBase
         }
 
         var selectedEmployeeId = SelectedEmployee.Employee.Id;
-        var result = await _employeeService.DismissEmployeeAsync(selectedEmployeeId);
+        var result = await _employeeService.ChangeEmployeeStatusAsync(selectedEmployeeId, SelectedStatus.Status);
         StatusMessage = result.Message;
 
         if (!result.Success)
@@ -320,27 +333,23 @@ public partial class EmployeesViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private async Task DismissSelectedAsync()
+    {
+        if (SelectedEmployee is null)
+            return;
+
+        SelectedStatus = StatusOptions.First(option => option.Status == EmployeeStatus.Dismissed);
+        await ApplyStatusAsync();
+    }
+
+    [RelayCommand]
     private async Task RestoreSelectedAsync()
     {
-        if (!CanManageEmployees)
-            return;
-
         if (SelectedEmployee is null)
-        {
-            StatusMessage = "Выберите сотрудника";
-            return;
-        }
-
-        var selectedEmployeeId = SelectedEmployee.Employee.Id;
-        var result = await _employeeService.RestoreEmployeeAsync(selectedEmployeeId);
-        StatusMessage = result.Message;
-
-        if (!result.Success)
             return;
 
-        await RefreshAsync();
-        SelectedEmployee = Employees.FirstOrDefault(employee => employee.Employee.Id == selectedEmployeeId);
-        StatusMessage = result.Message;
+        SelectedStatus = StatusOptions.First(option => option.Status == EmployeeStatus.Active);
+        await ApplyStatusAsync();
     }
 
     private async Task LoadAvailableUsersAsync()
@@ -349,9 +358,12 @@ public partial class EmployeesViewModel : ViewModelBase
 
         if (!usersResult.Success || usersResult.Users is null)
         {
+            _usersById = new Dictionary<Guid, AppUser>();
             AvailableUserOptions = [];
             return;
         }
+
+        _usersById = usersResult.Users.ToDictionary(user => user.Id);
 
         var employeeUserIds = Employees
             .Select(employee => employee.Employee.UserId)
@@ -370,7 +382,11 @@ public partial class EmployeesViewModel : ViewModelBase
     {
         ManagerOptions = new ObservableCollection<EmployeeManagerOption>(
             new[] { EmployeeManagerOption.Empty }
-                .Concat(Employees.Select(employee => new EmployeeManagerOption(employee.Employee))));
+                .Concat(Employees
+                    .Where(employee => _usersById.TryGetValue(employee.Employee.UserId, out var user)
+                        && user.Role is UserRole.HrSpecialist or UserRole.Manager
+                        && (!IsEditFormVisible || employee.Employee.Id != SelectedEmployee?.Employee.Id))
+                    .Select(employee => new EmployeeManagerOption(employee.Employee))));
 
         SelectedNewManager = ManagerOptions[0];
         SelectedEditManager = SelectedEmployee is null
@@ -418,7 +434,22 @@ public partial class EmployeesViewModel : ViewModelBase
         OnPropertyChanged(nameof(HasNoSelectedEmployee));
         OnPropertyChanged(nameof(CanShowEmployeeActions));
         OnPropertyChanged(nameof(CanShowActionPrompt));
+        OnPropertyChanged(nameof(CanShowEmployeeDetails));
         OnPropertyChanged(nameof(SelectedEmployeeCaption));
+        UpdateManagerOptions();
+        SelectedStatus = value is null
+            ? StatusOptions[0]
+            : StatusOptions.First(option => option.Status == value.Employee.Status);
+    }
+
+    partial void OnIsCreateFormVisibleChanged(bool value)
+    {
+        OnPropertyChanged(nameof(CanShowEmployeeDetails));
+    }
+
+    partial void OnIsEditFormVisibleChanged(bool value)
+    {
+        OnPropertyChanged(nameof(CanShowEmployeeDetails));
     }
 
     partial void OnStatusMessageChanged(string value)
@@ -441,6 +472,8 @@ public sealed class EmployeeRowViewModel
 {
     public EmployeeProfile Employee { get; }
 
+    private readonly EmployeeProfile? _manager;
+
     public string PersonnelNumber => Employee.PersonnelNumber;
 
     public string FullName => Employee.FullName;
@@ -455,11 +488,42 @@ public sealed class EmployeeRowViewModel
 
     public string HireDateText => Employee.HireDate.ToString("dd.MM.yyyy");
 
+    public string DismissalDateText => Employee.DismissalDate?.ToString("dd.MM.yyyy") ?? "-";
+
+    public string CreatedAtText => Employee.CreatedAt.ToString("dd.MM.yyyy HH:mm");
+
+    public string UpdatedAtText => Employee.UpdatedAt?.ToString("dd.MM.yyyy HH:mm") ?? "-";
+
+    public string ManagerTitle => _manager is null
+        ? "Без руководителя"
+        : $"{_manager.FullName} · {_manager.PersonnelNumber}";
+
     public string StatusTitle => DisplayNames.ForEmployeeStatus(Employee.Status);
 
-    public EmployeeRowViewModel(EmployeeProfile employee)
+    public EmployeeRowViewModel(EmployeeProfile employee, EmployeeProfile? manager = null)
     {
         Employee = employee;
+        _manager = manager;
+    }
+}
+
+public sealed class EmployeeStatusOption
+{
+    public static IReadOnlyList<EmployeeStatusOption> All { get; } =
+    [
+        new EmployeeStatusOption(EmployeeStatus.Active),
+        new EmployeeStatusOption(EmployeeStatus.OnVacation),
+        new EmployeeStatusOption(EmployeeStatus.SickLeave),
+        new EmployeeStatusOption(EmployeeStatus.Dismissed)
+    ];
+
+    public EmployeeStatus Status { get; }
+
+    public string Title => DisplayNames.ForEmployeeStatus(Status);
+
+    private EmployeeStatusOption(EmployeeStatus status)
+    {
+        Status = status;
     }
 }
 
