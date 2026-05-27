@@ -7,7 +7,7 @@
           Margin="32">
         <Grid ColumnDefinitions="*,Auto,Auto,Auto">
             <StackPanel Spacing="6">
-                <TextBlock Text="Сотрудники"
+                <TextBlock Text="Пользователи"
                            Foreground="{StaticResource InkBrush}"
                            FontSize="28"
                            FontWeight="SemiBold"/>
@@ -16,7 +16,7 @@
                            FontSize="14"/>
             </StackPanel>
             <Button Grid.Column="1"
-                    Content="Новый сотрудник"
+                    Content="Новый пользователь"
                     Classes="primary"
                     Command="{Binding OpenCreateFormCommand}"
                     VerticalAlignment="Center"
@@ -46,7 +46,7 @@
                     <Grid ColumnDefinitions="2*,1.1*,1.4*,1.1*,1"
                           Background="{StaticResource SurfaceAltBrush}"
                           Margin="16,12">
-                        <TextBlock Text="Сотрудник"
+                        <TextBlock Text="Пользователь"
                                    Foreground="{StaticResource MutedTextBrush}"
                                    FontSize="12"
                                    FontWeight="SemiBold"/>
@@ -227,7 +227,7 @@
                                 Padding="18"
                                 IsVisible="{Binding IsCreateFormVisible}">
                             <StackPanel Spacing="11">
-                                <TextBlock Text="Новый сотрудник"
+                                <TextBlock Text="Новый пользователь"
                                            Foreground="{StaticResource InkBrush}"
                                            FontSize="18"
                                            FontWeight="SemiBold"/>

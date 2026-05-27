@@ -1,0 +1,445 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MBappe.ViewModels.Employees"
+             x:Class="MBappe.Views.Employees.EmployeesView"
+             x:DataType="vm:EmployeesViewModel">
+    <Grid RowDefinitions="Auto,*"
+          Margin="32">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+            <StackPanel Spacing="6">
+                <TextBlock Text="Сотрудники"
+                           Foreground="{StaticResource InkBrush}"
+                           FontSize="28"
+                           FontWeight="SemiBold"/>
+                <TextBlock Text="Кадровые профили, должности и подразделения"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           FontSize="14"/>
+            </StackPanel>
+            <Button Grid.Column="1"
+                    Content="Новый профиль"
+                    Classes="primary"
+                    Command="{Binding OpenCreateFormCommand}"
+                    IsVisible="{Binding CanManageEmployees}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"/>
+            <Button Grid.Column="2"
+                    Content="Редактировать"
+                    Classes="subtle"
+                    Command="{Binding OpenEditFormCommand}"
+                    IsEnabled="{Binding HasSelectedEmployee}"
+                    IsVisible="{Binding CanManageEmployees}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"/>
+            <Button Grid.Column="3"
+                    Content="Обновить"
+                    Classes="subtle"
+                    Command="{Binding RefreshCommand}"
+                    VerticalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,430"
+              Margin="0,24,0,0">
+            <Border Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Margin="0,0,18,0">
+                <Grid RowDefinitions="Auto,*">
+                    <Grid ColumnDefinitions="0.9*,1.4*,1.3*,1.2*,1.3*,1*,0.9*,0.9*"
+                          Background="{StaticResource SurfaceAltBrush}"
+                          Margin="16,12">
+                        <TextBlock Text="Таб. номер"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="ФИО"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="2"
+                                   Text="Должность"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="3"
+                                   Text="Отдел"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="4"
+                                   Text="Почта"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="5"
+                                   Text="Телефон"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="6"
+                                   Text="Прием"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="7"
+                                   Text="Статус"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                    </Grid>
+
+                    <ListBox Grid.Row="1"
+                             ItemsSource="{Binding Employees}"
+                             SelectedItem="{Binding SelectedEmployee}"
+                             BorderThickness="0"
+                             Background="Transparent">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:EmployeeRowViewModel">
+                                <Grid ColumnDefinitions="0.9*,1.4*,1.3*,1.2*,1.3*,1*,0.9*,0.9*"
+                                      MinHeight="62"
+                                      Margin="16,9">
+                                    <TextBlock Text="{Binding PersonnelNumber}"
+                                               Foreground="{StaticResource InkBrush}"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding FullName}"
+                                               Foreground="{StaticResource InkBrush}"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding Position}"
+                                               Foreground="{StaticResource InkBrush}"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Column="3"
+                                               Text="{Binding Department}"
+                                               Foreground="{StaticResource InkBrush}"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Column="4"
+                                               Text="{Binding Email}"
+                                               Foreground="{StaticResource InkBrush}"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Column="5"
+                                               Text="{Binding Phone}"
+                                               Foreground="{StaticResource InkBrush}"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Column="6"
+                                               Text="{Binding HireDateText}"
+                                               Foreground="{StaticResource InkBrush}"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Column="7"
+                                               Text="{Binding StatusTitle}"
+                                               Foreground="{StaticResource AccentBrush}"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="1"
+                  RowDefinitions="Auto,*">
+                <Border Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1"
+                        Padding="18">
+                    <StackPanel Spacing="13">
+                        <TextBlock Text="Действия"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding SelectedEmployeeCaption}"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="13"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock Text="Выберите строку в таблице, чтобы открыть кадровые действия."
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="13"
+                                   TextWrapping="Wrap"
+                                   IsVisible="{Binding CanShowActionPrompt}"/>
+                        <TextBlock Text="Доступен только просмотр кадровых профилей."
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="13"
+                                   TextWrapping="Wrap"
+                                   IsVisible="{Binding IsReadOnlyEmployeeAccess}"/>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="10"
+                                    IsVisible="{Binding CanShowEmployeeActions}">
+                            <Button Content="Уволить"
+                                    Classes="danger"
+                                    Command="{Binding DismissSelectedCommand}"
+                                    HorizontalContentAlignment="Center"
+                                    Width="132"/>
+                            <Button Content="Восстановить"
+                                    Classes="success"
+                                    Command="{Binding RestoreSelectedCommand}"
+                                    HorizontalContentAlignment="Center"
+                                    Width="172"/>
+                        </StackPanel>
+                        <Border Background="{StaticResource AccentSoftBrush}"
+                                BorderBrush="{StaticResource AccentBrush}"
+                                BorderThickness="1"
+                                Padding="10"
+                                IsVisible="{Binding HasStatusMessage}">
+                            <TextBlock Text="{Binding StatusMessage}"
+                                       Foreground="{StaticResource AccentBrush}"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       TextWrapping="Wrap"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <ScrollViewer Grid.Row="1"
+                              Margin="0,18,0,0">
+                    <StackPanel Spacing="18">
+                        <Border Background="{StaticResource SurfaceBrush}"
+                                BorderBrush="{StaticResource BorderBrushSoft}"
+                                BorderThickness="1"
+                                Padding="18"
+                                IsVisible="{Binding IsEditFormVisible}">
+                            <StackPanel Spacing="11">
+                                <TextBlock Text="Редактирование профиля"
+                                           Foreground="{StaticResource InkBrush}"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding SelectedEmployeeCaption}"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           FontSize="13"
+                                           TextWrapping="Wrap"/>
+
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="ФИО"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                    <TextBox Text="{Binding EditFullName}"/>
+                                </StackPanel>
+
+                                <Grid ColumnDefinitions="*,*">
+                                    <StackPanel Spacing="6"
+                                                Margin="0,0,6,0">
+                                        <TextBlock Text="Должность"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                        <TextBox Text="{Binding EditPosition}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1"
+                                                Spacing="6"
+                                                Margin="6,0,0,0">
+                                        <TextBlock Text="Отдел"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                        <TextBox Text="{Binding EditDepartment}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid ColumnDefinitions="*,*">
+                                    <StackPanel Spacing="6"
+                                                Margin="0,0,6,0">
+                                        <TextBlock Text="Почта"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                        <TextBox Text="{Binding EditEmail}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1"
+                                                Spacing="6"
+                                                Margin="6,0,0,0">
+                                        <TextBlock Text="Телефон"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                        <TextBox Text="{Binding EditPhone}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="Руководитель"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                    <ComboBox ItemsSource="{Binding ManagerOptions}"
+                                              SelectedItem="{Binding SelectedEditManager}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:EmployeeManagerOption">
+                                                <TextBlock Text="{Binding Title}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <Border Background="#FFF4F2"
+                                        BorderBrush="{StaticResource ErrorBrush}"
+                                        BorderThickness="1"
+                                        Padding="10"
+                                        IsVisible="{Binding HasEditFormMessage}">
+                                    <TextBlock Text="{Binding EditFormMessage}"
+                                               Foreground="{StaticResource ErrorBrush}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"
+                                               TextWrapping="Wrap"/>
+                                </Border>
+
+                                <Grid ColumnDefinitions="*,*">
+                                    <Button Content="Сохранить"
+                                            Classes="primary"
+                                            Command="{Binding SaveEmployeeCommand}"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            Margin="0,0,6,0"/>
+                                    <Button Grid.Column="1"
+                                            Content="Отмена"
+                                            Classes="subtle"
+                                            Command="{Binding CloseEmployeeFormCommand}"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            Margin="6,0,0,0"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{StaticResource SurfaceBrush}"
+                                BorderBrush="{StaticResource BorderBrushSoft}"
+                                BorderThickness="1"
+                                Padding="18"
+                                IsVisible="{Binding IsCreateFormVisible}">
+                            <StackPanel Spacing="11">
+                                <TextBlock Text="Новый сотрудник"
+                                           Foreground="{StaticResource InkBrush}"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"/>
+
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="Учетная запись"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                    <ComboBox ItemsSource="{Binding AvailableUserOptions}"
+                                              SelectedItem="{Binding SelectedUserOption}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:UserAccountOption">
+                                                <TextBlock Text="{Binding Title}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <Grid ColumnDefinitions="*,*">
+                                    <StackPanel Spacing="6"
+                                                Margin="0,0,6,0">
+                                        <TextBlock Text="Табельный номер"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                        <TextBox Text="{Binding NewPersonnelNumber}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1"
+                                                Spacing="6"
+                                                Margin="6,0,0,0">
+                                        <TextBlock Text="Дата приема"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                        <TextBox Text="{Binding NewHireDateText}"
+                                                 Watermark="дд.мм.гггг"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="ФИО"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                    <TextBox Text="{Binding NewFullName}"/>
+                                </StackPanel>
+
+                                <Grid ColumnDefinitions="*,*">
+                                    <StackPanel Spacing="6"
+                                                Margin="0,0,6,0">
+                                        <TextBlock Text="Должность"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                        <TextBox Text="{Binding NewPosition}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1"
+                                                Spacing="6"
+                                                Margin="6,0,0,0">
+                                        <TextBlock Text="Отдел"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                        <TextBox Text="{Binding NewDepartment}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid ColumnDefinitions="*,*">
+                                    <StackPanel Spacing="6"
+                                                Margin="0,0,6,0">
+                                        <TextBlock Text="Почта"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                        <TextBox Text="{Binding NewEmail}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1"
+                                                Spacing="6"
+                                                Margin="6,0,0,0">
+                                        <TextBlock Text="Телефон"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"/>
+                                        <TextBox Text="{Binding NewPhone}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="Руководитель"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"/>
+                                    <ComboBox ItemsSource="{Binding ManagerOptions}"
+                                              SelectedItem="{Binding SelectedNewManager}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:EmployeeManagerOption">
+                                                <TextBlock Text="{Binding Title}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <Border Background="#FFF4F2"
+                                        BorderBrush="{StaticResource ErrorBrush}"
+                                        BorderThickness="1"
+                                        Padding="10"
+                                        IsVisible="{Binding HasCreateFormMessage}">
+                                    <TextBlock Text="{Binding CreateFormMessage}"
+                                               Foreground="{StaticResource ErrorBrush}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"
+                                               TextWrapping="Wrap"/>
+                                </Border>
+
+                                <Grid ColumnDefinitions="*,*">
+                                    <Button Content="Создать"
+                                            Classes="primary"
+                                            Command="{Binding CreateEmployeeCommand}"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            Margin="0,0,6,0"/>
+                                    <Button Grid.Column="1"
+                                            Content="Отмена"
+                                            Classes="subtle"
+                                            Command="{Binding CloseEmployeeFormCommand}"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            Margin="6,0,0,0"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

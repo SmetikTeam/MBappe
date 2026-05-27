@@ -14,6 +14,11 @@ public enum AuditActionType
     UserUnblocked,
     UserRoleChanged,
 
+    EmployeeCreated,
+    EmployeeUpdated,
+    EmployeeDismissed,
+    EmployeeRestored,
+
     DataViewed,
     DataCreated,
     DataUpdated,

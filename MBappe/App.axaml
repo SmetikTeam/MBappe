@@ -46,5 +46,15 @@
             <Setter Property="Background" Value="{StaticResource SurfaceAltBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource InkBrush}"/>
         </Style>
+        <Style Selector="Button.danger">
+            <Setter Property="Background" Value="#FFF4F2"/>
+            <Setter Property="Foreground" Value="{StaticResource ErrorBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ErrorBrush}"/>
+        </Style>
+        <Style Selector="Button.success">
+            <Setter Property="Background" Value="{StaticResource AccentSoftBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+        </Style>
     </Application.Styles>
 </Application>
