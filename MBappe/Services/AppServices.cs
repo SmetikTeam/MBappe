@@ -6,6 +6,8 @@ public static class AppServices
 {
     public static IUserRepository UserRepository { get; } = new InMemoryUserRepository();
 
+    public static IEmployeeRepository EmployeeRepository { get; } = new InMemoryEmployeeRepository();
+
     public static IAuditLogRepository AuditLogRepository { get; } = new InMemoryAuditLogRepository();
 
     public static PasswordHasher PasswordHasher { get; } = new PasswordHasher();
@@ -25,6 +27,12 @@ public static class AppServices
     public static UserManagementService UserManagementService { get; } = new UserManagementService(
         UserRepository,
         PasswordHasher,
+        SessionService,
+        AuditLogService);
+
+    public static EmployeeService EmployeeService { get; } = new EmployeeService(
+        EmployeeRepository,
+        UserRepository,
         SessionService,
         AuditLogService);
 }

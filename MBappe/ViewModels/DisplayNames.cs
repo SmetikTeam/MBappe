@@ -30,6 +30,10 @@ public static class DisplayNames
             AuditActionType.UserBlocked => "Блокировка пользователя",
             AuditActionType.UserUnblocked => "Разблокировка пользователя",
             AuditActionType.UserRoleChanged => "Изменение роли",
+            AuditActionType.EmployeeCreated => "Создание сотрудника",
+            AuditActionType.EmployeeUpdated => "Изменение сотрудника",
+            AuditActionType.EmployeeDismissed => "Увольнение сотрудника",
+            AuditActionType.EmployeeRestored => "Восстановление сотрудника",
             AuditActionType.DataViewed => "Просмотр данных",
             AuditActionType.DataCreated => "Создание данных",
             AuditActionType.DataUpdated => "Изменение данных",
@@ -37,6 +41,18 @@ public static class DisplayNames
             AuditActionType.AccessDenied => "Отказ в доступе",
             AuditActionType.SystemError => "Системная ошибка",
             _ => actionType.ToString()
+        };
+    }
+
+    public static string ForEmployeeStatus(EmployeeStatus status)
+    {
+        return status switch
+        {
+            EmployeeStatus.Active => "Активен",
+            EmployeeStatus.OnVacation => "В отпуске",
+            EmployeeStatus.SickLeave => "На больничном",
+            EmployeeStatus.Dismissed => "Уволен",
+            _ => status.ToString()
         };
     }
 }

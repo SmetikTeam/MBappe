@@ -1,6 +1,7 @@
 ﻿using MBappe.Models;
 using MBappe.Services;
 using MBappe.ViewModels.Audit;
+using MBappe.ViewModels.Employees;
 using MBappe.ViewModels.Profile;
 using MBappe.ViewModels.Users;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -16,6 +17,7 @@ public partial class MainShellViewModel : ViewModelBase
 {
     private readonly AuthService _authService;
     private readonly UserManagementService _userManagementService;
+    private readonly EmployeeService _employeeService;
     private readonly AuditLogService _auditLogService;
     private readonly Action<string?> _openLogin;
 
@@ -41,11 +43,13 @@ public partial class MainShellViewModel : ViewModelBase
         AuthService authService,
         SessionService sessionService,
         UserManagementService userManagementService,
+        EmployeeService employeeService,
         AuditLogService auditLogService,
         Action<string?> openLogin)
     {
         _authService = authService;
         _userManagementService = userManagementService;
+        _employeeService = employeeService;
         _auditLogService = auditLogService;
         _openLogin = openLogin;
 
@@ -71,27 +75,52 @@ public partial class MainShellViewModel : ViewModelBase
 
     private void BuildNavigation()
     {
-        NavigationItems.Add(new NavigationItemViewModel(
-            "Обзор",
-            "HR",
-            "Состояние рабочего контура",
-            () => new DashboardViewModel(CurrentUser)));
-
-        NavigationItems.Add(new NavigationItemViewModel(
-            "Профиль",
-            "ПР",
-            "Личный кабинет сотрудника",
-            () => new ProfileViewModel(CurrentUser)));
-
-        if (CanManageUsers(CurrentUser.Role))
+        if (CurrentUser.Role == UserRole.Employee)
         {
             NavigationItems.Add(new NavigationItemViewModel(
-                "Сотрудники",
-                "СТ",
-                "Учетные записи и доступ",
-                () => new UsersViewModel(_userManagementService)));
+                "Профиль",
+                "ПР",
+                "Личный кадровый профиль",
+                () => new ProfileViewModel(CurrentUser, _employeeService)));
+
+            return;
         }
 
+        if (CurrentUser.Role == UserRole.Administrator)
+            AddUsersNavigationItem();
+
+        if (CurrentUser.Role is UserRole.Administrator or UserRole.HrSpecialist or UserRole.Manager)
+            AddEmployeesNavigationItem();
+
+        if (CurrentUser.Role == UserRole.HrSpecialist)
+            AddUsersNavigationItem();
+
+        AddWorkInProgressModules();
+
+        if (CurrentUser.Role is UserRole.Administrator or UserRole.HrSpecialist)
+            AddAuditNavigationItem();
+    }
+
+    private void AddUsersNavigationItem()
+    {
+        NavigationItems.Add(new NavigationItemViewModel(
+            "Пользователи",
+            "ПЛ",
+            "Учетные записи и роли",
+            () => new UsersViewModel(_userManagementService)));
+    }
+
+    private void AddEmployeesNavigationItem()
+    {
+        NavigationItems.Add(new NavigationItemViewModel(
+            "Сотрудники",
+            "СТ",
+            "Кадровые профили",
+            () => new EmployeesViewModel(_employeeService, _userManagementService)));
+    }
+
+    private void AddWorkInProgressModules()
+    {
         NavigationItems.Add(new NavigationItemViewModel(
             "KPI",
             "KPI",
@@ -110,28 +139,20 @@ public partial class MainShellViewModel : ViewModelBase
             "Бонусы и премии",
             () => ModulePlaceholderViewModel.CreateMotivationModule()));
 
-        if (CurrentUser.Role is UserRole.Manager or UserRole.HrSpecialist or UserRole.Administrator)
-        {
-            NavigationItems.Add(new NavigationItemViewModel(
-                "Аналитика",
-                "АН",
-                "Отчеты по персоналу",
-                () => ModulePlaceholderViewModel.CreateAnalyticsModule()));
-        }
-
-        if (CurrentUser.Role == UserRole.Administrator)
-        {
-            NavigationItems.Add(new NavigationItemViewModel(
-                "Журнал",
-                "ЖР",
-                "Аудит безопасности",
-                () => new AuditLogViewModel(_auditLogService)));
-        }
+        NavigationItems.Add(new NavigationItemViewModel(
+            "Аналитика",
+            "АН",
+            "Отчеты по персоналу",
+            () => ModulePlaceholderViewModel.CreateAnalyticsModule()));
     }
 
-    private static bool CanManageUsers(UserRole role)
+    private void AddAuditNavigationItem()
     {
-        return role is UserRole.Administrator or UserRole.HrSpecialist;
+        NavigationItems.Add(new NavigationItemViewModel(
+            "Журнал",
+            "ЖР",
+            "Аудит безопасности",
+            () => new AuditLogViewModel(_auditLogService)));
     }
 
     private static string BuildInitials(string fullName)

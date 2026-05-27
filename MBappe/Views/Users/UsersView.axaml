@@ -7,7 +7,7 @@
           Margin="32">
         <Grid ColumnDefinitions="*,Auto,Auto,Auto">
             <StackPanel Spacing="6">
-                <TextBlock Text="Сотрудники"
+                <TextBlock Text="Пользователи"
                            Foreground="{StaticResource InkBrush}"
                            FontSize="28"
                            FontWeight="SemiBold"/>
@@ -16,7 +16,7 @@
                            FontSize="14"/>
             </StackPanel>
             <Button Grid.Column="1"
-                    Content="Новый сотрудник"
+                    Content="Новый пользователь"
                     Classes="primary"
                     Command="{Binding OpenCreateFormCommand}"
                     VerticalAlignment="Center"
@@ -42,66 +42,74 @@
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
                     Margin="0,0,18,0">
-                <Grid RowDefinitions="Auto,*">
-                    <Grid ColumnDefinitions="2*,1.1*,1.4*,1.1*,1"
-                          Background="{StaticResource SurfaceAltBrush}"
-                          Margin="16,12">
-                        <TextBlock Text="Сотрудник"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="1"
-                                   Text="Роль"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="2"
-                                   Text="Почта"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="3"
-                                   Text="Статус"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                    </Grid>
-
-                    <ListBox Grid.Row="1"
-                             ItemsSource="{Binding Users}"
+                <Grid>
+                    <ListBox ItemsSource="{Binding Users}"
                              SelectedItem="{Binding SelectedUser}"
                              BorderThickness="0"
-                             Background="Transparent">
+                             Background="Transparent"
+                             Margin="12">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="vm:UserRowViewModel">
-                                <Grid ColumnDefinitions="2*,1.1*,1.4*,1.1*,1"
-                                      MinHeight="58"
-                                      Margin="16,9">
-                                    <StackPanel VerticalAlignment="Center">
+                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
+                                        BorderThickness="0,0,0,1"
+                                        Padding="12">
+                                    <Grid ColumnDefinitions="1.35*,1.1*,1.35*,0.8*"
+                                          MinHeight="72">
+                                        <StackPanel VerticalAlignment="Center"
+                                                    Spacing="3">
+                                            <TextBlock Text="Пользователь"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"/>
                                         <TextBlock Text="{Binding FullName}"
                                                    Foreground="{StaticResource InkBrush}"
+                                                   FontSize="15"
                                                    FontWeight="SemiBold"
-                                                   TextWrapping="Wrap"/>
+                                                   TextTrimming="CharacterEllipsis"/>
                                         <TextBlock Text="{Binding Login}"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
-                                    </StackPanel>
-                                    <TextBlock Grid.Column="1"
-                                               Text="{Binding RoleTitle}"
-                                               Foreground="{StaticResource InkBrush}"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"/>
-                                    <TextBlock Grid.Column="2"
-                                               Text="{Binding Email}"
-                                               Foreground="{StaticResource InkBrush}"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"/>
-                                    <TextBlock Grid.Column="3"
-                                               Text="{Binding StatusTitle}"
-                                               Foreground="{StaticResource AccentBrush}"
-                                               FontWeight="SemiBold"
-                                               VerticalAlignment="Center"/>
-                                </Grid>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="3">
+                                            <TextBlock Text="Роль"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding RoleTitle}"
+                                                       Foreground="{StaticResource InkBrush}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="3"
+                                                    Margin="10,0">
+                                            <TextBlock Text="Почта"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding Email}"
+                                                       Foreground="{StaticResource InkBrush}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="3"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="3">
+                                            <TextBlock Text="Статус"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding StatusTitle}"
+                                                       Foreground="{StaticResource AccentBrush}"
+                                                       FontWeight="SemiBold"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -227,7 +235,7 @@
                                 Padding="18"
                                 IsVisible="{Binding IsCreateFormVisible}">
                             <StackPanel Spacing="11">
-                                <TextBlock Text="Новый сотрудник"
+                                <TextBlock Text="Новый пользователь"
                                            Foreground="{StaticResource InkBrush}"
                                            FontSize="18"
                                            FontWeight="SemiBold"/>
