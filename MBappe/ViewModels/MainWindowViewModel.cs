@@ -38,6 +38,7 @@ public partial class MainWindowViewModel : ViewModelBase
             AppServices.SessionService,
             AppServices.UserManagementService,
             AppServices.EmployeeService,
+            AppServices.KpiService,
             AppServices.AuditLogService,
             ShowLogin);
     }
