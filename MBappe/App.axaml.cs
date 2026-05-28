@@ -34,5 +34,12 @@ public partial class App : Application
             AppServices.EmployeeService,
             AppServices.KpiService,
             AppServices.AuditLogService);
+
+        await LearningDebugScenario.RunAsync(
+            AppServices.AuthService,
+            AppServices.UserManagementService,
+            AppServices.EmployeeService,
+            AppServices.LearningService,
+            AppServices.AuditLogService);
     }
 }

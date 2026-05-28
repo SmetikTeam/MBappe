@@ -282,12 +282,14 @@
                                 <Button Content="Редактировать"
                                         Classes="subtle"
                                         Command="{Binding OpenEditCourseFormCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"
                                         Margin="0,0,8,0"/>
                                 <Button Grid.Column="1"
                                         Content="Назначить"
                                         Classes="success"
                                         Command="{Binding OpenAssignFormCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"
                                         IsVisible="{Binding CanAssignLearning}"/>
                             </Grid>
@@ -308,12 +310,14 @@
                                 <Button Content="Прогресс"
                                         Classes="success"
                                         Command="{Binding OpenProgressFormCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"
                                         Margin="0,0,8,0"/>
                                 <Button Grid.Column="1"
                                         Content="Отменить"
                                         Classes="danger"
                                         Command="{Binding CancelSelectedAssignmentCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"
                                         IsVisible="{Binding CanAssignLearning}"/>
                             </Grid>
@@ -329,6 +333,75 @@
                                            FontWeight="SemiBold"
                                            TextWrapping="Wrap"/>
                             </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource BorderBrushSoft}"
+                            BorderThickness="1"
+                            Padding="18"
+                            IsVisible="{Binding IsAssignFormVisible}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="Назначить обучение"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"/>
+
+                            <TextBlock Text="{Binding SelectedCourseCaption}"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       FontSize="13"
+                                       TextWrapping="Wrap"/>
+
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="Сотрудник"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"/>
+                                <ComboBox ItemsSource="{Binding EmployeeOptions}"
+                                          SelectedItem="{Binding SelectedEmployeeOption}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:LearningEmployeeOption">
+                                            <TextBlock Text="{Binding Title}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="Срок"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"/>
+                                <TextBox Text="{Binding AssignmentDueDateText}"
+                                         Watermark="дд.мм.гггг"/>
+                            </StackPanel>
+
+                            <Border Background="{StaticResource AccentSoftBrush}"
+                                    BorderBrush="{StaticResource AccentBrush}"
+                                    BorderThickness="1"
+                                    Padding="10"
+                                    IsVisible="{Binding HasAssignmentFormMessage}">
+                                <TextBlock Text="{Binding AssignmentFormMessage}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <Button Content="Назначить"
+                                        Classes="primary"
+                                        Command="{Binding AssignCourseCommand}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Margin="0,0,8,0"/>
+                                <Button Grid.Column="1"
+                                        Content="Отмена"
+                                        Classes="subtle"
+                                        Command="{Binding CloseFormsCommand}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"/>
+                            </Grid>
                         </StackPanel>
                     </Border>
 
@@ -601,12 +674,14 @@
                                 <Button Content="Создать"
                                         Classes="primary"
                                         Command="{Binding CreateCourseCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"
                                         Margin="0,0,8,0"/>
                                 <Button Grid.Column="1"
                                         Content="Отмена"
                                         Classes="subtle"
                                         Command="{Binding CloseFormsCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"/>
                             </Grid>
                         </StackPanel>
@@ -690,79 +765,14 @@
                                 <Button Content="Сохранить"
                                         Classes="primary"
                                         Command="{Binding SaveCourseCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"
                                         Margin="0,0,8,0"/>
                                 <Button Grid.Column="1"
                                         Content="Отмена"
                                         Classes="subtle"
                                         Command="{Binding CloseFormsCommand}"
-                                        HorizontalContentAlignment="Center"/>
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrushSoft}"
-                            BorderThickness="1"
-                            Padding="18"
-                            IsVisible="{Binding IsAssignFormVisible}">
-                        <StackPanel Spacing="10">
-                            <TextBlock Text="Назначить обучение"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"/>
-
-                            <TextBlock Text="{Binding SelectedCourseCaption}"
-                                       Foreground="{StaticResource MutedTextBrush}"
-                                       FontSize="13"
-                                       TextWrapping="Wrap"/>
-
-                            <StackPanel Spacing="4">
-                                <TextBlock Text="Сотрудник"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           FontSize="12"
-                                           FontWeight="SemiBold"/>
-                                <ComboBox ItemsSource="{Binding EmployeeOptions}"
-                                          SelectedItem="{Binding SelectedEmployeeOption}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate x:DataType="vm:LearningEmployeeOption">
-                                            <TextBlock Text="{Binding Title}"/>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                            </StackPanel>
-
-                            <StackPanel Spacing="4">
-                                <TextBlock Text="Срок"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           FontSize="12"
-                                           FontWeight="SemiBold"/>
-                                <TextBox Text="{Binding AssignmentDueDateText}"
-                                         Watermark="дд.мм.гггг"/>
-                            </StackPanel>
-
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    Padding="10"
-                                    IsVisible="{Binding HasAssignmentFormMessage}">
-                                <TextBlock Text="{Binding AssignmentFormMessage}"
-                                           Foreground="{StaticResource AccentBrush}"
-                                           FontSize="13"
-                                           FontWeight="SemiBold"
-                                           TextWrapping="Wrap"/>
-                            </Border>
-
-                            <Grid ColumnDefinitions="*,*">
-                                <Button Content="Назначить"
-                                        Classes="primary"
-                                        Command="{Binding AssignCourseCommand}"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
-                                <Button Grid.Column="1"
-                                        Content="Отмена"
-                                        Classes="subtle"
-                                        Command="{Binding CloseFormsCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"/>
                             </Grid>
                         </StackPanel>
@@ -820,12 +830,14 @@
                                 <Button Content="Сохранить"
                                         Classes="primary"
                                         Command="{Binding SaveProgressCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"
                                         Margin="0,0,8,0"/>
                                 <Button Grid.Column="1"
                                         Content="Отмена"
                                         Classes="subtle"
                                         Command="{Binding CloseFormsCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"/>
                             </Grid>
                         </StackPanel>

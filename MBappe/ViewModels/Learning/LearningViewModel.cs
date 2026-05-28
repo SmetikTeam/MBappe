@@ -35,6 +35,9 @@ public partial class LearningViewModel : ViewModelBase
     private LearningAssignmentRowViewModel? selectedAssignment;
 
     [ObservableProperty]
+    private bool isCourseDetailsActive = true;
+
+    [ObservableProperty]
     private LearningEmployeeOption? selectedEmployeeOption;
 
     [ObservableProperty]
@@ -122,6 +125,8 @@ public partial class LearningViewModel : ViewModelBase
 
     public bool CanAssignLearning => _learningService.CanAssignLearning();
 
+    public bool CanUpdateLearningProgress => _learningService.CanUpdateLearningProgress();
+
     public bool HasSelectedCourse => SelectedCourse is not null;
 
     public bool HasSelectedAssignment => SelectedAssignment is not null;
@@ -132,23 +137,39 @@ public partial class LearningViewModel : ViewModelBase
 
     public bool CanShowCourseActions => CanManageCourses && HasSelectedCourse;
 
-    public bool CanShowAssignmentActions => HasSelectedAssignment;
+    public bool CanShowAssignmentActions => HasSelectedAssignment && CanUpdateLearningProgress;
 
     public bool CanShowAssignAction => CanAssignLearning && HasSelectedCourse;
 
     public bool CanShowCourseDetails =>
         HasSelectedCourse
+        && IsCourseDetailsActive
         && !IsCreateCourseFormVisible
-        && !IsEditCourseFormVisible;
-
-    public bool CanShowAssignmentDetails =>
-        HasSelectedAssignment
+        && !IsEditCourseFormVisible
         && !IsAssignFormVisible
         && !IsProgressFormVisible;
 
-    public bool CanShowCoursePrompt => HasNoSelectedCourse && !IsCreateCourseFormVisible;
+    public bool CanShowAssignmentDetails =>
+        HasSelectedAssignment
+        && !IsCourseDetailsActive
+        && !IsCreateCourseFormVisible
+        && !IsEditCourseFormVisible
+        && !IsAssignFormVisible
+        && !IsProgressFormVisible;
 
-    public bool CanShowAssignmentPrompt => HasNoSelectedAssignment && !IsAssignFormVisible && !IsProgressFormVisible;
+    public bool CanShowCoursePrompt =>
+        HasNoSelectedCourse
+        && !IsCreateCourseFormVisible
+        && !IsEditCourseFormVisible
+        && !IsAssignFormVisible
+        && !IsProgressFormVisible;
+
+    public bool CanShowAssignmentPrompt =>
+        HasNoSelectedAssignment
+        && !IsCreateCourseFormVisible
+        && !IsEditCourseFormVisible
+        && !IsAssignFormVisible
+        && !IsProgressFormVisible;
 
     public bool HasStatusMessage => !string.IsNullOrWhiteSpace(StatusMessage);
 
@@ -225,13 +246,18 @@ public partial class LearningViewModel : ViewModelBase
                 return new LearningAssignmentRowViewModel(assignment, course, employee);
             }));
 
-        SelectedCourse = selectedCourseId is null
+        if (selectedAssignmentId is not null)
+        {
+            SelectedAssignment = Assignments.FirstOrDefault(assignment => assignment.Assignment.Id == selectedAssignmentId.Value);
+            SelectedCourse = null;
+        }
+        else
+        {
+            SelectedCourse = selectedCourseId is null
             ? Courses.FirstOrDefault()
             : Courses.FirstOrDefault(course => course.Course.Id == selectedCourseId.Value) ?? Courses.FirstOrDefault();
-
-        SelectedAssignment = selectedAssignmentId is null
-            ? Assignments.FirstOrDefault()
-            : Assignments.FirstOrDefault(assignment => assignment.Assignment.Id == selectedAssignmentId.Value) ?? Assignments.FirstOrDefault();
+            SelectedAssignment = null;
+        }
 
         UpdateSummary();
         StatusMessage = "Модуль обучения обновлен";
@@ -653,6 +679,12 @@ public partial class LearningViewModel : ViewModelBase
         if (IsCreateCourseFormVisible || IsEditCourseFormVisible || IsAssignFormVisible)
             HideFormsAfterSelectionChanged();
 
+        if (value is not null)
+        {
+            IsCourseDetailsActive = true;
+            SelectedAssignment = null;
+        }
+
         OnPropertyChanged(nameof(HasSelectedCourse));
         OnPropertyChanged(nameof(HasNoSelectedCourse));
         OnPropertyChanged(nameof(CanShowCourseActions));
@@ -667,6 +699,12 @@ public partial class LearningViewModel : ViewModelBase
         if (IsProgressFormVisible)
             HideFormsAfterSelectionChanged();
 
+        if (value is not null)
+        {
+            IsCourseDetailsActive = false;
+            SelectedCourse = null;
+        }
+
         OnPropertyChanged(nameof(HasSelectedAssignment));
         OnPropertyChanged(nameof(HasNoSelectedAssignment));
         OnPropertyChanged(nameof(CanShowAssignmentActions));
@@ -677,24 +715,34 @@ public partial class LearningViewModel : ViewModelBase
 
     partial void OnIsCreateCourseFormVisibleChanged(bool value)
     {
-        OnPropertyChanged(nameof(CanShowCourseDetails));
-        OnPropertyChanged(nameof(CanShowCoursePrompt));
+        NotifyDetailsVisibilityChanged();
     }
 
     partial void OnIsEditCourseFormVisibleChanged(bool value)
     {
-        OnPropertyChanged(nameof(CanShowCourseDetails));
+        NotifyDetailsVisibilityChanged();
     }
 
     partial void OnIsAssignFormVisibleChanged(bool value)
     {
-        OnPropertyChanged(nameof(CanShowAssignmentDetails));
-        OnPropertyChanged(nameof(CanShowAssignmentPrompt));
+        NotifyDetailsVisibilityChanged();
     }
 
     partial void OnIsProgressFormVisibleChanged(bool value)
     {
+        NotifyDetailsVisibilityChanged();
+    }
+
+    partial void OnIsCourseDetailsActiveChanged(bool value)
+    {
+        NotifyDetailsVisibilityChanged();
+    }
+
+    private void NotifyDetailsVisibilityChanged()
+    {
+        OnPropertyChanged(nameof(CanShowCourseDetails));
         OnPropertyChanged(nameof(CanShowAssignmentDetails));
+        OnPropertyChanged(nameof(CanShowCoursePrompt));
         OnPropertyChanged(nameof(CanShowAssignmentPrompt));
     }
 

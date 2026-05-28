@@ -38,8 +38,15 @@ public class LearningService
     {
         return _sessionService.HasAnyRole(
             UserRole.Administrator,
+            UserRole.HrSpecialist);
+    }
+
+    public bool CanUpdateLearningProgress()
+    {
+        return _sessionService.HasAnyRole(
+            UserRole.Administrator,
             UserRole.HrSpecialist,
-            UserRole.Manager);
+            UserRole.Employee);
     }
 
     public async Task<LearningOperationResult> GetVisibleCoursesAsync()
@@ -51,7 +58,36 @@ public class LearningService
 
         var courses = await _learningRepository.GetAllCoursesAsync();
 
-        if (currentUser.Role is not (UserRole.Administrator or UserRole.HrSpecialist))
+        if (currentUser.Role is UserRole.Administrator or UserRole.HrSpecialist)
+        {
+            await _auditLogService.LogAsync(
+                AuditActionType.LearningCourseViewed,
+                true,
+                "Получен список курсов обучения",
+                $"Количество курсов: {courses.Count}");
+
+            return LearningOperationResult.Ok(courses, "Список курсов получен");
+        }
+
+        if (currentUser.Role == UserRole.Manager)
+        {
+            var currentEmployee = await _employeeRepository.GetByUserIdAsync(currentUser.Id);
+
+            if (currentEmployee is null)
+                return LearningOperationResult.Fail("Для текущей учетной записи не создан профиль сотрудника");
+
+            var visibleEmployeeIds = await GetVisibleEmployeeIdsForManagerAsync(currentEmployee.Id);
+            var assignments = await _learningRepository.GetAllAssignmentsAsync();
+            var visibleCourseIds = assignments
+                .Where(assignment => visibleEmployeeIds.Contains(assignment.EmployeeId))
+                .Select(assignment => assignment.CourseId)
+                .ToHashSet();
+
+            courses = courses
+                .Where(course => visibleCourseIds.Contains(course.Id))
+                .ToList();
+        }
+        else
         {
             courses = courses
                 .Where(course => course.Status == LearningCourseStatus.Active)
@@ -366,7 +402,7 @@ public class LearningService
         var employees = await _employeeRepository.GetAllAsync();
 
         return employees
-            .Where(employee => employee.Id == managerEmployeeId || employee.ManagerEmployeeId == managerEmployeeId)
+            .Where(employee => employee.ManagerEmployeeId == managerEmployeeId)
             .Select(employee => employee.Id)
             .ToHashSet();
     }
@@ -403,15 +439,7 @@ public class LearningService
         if (currentUser.Role is UserRole.Administrator or UserRole.HrSpecialist)
             return true;
 
-        if (currentUser.Role != UserRole.Manager)
-            return false;
-
-        var currentEmployee = await _employeeRepository.GetByUserIdAsync(currentUser.Id);
-
-        if (currentEmployee is null)
-            return false;
-
-        return employee.ManagerEmployeeId == currentEmployee.Id;
+        return false;
     }
 
     private async Task<bool> CanUpdateAssignmentAsync(LearningAssignment assignment)
@@ -429,11 +457,7 @@ public class LearningService
         if (currentEmployee is null)
             return false;
 
-        if (assignment.EmployeeId == currentEmployee.Id)
-            return true;
-
-        return currentUser.Role == UserRole.Manager
-            && await IsDirectReportAsync(assignment.EmployeeId, currentEmployee.Id);
+        return assignment.EmployeeId == currentEmployee.Id;
     }
 
     private async Task<bool> CanCancelAssignmentAsync(LearningAssignment assignment)
@@ -446,13 +470,7 @@ public class LearningService
         if (currentUser.Role is UserRole.Administrator or UserRole.HrSpecialist)
             return true;
 
-        if (currentUser.Role != UserRole.Manager)
-            return false;
-
-        var currentEmployee = await _employeeRepository.GetByUserIdAsync(currentUser.Id);
-
-        return currentEmployee is not null
-            && await IsDirectReportAsync(assignment.EmployeeId, currentEmployee.Id);
+        return false;
     }
 
     private async Task<bool> IsDirectReportAsync(Guid employeeId, Guid managerEmployeeId)
