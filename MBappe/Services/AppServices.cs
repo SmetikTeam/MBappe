@@ -8,6 +8,8 @@ public static class AppServices
 
     public static IEmployeeRepository EmployeeRepository { get; } = new InMemoryEmployeeRepository();
 
+    public static IKpiRepository KpiRepository { get; } = new InMemoryKpiRepository();
+
     public static IAuditLogRepository AuditLogRepository { get; } = new InMemoryAuditLogRepository();
 
     public static PasswordHasher PasswordHasher { get; } = new PasswordHasher();
@@ -33,6 +35,12 @@ public static class AppServices
     public static EmployeeService EmployeeService { get; } = new EmployeeService(
         EmployeeRepository,
         UserRepository,
+        SessionService,
+        AuditLogService);
+
+    public static KpiService KpiService { get; } = new KpiService(
+        KpiRepository,
+        EmployeeRepository,
         SessionService,
         AuditLogService);
 }

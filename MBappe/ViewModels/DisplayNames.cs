@@ -4,6 +4,18 @@ namespace MBappe.ViewModels;
 
 public static class DisplayNames
 {
+    public static string ForKpiStatus(KpiStatus status)
+    {
+        return status switch
+        {
+            KpiStatus.InProgress => "В работе",
+            KpiStatus.Completed => "Выполнен",
+            KpiStatus.Overdue => "Просрочен",
+            KpiStatus.Cancelled => "Отменен",
+            _ => status.ToString()
+        };
+    }
+
     public static string ForRole(UserRole role)
     {
         return role switch
@@ -30,16 +42,26 @@ public static class DisplayNames
             AuditActionType.UserBlocked => "Блокировка пользователя",
             AuditActionType.UserUnblocked => "Разблокировка пользователя",
             AuditActionType.UserRoleChanged => "Изменение роли",
+
             AuditActionType.EmployeeCreated => "Создание сотрудника",
             AuditActionType.EmployeeUpdated => "Изменение сотрудника",
             AuditActionType.EmployeeDismissed => "Увольнение сотрудника",
             AuditActionType.EmployeeRestored => "Восстановление сотрудника",
+
             AuditActionType.DataViewed => "Просмотр данных",
             AuditActionType.DataCreated => "Создание данных",
             AuditActionType.DataUpdated => "Изменение данных",
             AuditActionType.DataDeleted => "Удаление данных",
+
             AuditActionType.AccessDenied => "Отказ в доступе",
             AuditActionType.SystemError => "Системная ошибка",
+
+            AuditActionType.KpiCreated => "Создание KPI",
+            AuditActionType.KpiUpdated => "Изменение KPI",
+            AuditActionType.KpiProgressUpdated => "Обновление прогресса KPI",
+            AuditActionType.KpiCancelled => "Отмена KPI",
+            AuditActionType.KpiViewed => "Просмотр KPI",
+            AuditActionType.KpiEfficiencyCalculated => "Расчет эффективности",
             _ => actionType.ToString()
         };
     }
