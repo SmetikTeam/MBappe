@@ -29,6 +29,18 @@ public class KpiService
         _auditLogService = auditLogService;
     }
 
+    public bool CanManageKpis()
+    {
+        var currentUser = _sessionService.CurrentUser;
+
+        if (currentUser is null)
+            return false;
+
+        return currentUser.Role is UserRole.Administrator
+            or UserRole.HrSpecialist
+            or UserRole.Manager;
+    }
+
     public async Task<KpiOperationResult> GetVisibleKpisAsync()
     {
         var currentUser = _sessionService.CurrentUser;

@@ -1,0 +1,622 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MBappe.ViewModels.Kpi"
+             x:Class="MBappe.Views.Kpi.KpiView"
+             x:DataType="vm:KpiViewModel">
+    <Grid RowDefinitions="Auto,Auto,*"
+          Margin="32">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+            <StackPanel Spacing="6">
+                <TextBlock Text="KPI"
+                           Foreground="{StaticResource InkBrush}"
+                           FontSize="28"
+                           FontWeight="SemiBold"/>
+                <TextBlock Text="Показатели эффективности сотрудников"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           FontSize="14"/>
+            </StackPanel>
+
+            <Button Grid.Column="1"
+                    Content="Новый KPI"
+                    Classes="primary"
+                    Command="{Binding OpenCreateFormCommand}"
+                    IsVisible="{Binding CanManageKpis}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"/>
+
+            <Button Grid.Column="2"
+                    Content="Редактировать"
+                    Classes="subtle"
+                    Command="{Binding OpenEditFormCommand}"
+                    IsEnabled="{Binding HasSelectedKpi}"
+                    IsVisible="{Binding CanManageKpis}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"/>
+
+            <Button Grid.Column="3"
+                    Content="Обновить факт"
+                    Classes="success"
+                    Command="{Binding OpenProgressFormCommand}"
+                    IsEnabled="{Binding HasSelectedKpi}"
+                    IsVisible="{Binding CanManageKpis}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"/>
+
+            <Button Grid.Column="4"
+                    Content="Обновить"
+                    Classes="subtle"
+                    Command="{Binding RefreshCommand}"
+                    VerticalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,*,*"
+              Margin="0,24,0,0">
+            <Border Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Padding="16"
+                    Margin="0,0,12,0">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Всего KPI"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding TotalKpiCount}"
+                               Foreground="{StaticResource InkBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Padding="16"
+                    Margin="0,0,12,0">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Среднее выполнение"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding AverageCompletionText}"
+                               Foreground="{StaticResource AccentBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Padding="16">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Выполнено / просрочено"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Foreground="{StaticResource InkBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold">
+                        <Run Text="{Binding CompletedKpiCount}"/>
+                        <Run Text=" / "/>
+                        <Run Text="{Binding OverdueKpiCount}"/>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="2"
+              ColumnDefinitions="*,430"
+              Margin="0,24,0,0">
+            <Border Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Margin="0,0,18,0">
+                <ListBox ItemsSource="{Binding Kpis}"
+                         SelectedItem="{Binding SelectedKpi}"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         Margin="12">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:KpiRowViewModel">
+                            <Border BorderBrush="{StaticResource BorderBrushSoft}"
+                                    BorderThickness="0,0,0,1"
+                                    Padding="12">
+                                <Grid ColumnDefinitions="1.6*,1.4*,0.85*,0.85*,0.75*,0.7*"
+                                      MinHeight="78">
+                                    <StackPanel VerticalAlignment="Center"
+                                                Spacing="4">
+                                        <TextBlock Text="{Binding Title}"
+                                                   Foreground="{StaticResource InkBrush}"
+                                                   FontSize="15"
+                                                   FontWeight="SemiBold"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding EmployeeTitle}"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Spacing="4"
+                                                Margin="10,0">
+                                        <TextBlock Text="{Binding PeriodText}"
+                                                   Foreground="{StaticResource InkBrush}"
+                                                   FontSize="13"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding Description}"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2"
+                                                VerticalAlignment="Center"
+                                                Spacing="3">
+                                        <TextBlock Text="План"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding TargetValueText}"
+                                                   Foreground="{StaticResource InkBrush}"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="3"
+                                                VerticalAlignment="Center"
+                                                Spacing="3">
+                                        <TextBlock Text="Факт"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding ActualValueText}"
+                                                   Foreground="{StaticResource InkBrush}"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="4"
+                                                VerticalAlignment="Center"
+                                                Spacing="3">
+                                        <TextBlock Text="Вып."
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding CompletionText}"
+                                                   Foreground="{StaticResource AccentBrush}"
+                                                   FontWeight="SemiBold"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="5"
+                                                VerticalAlignment="Center"
+                                                Spacing="3">
+                                        <TextBlock Text="Статус"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding StatusTitle}"
+                                                   Foreground="{StaticResource AccentBrush}"
+                                                   FontWeight="SemiBold"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+
+            <Grid Grid.Column="1"
+                  RowDefinitions="Auto,Auto,*">
+                <Border Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1"
+                        Padding="18">
+                    <StackPanel Spacing="13">
+                        <TextBlock Text="Действия"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"/>
+
+                        <TextBlock Text="{Binding SelectedKpiCaption}"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="13"
+                                   TextWrapping="Wrap"/>
+
+                        <TextBlock Text="Выберите KPI в списке, чтобы открыть действия."
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="13"
+                                   TextWrapping="Wrap"
+                                   IsVisible="{Binding CanShowActionPrompt}"/>
+
+                        <TextBlock Text="Доступен только просмотр назначенных KPI."
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="13"
+                                   TextWrapping="Wrap"
+                                   IsVisible="{Binding IsReadOnlyAccess}"/>
+
+                        <Grid ColumnDefinitions="*,*"
+                              IsVisible="{Binding CanShowKpiActions}">
+                            <Button Content="Обновить факт"
+                                    Classes="success"
+                                    Command="{Binding OpenProgressFormCommand}"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="0,0,8,0"/>
+                            <Button Grid.Column="1"
+                                    Content="Отменить KPI"
+                                    Classes="danger"
+                                    Command="{Binding CancelSelectedKpiCommand}"
+                                    HorizontalContentAlignment="Center"/>
+                        </Grid>
+
+                        <Border Background="{StaticResource AccentSoftBrush}"
+                                BorderBrush="{StaticResource AccentBrush}"
+                                BorderThickness="1"
+                                Padding="10"
+                                IsVisible="{Binding HasStatusMessage}">
+                            <TextBlock Text="{Binding StatusMessage}"
+                                       Foreground="{StaticResource AccentBrush}"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       TextWrapping="Wrap"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1"
+                        Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1"
+                        Padding="18"
+                        Margin="0,18,0,0"
+                        IsVisible="{Binding CanShowKpiDetails}">
+                    <StackPanel Spacing="13">
+                        <TextBlock Text="Карточка KPI"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"/>
+
+                        <Grid ColumnDefinitions="130,*"
+                              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            <TextBlock Text="Название"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding SelectedKpi.Title}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Grid.Row="1"
+                                       Text="Сотрудник"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedKpi.EmployeeTitle}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Grid.Row="2"
+                                       Text="Период"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
+                            <TextBlock Grid.Row="2"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedKpi.PeriodText}"
+                                       Foreground="{StaticResource InkBrush}"/>
+
+                            <TextBlock Grid.Row="3"
+                                       Text="План"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
+                            <TextBlock Grid.Row="3"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedKpi.TargetValueText}"
+                                       Foreground="{StaticResource InkBrush}"/>
+
+                            <TextBlock Grid.Row="4"
+                                       Text="Факт"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
+                            <TextBlock Grid.Row="4"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedKpi.ActualValueText}"
+                                       Foreground="{StaticResource InkBrush}"/>
+
+                            <TextBlock Grid.Row="5"
+                                       Text="Выполнение"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
+                            <TextBlock Grid.Row="5"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedKpi.CompletionText}"
+                                       Foreground="{StaticResource AccentBrush}"
+                                       FontWeight="SemiBold"/>
+
+                            <TextBlock Grid.Row="6"
+                                       Text="Вес"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
+                            <TextBlock Grid.Row="6"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedKpi.WeightText}"
+                                       Foreground="{StaticResource InkBrush}"/>
+
+                            <TextBlock Grid.Row="7"
+                                       Text="Статус"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
+                            <TextBlock Grid.Row="7"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedKpi.StatusTitle}"
+                                       Foreground="{StaticResource AccentBrush}"
+                                       FontWeight="SemiBold"/>
+
+                            <TextBlock Grid.Row="8"
+                                       Text="Обновлен"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
+                            <TextBlock Grid.Row="8"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedKpi.UpdatedAtText}"
+                                       Foreground="{StaticResource InkBrush}"/>
+
+                            <TextBlock Grid.Row="9"
+                                       Text="Описание"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
+                            <TextBlock Grid.Row="9"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedKpi.Description}"
+                                       Foreground="{StaticResource InkBrush}"
+                                       TextWrapping="Wrap"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2"
+                        Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1"
+                        Padding="18"
+                        Margin="0,18,0,0"
+                        IsVisible="{Binding IsCreateFormVisible}">
+                    <ScrollViewer>
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="Новый KPI"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"/>
+
+                            <ComboBox ItemsSource="{Binding EmployeeOptions}"
+                                      SelectedItem="{Binding SelectedEmployeeOption}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:KpiEmployeeOption">
+                                        <TextBlock Text="{Binding Title}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <TextBox Watermark="Название KPI"
+                                     Text="{Binding NewTitle}"/>
+
+                            <TextBox Watermark="Описание"
+                                     Text="{Binding NewDescription}"
+                                     AcceptsReturn="True"
+                                     MinHeight="70"/>
+
+							<Grid ColumnDefinitions="*,*">
+								<StackPanel Spacing="4"
+											Margin="0,0,8,0">
+									<TextBlock Text="Плановое значение"
+											   Foreground="{StaticResource MutedTextBrush}"
+											   FontSize="12"
+											   FontWeight="SemiBold"/>
+									<TextBox Watermark="Например: 20"
+											 Text="{Binding NewTargetValueText}"/>
+								</StackPanel>
+
+								<StackPanel Grid.Column="1"
+											Spacing="4">
+									<TextBlock Text="Фактическое значение"
+											   Foreground="{StaticResource MutedTextBrush}"
+											   FontSize="12"
+											   FontWeight="SemiBold"/>
+									<TextBox Text="{Binding NewActualValueText}"/>
+								</StackPanel>
+							</Grid>
+
+							<Grid ColumnDefinitions="*,*">
+								<StackPanel Spacing="4"
+											Margin="0,0,8,0">
+									<TextBlock Text="Единица измерения"
+											   Foreground="{StaticResource MutedTextBrush}"
+											   FontSize="12"
+											   FontWeight="SemiBold"/>
+									<TextBox Watermark="задач, %, часов"
+											 Text="{Binding NewUnit}"/>
+								</StackPanel>
+
+								<StackPanel Grid.Column="1"
+											Spacing="4">
+									<TextBlock Text="Вес KPI, %"
+											   Foreground="{StaticResource MutedTextBrush}"
+											   FontSize="12"
+											   FontWeight="SemiBold"/>
+									<TextBox Text="{Binding NewWeightPercentText}"/>
+								</StackPanel>
+							</Grid>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <TextBox Watermark="Начало периода"
+                                         Text="{Binding NewPeriodStartText}"
+                                         Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="1"
+                                         Watermark="Конец периода"
+                                         Text="{Binding NewPeriodEndText}"/>
+                            </Grid>
+
+                            <Border Background="{StaticResource AccentSoftBrush}"
+                                    BorderBrush="{StaticResource AccentBrush}"
+                                    BorderThickness="1"
+                                    Padding="10"
+                                    IsVisible="{Binding HasCreateFormMessage}">
+                                <TextBlock Text="{Binding CreateFormMessage}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <Button Content="Создать"
+                                        Classes="primary"
+                                        Command="{Binding CreateKpiCommand}"
+                                        HorizontalContentAlignment="Center"
+                                        Margin="0,0,8,0"/>
+                                <Button Grid.Column="1"
+                                        Content="Отмена"
+                                        Classes="subtle"
+                                        Command="{Binding CloseFormsCommand}"
+                                        HorizontalContentAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <Border Grid.Row="2"
+                        Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1"
+                        Padding="18"
+                        Margin="0,18,0,0"
+                        IsVisible="{Binding IsEditFormVisible}">
+                    <ScrollViewer>
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="Редактирование KPI"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"/>
+
+                            <TextBox Watermark="Название KPI"
+                                     Text="{Binding EditTitle}"/>
+
+                            <TextBox Watermark="Описание"
+                                     Text="{Binding EditDescription}"
+                                     AcceptsReturn="True"
+                                     MinHeight="70"/>
+
+							<Grid ColumnDefinitions="*,*">
+								<StackPanel Spacing="4"
+											Margin="0,0,8,0">
+									<TextBlock Text="Плановое значение"
+											   Foreground="{StaticResource MutedTextBrush}"
+											   FontSize="12"
+											   FontWeight="SemiBold"/>
+									<TextBox Text="{Binding EditTargetValueText}"/>
+								</StackPanel>
+
+								<StackPanel Grid.Column="1"
+											Spacing="4">
+									<TextBlock Text="Единица измерения"
+											   Foreground="{StaticResource MutedTextBrush}"
+											   FontSize="12"
+											   FontWeight="SemiBold"/>
+									<TextBox Text="{Binding EditUnit}"/>
+								</StackPanel>
+							</Grid>
+
+							<StackPanel Spacing="4">
+								<TextBlock Text="Вес KPI, %"
+										   Foreground="{StaticResource MutedTextBrush}"
+										   FontSize="12"
+										   FontWeight="SemiBold"/>
+								<TextBox Text="{Binding EditWeightPercentText}"/>
+							</StackPanel>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <TextBox Watermark="Начало периода"
+                                         Text="{Binding EditPeriodStartText}"
+                                         Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="1"
+                                         Watermark="Конец периода"
+                                         Text="{Binding EditPeriodEndText}"/>
+                            </Grid>
+
+                            <Border Background="{StaticResource AccentSoftBrush}"
+                                    BorderBrush="{StaticResource AccentBrush}"
+                                    BorderThickness="1"
+                                    Padding="10"
+                                    IsVisible="{Binding HasEditFormMessage}">
+                                <TextBlock Text="{Binding EditFormMessage}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <Button Content="Сохранить"
+                                        Classes="primary"
+                                        Command="{Binding SaveKpiCommand}"
+                                        HorizontalContentAlignment="Center"
+                                        Margin="0,0,8,0"/>
+                                <Button Grid.Column="1"
+                                        Content="Отмена"
+                                        Classes="subtle"
+                                        Command="{Binding CloseFormsCommand}"
+                                        HorizontalContentAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <Border Grid.Row="2"
+                        Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1"
+                        Padding="18"
+                        Margin="0,18,0,0"
+                        IsVisible="{Binding IsProgressFormVisible}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Обновление факта"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"/>
+
+                        <TextBlock Text="{Binding SelectedKpiCaption}"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="13"
+                                   TextWrapping="Wrap"/>
+
+						<StackPanel Spacing="4">
+							<TextBlock Text="Новое фактическое значение"
+									   Foreground="{StaticResource MutedTextBrush}"
+									   FontSize="12"
+									   FontWeight="SemiBold"/>
+							<TextBox Text="{Binding ProgressActualValueText}"/>
+						</StackPanel>
+
+                        <Border Background="{StaticResource AccentSoftBrush}"
+                                BorderBrush="{StaticResource AccentBrush}"
+                                BorderThickness="1"
+                                Padding="10"
+                                IsVisible="{Binding HasProgressFormMessage}">
+                            <TextBlock Text="{Binding ProgressFormMessage}"
+                                       Foreground="{StaticResource AccentBrush}"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       TextWrapping="Wrap"/>
+                        </Border>
+
+                        <Grid ColumnDefinitions="*,*">
+                            <Button Content="Сохранить"
+                                    Classes="primary"
+                                    Command="{Binding SaveProgressCommand}"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="0,0,8,0"/>
+                            <Button Grid.Column="1"
+                                    Content="Отмена"
+                                    Classes="subtle"
+                                    Command="{Binding CloseFormsCommand}"
+                                    HorizontalContentAlignment="Center"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
