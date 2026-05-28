@@ -19,6 +19,13 @@ public enum AuditActionType
     EmployeeDismissed,
     EmployeeRestored,
 
+    KpiCreated,
+    KpiUpdated,
+    KpiProgressUpdated,
+    KpiCancelled,
+    KpiViewed,
+    KpiEfficiencyCalculated,
+
     DataViewed,
     DataCreated,
     DataUpdated,
