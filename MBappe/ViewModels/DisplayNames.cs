@@ -28,6 +28,40 @@ public static class DisplayNames
         };
     }
 
+    public static string ForLearningFormat(LearningFormat format)
+    {
+        return format switch
+        {
+            LearningFormat.Online => "Онлайн",
+            LearningFormat.Offline => "Очно",
+            LearningFormat.Mixed => "Смешанный",
+            _ => format.ToString()
+        };
+    }
+
+    public static string ForLearningCourseStatus(LearningCourseStatus status)
+    {
+        return status switch
+        {
+            LearningCourseStatus.Draft => "Черновик",
+            LearningCourseStatus.Active => "Активен",
+            LearningCourseStatus.Archived => "В архиве",
+            _ => status.ToString()
+        };
+    }
+
+    public static string ForLearningAssignmentStatus(LearningAssignmentStatus status)
+    {
+        return status switch
+        {
+            LearningAssignmentStatus.Assigned => "Назначено",
+            LearningAssignmentStatus.InProgress => "В процессе",
+            LearningAssignmentStatus.Completed => "Завершено",
+            LearningAssignmentStatus.Cancelled => "Отменено",
+            _ => status.ToString()
+        };
+    }
+
     public static string ForAuditAction(AuditActionType actionType)
     {
         return actionType switch
@@ -62,6 +96,13 @@ public static class DisplayNames
             AuditActionType.KpiCancelled => "Отмена KPI",
             AuditActionType.KpiViewed => "Просмотр KPI",
             AuditActionType.KpiEfficiencyCalculated => "Расчет эффективности",
+
+            AuditActionType.LearningCourseCreated => "Создание курса",
+            AuditActionType.LearningCourseUpdated => "Изменение курса",
+            AuditActionType.LearningCourseViewed => "Просмотр обучения",
+            AuditActionType.LearningAssigned => "Назначение обучения",
+            AuditActionType.LearningProgressUpdated => "Обновление прогресса обучения",
+            AuditActionType.LearningAssignmentCancelled => "Отмена обучения",
             _ => actionType.ToString()
         };
     }
