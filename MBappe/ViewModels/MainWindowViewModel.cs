@@ -34,6 +34,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private void ShowShell()
     {
         CurrentViewModel = new MainShellViewModel(
+
             AppServices.AuthService,
             AppServices.SessionService,
             AppServices.UserManagementService,
@@ -42,5 +43,15 @@ public partial class MainWindowViewModel : ViewModelBase
             AppServices.LearningService,
             AppServices.AuditLogService,
             ShowLogin);
+
+             AppServices.AuthService,
+             AppServices.SessionService,
+             AppServices.UserManagementService,
+             AppServices.EmployeeService,
+             AppServices.KpiService,
+             AppServices.MotivationService,
+             AppServices.AuditLogService,
+             ShowLogin);
+
     }
 }

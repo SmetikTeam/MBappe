@@ -6,6 +6,7 @@ using MBappe.ViewModels.Profile;
 using MBappe.ViewModels.Users;
 using MBappe.ViewModels.Kpi;
 using MBappe.ViewModels.Learning;
+using MBappe.ViewModels.Motivation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -24,6 +25,7 @@ public partial class MainShellViewModel : ViewModelBase
     private readonly Action<string?> _openLogin;
     private readonly KpiService _kpiService;
     private readonly LearningService _learningService;
+    private readonly MotivationService _motivationService;
 
     [ObservableProperty]
     private NavigationItemViewModel? selectedNavigationItem;
@@ -50,6 +52,7 @@ public partial class MainShellViewModel : ViewModelBase
         EmployeeService employeeService,
         KpiService kpiService,
         LearningService learningService,
+        MotivationService motivationService,
         AuditLogService auditLogService,
         Action<string?> openLogin)
     {
@@ -58,6 +61,7 @@ public partial class MainShellViewModel : ViewModelBase
         _employeeService = employeeService;
         _kpiService = kpiService;
         _learningService = learningService;
+        _motivationService = motivationService;
         _auditLogService = auditLogService;
         _openLogin = openLogin;
 
@@ -93,6 +97,8 @@ public partial class MainShellViewModel : ViewModelBase
 
             AddKpiNavigationItem();
             AddLearningNavigationItem();
+            AddMotivationNavigationItem();
+
 
             return;
         }
@@ -105,6 +111,7 @@ public partial class MainShellViewModel : ViewModelBase
 
         AddKpiNavigationItem();
         AddLearningNavigationItem();
+        AddMotivationNavigationItem();
 
         if (CurrentUser.Role == UserRole.HrSpecialist)
             AddUsersNavigationItem();
@@ -113,6 +120,15 @@ public partial class MainShellViewModel : ViewModelBase
 
         if (CurrentUser.Role is UserRole.Administrator or UserRole.HrSpecialist)
             AddAuditNavigationItem();
+    }
+
+    private void AddMotivationNavigationItem()
+    {
+        NavigationItems.Add(new NavigationItemViewModel(
+            "Мотивация",
+            "₽",
+            "Бонусы и премии",
+            () => new MotivationViewModel(_motivationService, _employeeService)));
     }
 
     private void AddKpiNavigationItem()
@@ -153,12 +169,6 @@ public partial class MainShellViewModel : ViewModelBase
 
     private void AddWorkInProgressModules()
     {
-        NavigationItems.Add(new NavigationItemViewModel(
-            "Мотивация",
-            "МТ",
-            "Бонусы и премии",
-            () => ModulePlaceholderViewModel.CreateMotivationModule()));
-
         NavigationItems.Add(new NavigationItemViewModel(
             "Аналитика",
             "АН",

@@ -97,12 +97,24 @@ public static class DisplayNames
             AuditActionType.KpiViewed => "Просмотр KPI",
             AuditActionType.KpiEfficiencyCalculated => "Расчет эффективности",
 
+
             AuditActionType.LearningCourseCreated => "Создание курса",
             AuditActionType.LearningCourseUpdated => "Изменение курса",
             AuditActionType.LearningCourseViewed => "Просмотр обучения",
             AuditActionType.LearningAssigned => "Назначение обучения",
             AuditActionType.LearningProgressUpdated => "Обновление прогресса обучения",
             AuditActionType.LearningAssignmentCancelled => "Отмена обучения",
+
+            AuditActionType.MotivationProgramCreated => "Создание программы мотивации",
+            AuditActionType.MotivationProgramUpdated => "Изменение программы мотивации",
+            AuditActionType.MotivationProgramViewed => "Просмотр программ мотивации",
+            AuditActionType.BonusCalculated => "Расчет бонуса",
+            AuditActionType.BonusApproved => "Утверждение бонуса",
+            AuditActionType.BonusRejected => "Отклонение бонуса",
+            AuditActionType.BonusPaid => "Выплата бонуса",
+            AuditActionType.BonusCancelled => "Отмена бонуса",
+            AuditActionType.BonusViewed => "Просмотр бонусов",
+
             _ => actionType.ToString()
         };
     }
@@ -115,6 +127,19 @@ public static class DisplayNames
             EmployeeStatus.OnVacation => "В отпуске",
             EmployeeStatus.SickLeave => "На больничном",
             EmployeeStatus.Dismissed => "Уволен",
+            _ => status.ToString()
+        };
+    }
+
+    public static string ForMotivationBonusStatus(MotivationBonusStatus status)
+    {
+        return status switch
+        {
+            MotivationBonusStatus.PendingApproval => "Ожидает утверждения",
+            MotivationBonusStatus.Approved => "Утвержден",
+            MotivationBonusStatus.Rejected => "Отклонен",
+            MotivationBonusStatus.Paid => "Выплачен",
+            MotivationBonusStatus.Cancelled => "Отменен",
             _ => status.ToString()
         };
     }

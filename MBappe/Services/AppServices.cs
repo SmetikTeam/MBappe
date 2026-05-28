@@ -10,7 +10,15 @@ public static class AppServices
 
     public static IKpiRepository KpiRepository { get; } = new InMemoryKpiRepository();
 
+
     public static ILearningRepository LearningRepository { get; } = new InMemoryLearningRepository();
+
+    public static IMotivationProgramRepository MotivationProgramRepository { get; } =
+        new InMemoryMotivationProgramRepository();
+
+    public static IMotivationBonusRepository MotivationBonusRepository { get; } =
+        new InMemoryMotivationBonusRepository();
+
 
     public static IAuditLogRepository AuditLogRepository { get; } = new InMemoryAuditLogRepository();
 
@@ -51,4 +59,12 @@ public static class AppServices
         EmployeeRepository,
         SessionService,
         AuditLogService);
+
+    public static MotivationService MotivationService { get; } = new MotivationService(
+        MotivationProgramRepository,
+        MotivationBonusRepository,
+        EmployeeRepository,
+        KpiService,
+        SessionService,
+        AuditLogService); 
 }
