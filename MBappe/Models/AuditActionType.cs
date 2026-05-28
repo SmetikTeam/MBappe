@@ -26,6 +26,14 @@ public enum AuditActionType
     KpiViewed,
     KpiEfficiencyCalculated,
 
+
+    LearningCourseCreated,
+    LearningCourseUpdated,
+    LearningCourseViewed,
+    LearningAssigned,
+    LearningProgressUpdated,
+    LearningAssignmentCancelled,
+
     MotivationProgramCreated,
     MotivationProgramUpdated,
     MotivationProgramViewed,
