@@ -28,11 +28,12 @@ public partial class App : Application
 
         base.OnFrameworkInitializationCompleted();
 
-        await KpiDebugScenario.RunAsync(
+        await MotivationDebugScenario.RunAsync(
             AppServices.AuthService,
             AppServices.UserManagementService,
             AppServices.EmployeeService,
             AppServices.KpiService,
+            AppServices.MotivationService,
             AppServices.AuditLogService);
     }
 }
