@@ -1,0 +1,837 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MBappe.ViewModels.Learning"
+             x:Class="MBappe.Views.Learning.LearningView"
+             x:DataType="vm:LearningViewModel">
+    <Grid RowDefinitions="Auto,Auto,*"
+          Margin="32">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+            <StackPanel Spacing="6">
+                <TextBlock Text="Обучение"
+                           Foreground="{StaticResource InkBrush}"
+                           FontSize="28"
+                           FontWeight="SemiBold"/>
+                <TextBlock Text="Курсы, назначения и прогресс сотрудников"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           FontSize="14"/>
+            </StackPanel>
+
+            <Button Grid.Column="1"
+                    Content="Новый курс"
+                    Classes="primary"
+                    Command="{Binding OpenCreateCourseFormCommand}"
+                    IsVisible="{Binding CanManageCourses}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"/>
+
+            <Button Grid.Column="2"
+                    Content="Редактировать"
+                    Classes="subtle"
+                    Command="{Binding OpenEditCourseFormCommand}"
+                    IsEnabled="{Binding HasSelectedCourse}"
+                    IsVisible="{Binding CanManageCourses}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"/>
+
+            <Button Grid.Column="3"
+                    Content="Назначить"
+                    Classes="success"
+                    Command="{Binding OpenAssignFormCommand}"
+                    IsEnabled="{Binding HasSelectedCourse}"
+                    IsVisible="{Binding CanAssignLearning}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"/>
+
+            <Button Grid.Column="4"
+                    Content="Обновить"
+                    Classes="subtle"
+                    Command="{Binding RefreshCommand}"
+                    VerticalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,*,*,*"
+              Margin="0,24,0,0">
+            <Border Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Padding="16"
+                    Margin="0,0,12,0">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Курсы"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding TotalCourseCount}"
+                               Foreground="{StaticResource InkBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Padding="16"
+                    Margin="0,0,12,0">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Активные курсы"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding ActiveCourseCount}"
+                               Foreground="{StaticResource AccentBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Padding="16"
+                    Margin="0,0,12,0">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="В обучении"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding ActiveAssignmentCount}"
+                               Foreground="{StaticResource InkBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="3"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Padding="16">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Завершено"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding CompletedAssignmentCount}"
+                               Foreground="{StaticResource AccentBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="2"
+              ColumnDefinitions="1.05*,1.15*,430"
+              Margin="0,24,0,0">
+            <Border Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Margin="0,0,18,0">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBlock Text="Каталог курсов"
+                               Foreground="{StaticResource InkBrush}"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Margin="18,16,18,8"/>
+
+                    <ListBox Grid.Row="1"
+                             ItemsSource="{Binding Courses}"
+                             SelectedItem="{Binding SelectedCourse}"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             Margin="12,0,12,12">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:LearningCourseRowViewModel">
+                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
+                                        BorderThickness="0,0,0,1"
+                                        Padding="12">
+                                    <Grid ColumnDefinitions="*,95"
+                                          MinHeight="74">
+                                        <StackPanel VerticalAlignment="Center"
+                                                    Spacing="4">
+                                            <TextBlock Text="{Binding Title}"
+                                                       Foreground="{StaticResource InkBrush}"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Provider}"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="12"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Description}"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="12"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="3"
+                                                    Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding StatusTitle}"
+                                                       Foreground="{StaticResource AccentBrush}"
+                                                       FontWeight="SemiBold"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding FormatTitle}"
+                                                       Foreground="{StaticResource InkBrush}"
+                                                       FontSize="12"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding DurationText}"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="12"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Margin="0,0,18,0">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBlock Text="Назначения"
+                               Foreground="{StaticResource InkBrush}"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Margin="18,16,18,8"/>
+
+                    <ListBox Grid.Row="1"
+                             ItemsSource="{Binding Assignments}"
+                             SelectedItem="{Binding SelectedAssignment}"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             Margin="12,0,12,12">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:LearningAssignmentRowViewModel">
+                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
+                                        BorderThickness="0,0,0,1"
+                                        Padding="12">
+                                    <Grid ColumnDefinitions="*,105"
+                                          MinHeight="74">
+                                        <StackPanel VerticalAlignment="Center"
+                                                    Spacing="4">
+                                            <TextBlock Text="{Binding CourseTitle}"
+                                                       Foreground="{StaticResource InkBrush}"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding EmployeeTitle}"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="12"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding DueDateText}"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="12"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="4"
+                                                    Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding ProgressText}"
+                                                       Foreground="{StaticResource AccentBrush}"
+                                                       FontSize="18"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding StatusTitle}"
+                                                       Foreground="{StaticResource InkBrush}"
+                                                       FontSize="12"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Column="2">
+                <StackPanel Spacing="18">
+                    <Border Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource BorderBrushSoft}"
+                            BorderThickness="1"
+                            Padding="18">
+                        <StackPanel Spacing="13">
+                            <TextBlock Text="Действия"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"/>
+
+                            <TextBlock Text="{Binding SelectedCourseCaption}"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       FontSize="13"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Text="Выберите курс, чтобы открыть действия с каталогом."
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       FontSize="13"
+                                       TextWrapping="Wrap"
+                                       IsVisible="{Binding CanShowCoursePrompt}"/>
+
+                            <Grid ColumnDefinitions="*,*"
+                                  IsVisible="{Binding CanShowCourseActions}">
+                                <Button Content="Редактировать"
+                                        Classes="subtle"
+                                        Command="{Binding OpenEditCourseFormCommand}"
+                                        HorizontalContentAlignment="Center"
+                                        Margin="0,0,8,0"/>
+                                <Button Grid.Column="1"
+                                        Content="Назначить"
+                                        Classes="success"
+                                        Command="{Binding OpenAssignFormCommand}"
+                                        HorizontalContentAlignment="Center"
+                                        IsVisible="{Binding CanAssignLearning}"/>
+                            </Grid>
+
+                            <TextBlock Text="{Binding SelectedAssignmentCaption}"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       FontSize="13"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Text="Выберите назначение, чтобы обновить прогресс."
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       FontSize="13"
+                                       TextWrapping="Wrap"
+                                       IsVisible="{Binding CanShowAssignmentPrompt}"/>
+
+                            <Grid ColumnDefinitions="*,*"
+                                  IsVisible="{Binding CanShowAssignmentActions}">
+                                <Button Content="Прогресс"
+                                        Classes="success"
+                                        Command="{Binding OpenProgressFormCommand}"
+                                        HorizontalContentAlignment="Center"
+                                        Margin="0,0,8,0"/>
+                                <Button Grid.Column="1"
+                                        Content="Отменить"
+                                        Classes="danger"
+                                        Command="{Binding CancelSelectedAssignmentCommand}"
+                                        HorizontalContentAlignment="Center"
+                                        IsVisible="{Binding CanAssignLearning}"/>
+                            </Grid>
+
+                            <Border Background="{StaticResource AccentSoftBrush}"
+                                    BorderBrush="{StaticResource AccentBrush}"
+                                    BorderThickness="1"
+                                    Padding="10"
+                                    IsVisible="{Binding HasStatusMessage}">
+                                <TextBlock Text="{Binding StatusMessage}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource BorderBrushSoft}"
+                            BorderThickness="1"
+                            Padding="18"
+                            IsVisible="{Binding CanShowCourseDetails}">
+                        <StackPanel Spacing="13">
+                            <TextBlock Text="Карточка курса"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"/>
+
+                            <Grid ColumnDefinitions="130,*"
+                                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                                <TextBlock Text="Название"
+                                           Foreground="{StaticResource MutedTextBrush}"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding SelectedCourse.Title}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock Grid.Row="1"
+                                           Text="Провайдер"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedCourse.Provider}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           Margin="0,10,0,0"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock Grid.Row="2"
+                                           Text="Формат"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedCourse.FormatTitle}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           Margin="0,10,0,0"/>
+
+                                <TextBlock Grid.Row="3"
+                                           Text="Длительность"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="3"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedCourse.DurationText}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           Margin="0,10,0,0"/>
+
+                                <TextBlock Grid.Row="4"
+                                           Text="Статус"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedCourse.StatusTitle}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontWeight="SemiBold"
+                                           Margin="0,10,0,0"/>
+
+                                <TextBlock Grid.Row="5"
+                                           Text="Создан"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="5"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedCourse.CreatedAtText}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           Margin="0,10,0,0"/>
+
+                                <TextBlock Grid.Row="6"
+                                           Text="Обновлен"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedCourse.UpdatedAtText}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           Margin="0,10,0,0"/>
+
+                                <TextBlock Grid.Row="7"
+                                           Text="Описание"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="7"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedCourse.Description}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           Margin="0,10,0,0"
+                                           TextWrapping="Wrap"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource BorderBrushSoft}"
+                            BorderThickness="1"
+                            Padding="18"
+                            IsVisible="{Binding CanShowAssignmentDetails}">
+                        <StackPanel Spacing="13">
+                            <TextBlock Text="Карточка назначения"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"/>
+
+                            <Grid ColumnDefinitions="130,*"
+                                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                                <TextBlock Text="Курс"
+                                           Foreground="{StaticResource MutedTextBrush}"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding SelectedAssignment.CourseTitle}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock Grid.Row="1"
+                                           Text="Сотрудник"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedAssignment.EmployeeTitle}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           Margin="0,10,0,0"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock Grid.Row="2"
+                                           Text="Прогресс"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedAssignment.ProgressText}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontWeight="SemiBold"
+                                           Margin="0,10,0,0"/>
+
+                                <TextBlock Grid.Row="3"
+                                           Text="Оценка"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="3"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedAssignment.ScoreText}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           Margin="0,10,0,0"/>
+
+                                <TextBlock Grid.Row="4"
+                                           Text="Статус"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedAssignment.StatusTitle}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontWeight="SemiBold"
+                                           Margin="0,10,0,0"/>
+
+                                <TextBlock Grid.Row="5"
+                                           Text="Назначено"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="5"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedAssignment.AssignedAtText}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           Margin="0,10,0,0"/>
+
+                                <TextBlock Grid.Row="6"
+                                           Text="Срок"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedAssignment.DueDateText}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           Margin="0,10,0,0"/>
+
+                                <TextBlock Grid.Row="7"
+                                           Text="Начато"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="7"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedAssignment.StartedAtText}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           Margin="0,10,0,0"/>
+
+                                <TextBlock Grid.Row="8"
+                                           Text="Завершено"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           Margin="0,10,0,0"/>
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedAssignment.CompletedAtText}"
+                                           Foreground="{StaticResource InkBrush}"
+                                           Margin="0,10,0,0"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource BorderBrushSoft}"
+                            BorderThickness="1"
+                            Padding="18"
+                            IsVisible="{Binding IsCreateCourseFormVisible}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="Новый курс"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"/>
+
+                            <TextBox Watermark="Название курса"
+                                     Text="{Binding NewCourseTitle}"/>
+
+                            <TextBox Watermark="Описание"
+                                     Text="{Binding NewCourseDescription}"
+                                     AcceptsReturn="True"
+                                     MinHeight="72"/>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <StackPanel Spacing="4"
+                                            Margin="0,0,8,0">
+                                    <TextBlock Text="Формат"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"/>
+                                    <ComboBox ItemsSource="{Binding FormatOptions}"
+                                              SelectedItem="{Binding SelectedNewFormat}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:LearningFormatOption">
+                                                <TextBlock Text="{Binding Title}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1"
+                                            Spacing="4">
+                                    <TextBlock Text="Длительность, часов"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"/>
+                                    <TextBox Text="{Binding NewCourseDurationText}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <TextBox Watermark="Провайдер"
+                                     Text="{Binding NewCourseProvider}"/>
+
+                            <Border Background="{StaticResource AccentSoftBrush}"
+                                    BorderBrush="{StaticResource AccentBrush}"
+                                    BorderThickness="1"
+                                    Padding="10"
+                                    IsVisible="{Binding HasCourseFormMessage}">
+                                <TextBlock Text="{Binding CourseFormMessage}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <Button Content="Создать"
+                                        Classes="primary"
+                                        Command="{Binding CreateCourseCommand}"
+                                        HorizontalContentAlignment="Center"
+                                        Margin="0,0,8,0"/>
+                                <Button Grid.Column="1"
+                                        Content="Отмена"
+                                        Classes="subtle"
+                                        Command="{Binding CloseFormsCommand}"
+                                        HorizontalContentAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource BorderBrushSoft}"
+                            BorderThickness="1"
+                            Padding="18"
+                            IsVisible="{Binding IsEditCourseFormVisible}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="Редактирование курса"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"/>
+
+                            <TextBox Watermark="Название курса"
+                                     Text="{Binding EditCourseTitle}"/>
+
+                            <TextBox Watermark="Описание"
+                                     Text="{Binding EditCourseDescription}"
+                                     AcceptsReturn="True"
+                                     MinHeight="72"/>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <StackPanel Spacing="4"
+                                            Margin="0,0,8,0">
+                                    <TextBlock Text="Формат"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"/>
+                                    <ComboBox ItemsSource="{Binding FormatOptions}"
+                                              SelectedItem="{Binding SelectedEditFormat}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:LearningFormatOption">
+                                                <TextBlock Text="{Binding Title}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1"
+                                            Spacing="4">
+                                    <TextBlock Text="Статус"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"/>
+                                    <ComboBox ItemsSource="{Binding CourseStatusOptions}"
+                                              SelectedItem="{Binding SelectedEditCourseStatus}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:LearningCourseStatusOption">
+                                                <TextBlock Text="{Binding Title}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <TextBox Watermark="Провайдер"
+                                         Text="{Binding EditCourseProvider}"
+                                         Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="1"
+                                         Watermark="Длительность, часов"
+                                         Text="{Binding EditCourseDurationText}"/>
+                            </Grid>
+
+                            <Border Background="{StaticResource AccentSoftBrush}"
+                                    BorderBrush="{StaticResource AccentBrush}"
+                                    BorderThickness="1"
+                                    Padding="10"
+                                    IsVisible="{Binding HasCourseFormMessage}">
+                                <TextBlock Text="{Binding CourseFormMessage}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <Button Content="Сохранить"
+                                        Classes="primary"
+                                        Command="{Binding SaveCourseCommand}"
+                                        HorizontalContentAlignment="Center"
+                                        Margin="0,0,8,0"/>
+                                <Button Grid.Column="1"
+                                        Content="Отмена"
+                                        Classes="subtle"
+                                        Command="{Binding CloseFormsCommand}"
+                                        HorizontalContentAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource BorderBrushSoft}"
+                            BorderThickness="1"
+                            Padding="18"
+                            IsVisible="{Binding IsAssignFormVisible}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="Назначить обучение"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"/>
+
+                            <TextBlock Text="{Binding SelectedCourseCaption}"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       FontSize="13"
+                                       TextWrapping="Wrap"/>
+
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="Сотрудник"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"/>
+                                <ComboBox ItemsSource="{Binding EmployeeOptions}"
+                                          SelectedItem="{Binding SelectedEmployeeOption}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:LearningEmployeeOption">
+                                            <TextBlock Text="{Binding Title}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="Срок"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"/>
+                                <TextBox Text="{Binding AssignmentDueDateText}"
+                                         Watermark="дд.мм.гггг"/>
+                            </StackPanel>
+
+                            <Border Background="{StaticResource AccentSoftBrush}"
+                                    BorderBrush="{StaticResource AccentBrush}"
+                                    BorderThickness="1"
+                                    Padding="10"
+                                    IsVisible="{Binding HasAssignmentFormMessage}">
+                                <TextBlock Text="{Binding AssignmentFormMessage}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <Button Content="Назначить"
+                                        Classes="primary"
+                                        Command="{Binding AssignCourseCommand}"
+                                        HorizontalContentAlignment="Center"
+                                        Margin="0,0,8,0"/>
+                                <Button Grid.Column="1"
+                                        Content="Отмена"
+                                        Classes="subtle"
+                                        Command="{Binding CloseFormsCommand}"
+                                        HorizontalContentAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource BorderBrushSoft}"
+                            BorderThickness="1"
+                            Padding="18"
+                            IsVisible="{Binding IsProgressFormVisible}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="Прогресс обучения"
+                                       Foreground="{StaticResource InkBrush}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"/>
+
+                            <TextBlock Text="{Binding SelectedAssignmentCaption}"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       FontSize="13"
+                                       TextWrapping="Wrap"/>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <StackPanel Spacing="4"
+                                            Margin="0,0,8,0">
+                                    <TextBlock Text="Прогресс, %"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"/>
+                                    <TextBox Text="{Binding ProgressPercentText}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1"
+                                            Spacing="4">
+                                    <TextBlock Text="Оценка"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"/>
+                                    <TextBox Text="{Binding ProgressScoreText}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Border Background="{StaticResource AccentSoftBrush}"
+                                    BorderBrush="{StaticResource AccentBrush}"
+                                    BorderThickness="1"
+                                    Padding="10"
+                                    IsVisible="{Binding HasProgressFormMessage}">
+                                <TextBlock Text="{Binding ProgressFormMessage}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                            </Border>
+
+                            <Grid ColumnDefinitions="*,*">
+                                <Button Content="Сохранить"
+                                        Classes="primary"
+                                        Command="{Binding SaveProgressCommand}"
+                                        HorizontalContentAlignment="Center"
+                                        Margin="0,0,8,0"/>
+                                <Button Grid.Column="1"
+                                        Content="Отмена"
+                                        Classes="subtle"
+                                        Command="{Binding CloseFormsCommand}"
+                                        HorizontalContentAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>
