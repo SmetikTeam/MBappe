@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using MBappe.Services;
 using MBappe.ViewModels;
 using MBappe.Views;
 
@@ -15,7 +16,7 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public override async void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -26,5 +27,12 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+
+        await KpiDebugScenario.RunAsync(
+            AppServices.AuthService,
+            AppServices.UserManagementService,
+            AppServices.EmployeeService,
+            AppServices.KpiService,
+            AppServices.AuditLogService);
     }
 }
