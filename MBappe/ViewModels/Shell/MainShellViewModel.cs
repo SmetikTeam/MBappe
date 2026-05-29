@@ -1,5 +1,6 @@
 ﻿using MBappe.Models;
 using MBappe.Services;
+using MBappe.ViewModels.Analytics;
 using MBappe.ViewModels.Audit;
 using MBappe.ViewModels.Employees;
 using MBappe.ViewModels.Profile;
@@ -26,6 +27,7 @@ public partial class MainShellViewModel : ViewModelBase
     private readonly KpiService _kpiService;
     private readonly LearningService _learningService;
     private readonly MotivationService _motivationService;
+    private readonly AnalyticsService _analyticsService;
 
     [ObservableProperty]
     private NavigationItemViewModel? selectedNavigationItem;
@@ -53,6 +55,7 @@ public partial class MainShellViewModel : ViewModelBase
         KpiService kpiService,
         LearningService learningService,
         MotivationService motivationService,
+        AnalyticsService analyticsService,
         AuditLogService auditLogService,
         Action<string?> openLogin)
     {
@@ -62,6 +65,7 @@ public partial class MainShellViewModel : ViewModelBase
         _kpiService = kpiService;
         _learningService = learningService;
         _motivationService = motivationService;
+        _analyticsService = analyticsService;
         _auditLogService = auditLogService;
         _openLogin = openLogin;
 
@@ -98,7 +102,7 @@ public partial class MainShellViewModel : ViewModelBase
             AddKpiNavigationItem();
             AddLearningNavigationItem();
             AddMotivationNavigationItem();
-
+            AddAnalyticsNavigationItem();
 
             return;
         }
@@ -112,11 +116,10 @@ public partial class MainShellViewModel : ViewModelBase
         AddKpiNavigationItem();
         AddLearningNavigationItem();
         AddMotivationNavigationItem();
+        AddAnalyticsNavigationItem();
 
         if (CurrentUser.Role == UserRole.HrSpecialist)
             AddUsersNavigationItem();
-
-        AddWorkInProgressModules();
 
         if (CurrentUser.Role is UserRole.Administrator or UserRole.HrSpecialist)
             AddAuditNavigationItem();
@@ -167,13 +170,13 @@ public partial class MainShellViewModel : ViewModelBase
             () => new EmployeesViewModel(_employeeService, _userManagementService)));
     }
 
-    private void AddWorkInProgressModules()
+    private void AddAnalyticsNavigationItem()
     {
         NavigationItems.Add(new NavigationItemViewModel(
             "Аналитика",
             "АН",
             "Отчеты по персоналу",
-            () => ModulePlaceholderViewModel.CreateAnalyticsModule()));
+            () => new AnalyticsViewModel(_analyticsService)));
     }
 
     private void AddAuditNavigationItem()

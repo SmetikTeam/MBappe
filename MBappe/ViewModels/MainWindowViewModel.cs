@@ -41,6 +41,7 @@ public partial class MainWindowViewModel : ViewModelBase
             AppServices.KpiService,
             AppServices.LearningService,
             AppServices.MotivationService,
+            AppServices.AnalyticsService,
             AppServices.AuditLogService,
             ShowLogin);
     }

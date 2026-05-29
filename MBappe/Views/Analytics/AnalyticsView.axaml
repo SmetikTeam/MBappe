@@ -1,0 +1,342 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MBappe.ViewModels.Analytics"
+             x:Class="MBappe.Views.Analytics.AnalyticsView"
+             x:DataType="vm:AnalyticsViewModel">
+    <ScrollViewer>
+        <StackPanel Margin="32"
+                    Spacing="24">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Аналитика"
+                               Foreground="{StaticResource InkBrush}"
+                               FontSize="28"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding ScopeTitle}"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="14"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            Spacing="12"
+                            VerticalAlignment="Center">
+                    <StackPanel VerticalAlignment="Center"
+                                Spacing="2">
+                        <TextBlock Text="Сформировано"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding GeneratedAtText}"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+                    <Button Content="Обновить"
+                            Classes="primary"
+                            Command="{Binding RefreshCommand}"/>
+                </StackPanel>
+            </Grid>
+
+            <Border Background="{StaticResource AccentSoftBrush}"
+                    BorderBrush="{StaticResource AccentBrush}"
+                    BorderThickness="1"
+                    Padding="12"
+                    IsVisible="{Binding HasStatusMessage}">
+                <TextBlock Text="{Binding StatusMessage}"
+                           Foreground="{StaticResource InkBrush}"
+                           TextWrapping="Wrap"/>
+            </Border>
+
+            <Border Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Padding="22"
+                    IsVisible="{Binding HasNoReport}">
+                <TextBlock Text="Отчет пока не сформирован."
+                           Foreground="{StaticResource MutedTextBrush}"
+                           FontSize="15"/>
+            </Border>
+
+            <ItemsControl ItemsSource="{Binding MetricCards}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:AnalyticsMetricCardViewModel">
+                        <Border Width="230"
+                                MinHeight="126"
+                                Background="{StaticResource SurfaceBrush}"
+                                BorderBrush="{StaticResource BorderBrushSoft}"
+                                BorderThickness="1"
+                                Padding="18"
+                                Margin="0,0,14,14">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="{Binding Title}"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           FontSize="13"/>
+                                <TextBlock Text="{Binding Value}"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           FontSize="24"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Caption}"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           TextWrapping="Wrap"
+                                           FontSize="13"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Grid ColumnDefinitions="0.9*,1.35*">
+                <Border Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1"
+                        Padding="18"
+                        Margin="0,0,18,0">
+                    <Grid RowDefinitions="Auto,*">
+                        <TextBlock Text="Ключевые выводы"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"/>
+                        <ItemsControl Grid.Row="1"
+                                      ItemsSource="{Binding Insights}"
+                                      Margin="0,14,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:AnalyticsInsightRowViewModel">
+                                    <Border BorderBrush="{StaticResource BorderBrushSoft}"
+                                            BorderThickness="0,0,0,1"
+                                            Padding="0,10">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <StackPanel Spacing="3">
+                                                <TextBlock Text="{Binding Title}"
+                                                           Foreground="{StaticResource InkBrush}"
+                                                           FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding Caption}"
+                                                           Foreground="{StaticResource MutedTextBrush}"
+                                                           TextWrapping="Wrap"
+                                                           FontSize="12"/>
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding Value}"
+                                                       Foreground="{StaticResource AccentBrush}"
+                                                       FontSize="18"
+                                                       FontWeight="SemiBold"
+                                                       Margin="14,0,0,0"
+                                                       VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1"
+                        Padding="18">
+                    <Grid RowDefinitions="Auto,*">
+                        <TextBlock Text="Сводка по отделам"
+                                   Foreground="{StaticResource InkBrush}"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"/>
+                        <ListBox Grid.Row="1"
+                                 ItemsSource="{Binding Departments}"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 Margin="0,14,0,0"
+                                 MaxHeight="320">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate x:DataType="vm:AnalyticsDepartmentRowViewModel">
+                                    <Border BorderBrush="{StaticResource BorderBrushSoft}"
+                                            BorderThickness="0,0,0,1"
+                                            Padding="10">
+                                        <Grid ColumnDefinitions="1.35*,0.75*,0.75*,0.85*,0.85*,0.9*"
+                                              MinHeight="58">
+                                            <StackPanel VerticalAlignment="Center"
+                                                        Spacing="3">
+                                                <TextBlock Text="{Binding Department}"
+                                                           Foreground="{StaticResource InkBrush}"
+                                                           FontWeight="SemiBold"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding EmployeesText}"
+                                                           Foreground="{StaticResource MutedTextBrush}"
+                                                           FontSize="12"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1"
+                                                        VerticalAlignment="Center"
+                                                        Spacing="3">
+                                                <TextBlock Text="KPI"
+                                                           Foreground="{StaticResource MutedTextBrush}"
+                                                           FontSize="11"
+                                                           FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding KpiText}"
+                                                           Foreground="{StaticResource InkBrush}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2"
+                                                        VerticalAlignment="Center"
+                                                        Spacing="3">
+                                                <TextBlock Text="Сред."
+                                                           Foreground="{StaticResource MutedTextBrush}"
+                                                           FontSize="11"
+                                                           FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding AverageKpiCompletionText}"
+                                                           Foreground="{StaticResource AccentBrush}"
+                                                           FontWeight="SemiBold"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="3"
+                                                        VerticalAlignment="Center"
+                                                        Spacing="3">
+                                                <TextBlock Text="Обуч."
+                                                           Foreground="{StaticResource MutedTextBrush}"
+                                                           FontSize="11"
+                                                           FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding LearningText}"
+                                                           Foreground="{StaticResource InkBrush}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="4"
+                                                        VerticalAlignment="Center"
+                                                        Spacing="3">
+                                                <TextBlock Text="Готово"
+                                                           Foreground="{StaticResource MutedTextBrush}"
+                                                           FontSize="11"
+                                                           FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding LearningCompletionRateText}"
+                                                           Foreground="{StaticResource AccentBrush}"
+                                                           FontWeight="SemiBold"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="5"
+                                                        VerticalAlignment="Center"
+                                                        Spacing="3">
+                                                <TextBlock Text="Бонусы"
+                                                           Foreground="{StaticResource MutedTextBrush}"
+                                                           FontSize="11"
+                                                           FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding BonusText}"
+                                                           Foreground="{StaticResource InkBrush}"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Border Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    Padding="18">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBlock Text="Сотрудники в отчете"
+                               Foreground="{StaticResource InkBrush}"
+                               FontSize="18"
+                               FontWeight="SemiBold"/>
+                    <ListBox Grid.Row="1"
+                             ItemsSource="{Binding Employees}"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             Margin="0,14,0,0"
+                             MaxHeight="420">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:AnalyticsEmployeeRowViewModel">
+                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
+                                        BorderThickness="0,0,0,1"
+                                        Padding="12">
+                                    <Grid ColumnDefinitions="1.45*,1.15*,0.8*,0.75*,0.85*,0.85*,0.85*"
+                                          MinHeight="70">
+                                        <StackPanel VerticalAlignment="Center"
+                                                    Spacing="4">
+                                            <TextBlock Text="{Binding FullName}"
+                                                       Foreground="{StaticResource InkBrush}"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding PersonnelNumber}"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="12"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="4"
+                                                    Margin="10,0">
+                                            <TextBlock Text="{Binding Position}"
+                                                       Foreground="{StaticResource InkBrush}"
+                                                       FontSize="13"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Department}"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="12"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="3">
+                                            <TextBlock Text="Статус"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding StatusTitle}"
+                                                       Foreground="{StaticResource InkBrush}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="3"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="3">
+                                            <TextBlock Text="KPI"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding KpiText}"
+                                                       Foreground="{StaticResource InkBrush}"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="4"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="3">
+                                            <TextBlock Text="Вып."
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding KpiAverageText}"
+                                                       Foreground="{StaticResource AccentBrush}"
+                                                       FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="5"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="3">
+                                            <TextBlock Text="Обуч."
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding LearningText}"
+                                                       Foreground="{StaticResource InkBrush}"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="6"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="3">
+                                            <TextBlock Text="Бонус"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding BonusText}"
+                                                       Foreground="{StaticResource AccentBrush}"
+                                                       FontWeight="SemiBold"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
