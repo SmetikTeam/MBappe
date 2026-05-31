@@ -8,16 +8,16 @@ public static class AppServices
 
     public static IEmployeeRepository EmployeeRepository { get; } = new EfEmployeeRepository();
 
-    public static IKpiRepository KpiRepository { get; } = new InMemoryKpiRepository();
+    public static IKpiRepository KpiRepository { get; } = new EfKpiRepository();
 
 
-    public static ILearningRepository LearningRepository { get; } = new InMemoryLearningRepository();
+    public static ILearningRepository LearningRepository { get; } = new EfLearningRepository();
 
     public static IMotivationProgramRepository MotivationProgramRepository { get; } =
-        new InMemoryMotivationProgramRepository();
+        new EfMotivationProgramRepository();
 
     public static IMotivationBonusRepository MotivationBonusRepository { get; } =
-        new InMemoryMotivationBonusRepository();
+        new EfMotivationBonusRepository();
 
 
     public static IAuditLogRepository AuditLogRepository { get; } = new EfAuditLogRepository();
