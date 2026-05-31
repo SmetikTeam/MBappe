@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using MBappe.Services;
 using MBappe.ViewModels;
 using MBappe.Views;
+using MBappe.Data;
 
 namespace MBappe;
 
@@ -18,6 +19,8 @@ public partial class App : Application
 
     public override async void OnFrameworkInitializationCompleted()
     {
+        await DatabaseInitializer.InitializeAsync();
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
@@ -27,20 +30,5 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
-
-        await MotivationDebugScenario.RunAsync(
-            AppServices.AuthService,
-            AppServices.UserManagementService,
-            AppServices.EmployeeService,
-            AppServices.KpiService,
-            AppServices.MotivationService,
-            AppServices.AuditLogService);
-
-        await LearningDebugScenario.RunAsync(
-            AppServices.AuthService,
-            AppServices.UserManagementService,
-            AppServices.EmployeeService,
-            AppServices.LearningService,
-            AppServices.AuditLogService);
     }
 }

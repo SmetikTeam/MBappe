@@ -17,7 +17,7 @@ public static class DatabaseInitializer
 
         await SeedUsersAsync(db);
         await SeedMotivationProgramsAsync(db);
-        await SeedLearningCoursesAsync(db);
+        //await SeedLearningCoursesAsync(db);
 
         await db.SaveChangesAsync();
 
