@@ -4,11 +4,10 @@
              xmlns:vm="using:MBappe.ViewModels.Analytics"
              x:Class="MBappe.Views.Analytics.AnalyticsView"
              x:DataType="vm:AnalyticsViewModel">
-    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                   VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="32"
-                    Spacing="22"
-                    MinWidth="980">
+                    Spacing="22">
             <Grid ColumnDefinitions="*,Auto">
                 <StackPanel Spacing="6">
                     <TextBlock Text="Аналитика"
