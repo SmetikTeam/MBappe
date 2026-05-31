@@ -44,6 +44,9 @@ public enum AuditActionType
     BonusCancelled,
     BonusViewed,
 
+    AnalyticsViewed,
+    AnalyticsReportGenerated,
+
     DataViewed,
     DataCreated,
     DataUpdated,

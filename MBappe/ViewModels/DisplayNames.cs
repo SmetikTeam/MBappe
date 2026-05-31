@@ -115,6 +115,9 @@ public static class DisplayNames
             AuditActionType.BonusCancelled => "Отмена бонуса",
             AuditActionType.BonusViewed => "Просмотр бонусов",
 
+            AuditActionType.AnalyticsViewed => "Просмотр аналитики",
+            AuditActionType.AnalyticsReportGenerated => "Формирование аналитического отчета",
+
             _ => actionType.ToString()
         };
     }
