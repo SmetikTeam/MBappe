@@ -4,9 +4,9 @@ namespace MBappe.Services;
 
 public static class AppServices
 {
-    public static IUserRepository UserRepository { get; } = new InMemoryUserRepository();
+    public static IUserRepository UserRepository { get; } = new EfUserRepository();
 
-    public static IEmployeeRepository EmployeeRepository { get; } = new InMemoryEmployeeRepository();
+    public static IEmployeeRepository EmployeeRepository { get; } = new EfEmployeeRepository();
 
     public static IKpiRepository KpiRepository { get; } = new InMemoryKpiRepository();
 
@@ -20,7 +20,7 @@ public static class AppServices
         new InMemoryMotivationBonusRepository();
 
 
-    public static IAuditLogRepository AuditLogRepository { get; } = new InMemoryAuditLogRepository();
+    public static IAuditLogRepository AuditLogRepository { get; } = new EfAuditLogRepository();
 
     public static PasswordHasher PasswordHasher { get; } = new PasswordHasher();
 
