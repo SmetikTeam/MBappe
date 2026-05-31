@@ -7,6 +7,8 @@
 # Keep the application project.
 !/MBappe/
 !/MBappe/**
+!/MBappe.Tests/
+!/MBappe.Tests/**
 !/MBappe.sln
 
 # Keep the required TT document.
