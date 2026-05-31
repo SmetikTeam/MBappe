@@ -66,5 +66,13 @@ public static class AppServices
         EmployeeRepository,
         KpiService,
         SessionService,
-        AuditLogService); 
+        AuditLogService);
+
+    public static AnalyticsService AnalyticsService { get; } = new AnalyticsService(
+        EmployeeRepository,
+        KpiRepository,
+        LearningRepository,
+        MotivationBonusRepository,
+        SessionService,
+        AuditLogService);
 }
