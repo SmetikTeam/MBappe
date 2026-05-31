@@ -4,51 +4,16 @@ using System.Collections.Generic;
 
 namespace MBappe.Common;
 
-public sealed class AnalyticsReport
+public sealed class AnalyticsSummary
 {
+    public DateTime PeriodStart { get; }
+
+    public DateTime PeriodEnd { get; }
+
     public DateTime GeneratedAt { get; }
 
     public string ScopeTitle { get; }
 
-    public AnalyticsEmployeeSummary EmployeeSummary { get; }
-
-    public AnalyticsKpiSummary KpiSummary { get; }
-
-    public AnalyticsLearningSummary LearningSummary { get; }
-
-    public AnalyticsMotivationSummary MotivationSummary { get; }
-
-    public IReadOnlyList<AnalyticsDepartmentSummary> Departments { get; }
-
-    public IReadOnlyList<AnalyticsEmployeeReportRow> Employees { get; }
-
-    public IReadOnlyList<AnalyticsInsight> Insights { get; }
-
-    public AnalyticsReport(
-        DateTime generatedAt,
-        string scopeTitle,
-        AnalyticsEmployeeSummary employeeSummary,
-        AnalyticsKpiSummary kpiSummary,
-        AnalyticsLearningSummary learningSummary,
-        AnalyticsMotivationSummary motivationSummary,
-        IReadOnlyList<AnalyticsDepartmentSummary> departments,
-        IReadOnlyList<AnalyticsEmployeeReportRow> employees,
-        IReadOnlyList<AnalyticsInsight> insights)
-    {
-        GeneratedAt = generatedAt;
-        ScopeTitle = scopeTitle;
-        EmployeeSummary = employeeSummary;
-        KpiSummary = kpiSummary;
-        LearningSummary = learningSummary;
-        MotivationSummary = motivationSummary;
-        Departments = departments;
-        Employees = employees;
-        Insights = insights;
-    }
-}
-
-public sealed class AnalyticsEmployeeSummary
-{
     public int TotalEmployees { get; }
 
     public int ActiveEmployees { get; }
@@ -59,214 +24,109 @@ public sealed class AnalyticsEmployeeSummary
 
     public int SickLeaveEmployees { get; }
 
+    public int OnVacationOrSickLeaveEmployees { get; }
+
     public int DepartmentCount { get; }
 
-    public int TotalUsers { get; }
-
-    public int ActiveUsers { get; }
-
-    public AnalyticsEmployeeSummary(
-        int totalEmployees,
-        int activeEmployees,
-        int dismissedEmployees,
-        int onVacationEmployees,
-        int sickLeaveEmployees,
-        int departmentCount,
-        int totalUsers,
-        int activeUsers)
-    {
-        TotalEmployees = totalEmployees;
-        ActiveEmployees = activeEmployees;
-        DismissedEmployees = dismissedEmployees;
-        OnVacationEmployees = onVacationEmployees;
-        SickLeaveEmployees = sickLeaveEmployees;
-        DepartmentCount = departmentCount;
-        TotalUsers = totalUsers;
-        ActiveUsers = activeUsers;
-    }
-}
-
-public sealed class AnalyticsKpiSummary
-{
     public int TotalKpis { get; }
 
-    public int InProgressKpis { get; }
-
     public int CompletedKpis { get; }
+
+    public int InProgressKpis { get; }
 
     public int OverdueKpis { get; }
 
     public int CancelledKpis { get; }
 
-    public double AverageCompletionPercent { get; }
+    public double AverageKpiPercent { get; }
 
-    public double CompletionRatePercent { get; }
+    public int TotalLearningAssignments { get; }
 
-    public AnalyticsKpiSummary(
-        int totalKpis,
-        int inProgressKpis,
-        int completedKpis,
-        int overdueKpis,
-        int cancelledKpis,
-        double averageCompletionPercent,
-        double completionRatePercent)
-    {
-        TotalKpis = totalKpis;
-        InProgressKpis = inProgressKpis;
-        CompletedKpis = completedKpis;
-        OverdueKpis = overdueKpis;
-        CancelledKpis = cancelledKpis;
-        AverageCompletionPercent = averageCompletionPercent;
-        CompletionRatePercent = completionRatePercent;
-    }
-}
+    public int CompletedLearningAssignments { get; }
 
-public sealed class AnalyticsLearningSummary
-{
-    public int TotalCourses { get; }
+    public int InProgressLearningAssignments { get; }
 
-    public int ActiveCourses { get; }
+    public int CancelledLearningAssignments { get; }
 
-    public int TotalAssignments { get; }
+    public double AverageLearningProgressPercent { get; }
 
-    public int ActiveAssignments { get; }
-
-    public int CompletedAssignments { get; }
-
-    public int CancelledAssignments { get; }
-
-    public double AverageProgressPercent { get; }
-
-    public double AverageScore { get; }
-
-    public double CompletionRatePercent { get; }
-
-    public AnalyticsLearningSummary(
-        int totalCourses,
-        int activeCourses,
-        int totalAssignments,
-        int activeAssignments,
-        int completedAssignments,
-        int cancelledAssignments,
-        double averageProgressPercent,
-        double averageScore,
-        double completionRatePercent)
-    {
-        TotalCourses = totalCourses;
-        ActiveCourses = activeCourses;
-        TotalAssignments = totalAssignments;
-        ActiveAssignments = activeAssignments;
-        CompletedAssignments = completedAssignments;
-        CancelledAssignments = cancelledAssignments;
-        AverageProgressPercent = averageProgressPercent;
-        AverageScore = averageScore;
-        CompletionRatePercent = completionRatePercent;
-    }
-}
-
-public sealed class AnalyticsMotivationSummary
-{
     public int TotalBonuses { get; }
 
     public int PendingBonuses { get; }
 
     public int ApprovedBonuses { get; }
 
-    public int PaidBonuses { get; }
-
     public int RejectedBonuses { get; }
 
-    public int CancelledBonuses { get; }
+    public int PaidBonuses { get; }
 
-    public decimal TotalCalculatedAmount { get; }
+    public decimal PayableBonusAmount { get; }
 
-    public decimal TotalFinalAmount { get; }
+    public decimal PaidBonusAmount { get; }
 
-    public decimal TotalPayableAmount { get; }
-
-    public decimal TotalPaidAmount { get; }
-
-    public double AverageEfficiencyPercent { get; }
-
-    public AnalyticsMotivationSummary(
+    public AnalyticsSummary(
+        DateTime periodStart,
+        DateTime periodEnd,
+        DateTime generatedAt,
+        string scopeTitle,
+        int totalEmployees,
+        int activeEmployees,
+        int dismissedEmployees,
+        int onVacationEmployees,
+        int sickLeaveEmployees,
+        int departmentCount,
+        int totalKpis,
+        int completedKpis,
+        int inProgressKpis,
+        int overdueKpis,
+        int cancelledKpis,
+        double averageKpiPercent,
+        int totalLearningAssignments,
+        int completedLearningAssignments,
+        int inProgressLearningAssignments,
+        int cancelledLearningAssignments,
+        double averageLearningProgressPercent,
         int totalBonuses,
         int pendingBonuses,
         int approvedBonuses,
-        int paidBonuses,
         int rejectedBonuses,
-        int cancelledBonuses,
-        decimal totalCalculatedAmount,
-        decimal totalFinalAmount,
-        decimal totalPayableAmount,
-        decimal totalPaidAmount,
-        double averageEfficiencyPercent)
+        int paidBonuses,
+        decimal payableBonusAmount,
+        decimal paidBonusAmount)
     {
+        PeriodStart = periodStart;
+        PeriodEnd = periodEnd;
+        GeneratedAt = generatedAt;
+        ScopeTitle = scopeTitle;
+        TotalEmployees = totalEmployees;
+        ActiveEmployees = activeEmployees;
+        DismissedEmployees = dismissedEmployees;
+        OnVacationEmployees = onVacationEmployees;
+        SickLeaveEmployees = sickLeaveEmployees;
+        OnVacationOrSickLeaveEmployees = onVacationEmployees + sickLeaveEmployees;
+        DepartmentCount = departmentCount;
+        TotalKpis = totalKpis;
+        CompletedKpis = completedKpis;
+        InProgressKpis = inProgressKpis;
+        OverdueKpis = overdueKpis;
+        CancelledKpis = cancelledKpis;
+        AverageKpiPercent = averageKpiPercent;
+        TotalLearningAssignments = totalLearningAssignments;
+        CompletedLearningAssignments = completedLearningAssignments;
+        InProgressLearningAssignments = inProgressLearningAssignments;
+        CancelledLearningAssignments = cancelledLearningAssignments;
+        AverageLearningProgressPercent = averageLearningProgressPercent;
         TotalBonuses = totalBonuses;
         PendingBonuses = pendingBonuses;
         ApprovedBonuses = approvedBonuses;
-        PaidBonuses = paidBonuses;
         RejectedBonuses = rejectedBonuses;
-        CancelledBonuses = cancelledBonuses;
-        TotalCalculatedAmount = totalCalculatedAmount;
-        TotalFinalAmount = totalFinalAmount;
-        TotalPayableAmount = totalPayableAmount;
-        TotalPaidAmount = totalPaidAmount;
-        AverageEfficiencyPercent = averageEfficiencyPercent;
+        PaidBonuses = paidBonuses;
+        PayableBonusAmount = payableBonusAmount;
+        PaidBonusAmount = paidBonusAmount;
     }
 }
 
-public sealed class AnalyticsDepartmentSummary
-{
-    public string Department { get; }
-
-    public int EmployeeCount { get; }
-
-    public int ActiveEmployeeCount { get; }
-
-    public int TotalKpis { get; }
-
-    public int CompletedKpis { get; }
-
-    public int OverdueKpis { get; }
-
-    public double AverageKpiCompletionPercent { get; }
-
-    public int LearningAssignments { get; }
-
-    public int CompletedLearningAssignments { get; }
-
-    public double LearningCompletionRatePercent { get; }
-
-    public decimal TotalBonusAmount { get; }
-
-    public AnalyticsDepartmentSummary(
-        string department,
-        int employeeCount,
-        int activeEmployeeCount,
-        int totalKpis,
-        int completedKpis,
-        int overdueKpis,
-        double averageKpiCompletionPercent,
-        int learningAssignments,
-        int completedLearningAssignments,
-        double learningCompletionRatePercent,
-        decimal totalBonusAmount)
-    {
-        Department = department;
-        EmployeeCount = employeeCount;
-        ActiveEmployeeCount = activeEmployeeCount;
-        TotalKpis = totalKpis;
-        CompletedKpis = completedKpis;
-        OverdueKpis = overdueKpis;
-        AverageKpiCompletionPercent = averageKpiCompletionPercent;
-        LearningAssignments = learningAssignments;
-        CompletedLearningAssignments = completedLearningAssignments;
-        LearningCompletionRatePercent = learningCompletionRatePercent;
-        TotalBonusAmount = totalBonusAmount;
-    }
-}
-
-public sealed class AnalyticsEmployeeReportRow
+public sealed class EmployeeAnalyticsRow
 {
     public Guid EmployeeId { get; }
 
@@ -274,84 +134,80 @@ public sealed class AnalyticsEmployeeReportRow
 
     public string PersonnelNumber { get; }
 
-    public string Position { get; }
-
     public string Department { get; }
+
+    public string Position { get; }
 
     public EmployeeStatus Status { get; }
 
-    public int KpiCount { get; }
+    public double AverageKpiPercent { get; }
 
-    public int CompletedKpiCount { get; }
+    public int TotalKpis { get; }
 
-    public int OverdueKpiCount { get; }
+    public int OverdueKpis { get; }
 
-    public double AverageKpiCompletionPercent { get; }
+    public double LearningProgressPercent { get; }
 
-    public int LearningAssignmentCount { get; }
+    public int TotalLearningAssignments { get; }
 
-    public int CompletedLearningAssignmentCount { get; }
+    public int CompletedLearningAssignments { get; }
 
-    public double AverageLearningProgressPercent { get; }
-
-    public int BonusCount { get; }
-
-    public decimal TotalBonusAmount { get; }
+    public decimal PayableBonusAmount { get; }
 
     public decimal PaidBonusAmount { get; }
 
-    public AnalyticsEmployeeReportRow(
+    public IReadOnlyList<string> ProblemFlags { get; }
+
+    public EmployeeAnalyticsRow(
         Guid employeeId,
         string fullName,
         string personnelNumber,
-        string position,
         string department,
+        string position,
         EmployeeStatus status,
-        int kpiCount,
-        int completedKpiCount,
-        int overdueKpiCount,
-        double averageKpiCompletionPercent,
-        int learningAssignmentCount,
-        int completedLearningAssignmentCount,
-        double averageLearningProgressPercent,
-        int bonusCount,
-        decimal totalBonusAmount,
-        decimal paidBonusAmount)
+        double averageKpiPercent,
+        int totalKpis,
+        int overdueKpis,
+        double learningProgressPercent,
+        int totalLearningAssignments,
+        int completedLearningAssignments,
+        decimal payableBonusAmount,
+        decimal paidBonusAmount,
+        IReadOnlyList<string> problemFlags)
     {
         EmployeeId = employeeId;
         FullName = fullName;
         PersonnelNumber = personnelNumber;
-        Position = position;
         Department = department;
+        Position = position;
         Status = status;
-        KpiCount = kpiCount;
-        CompletedKpiCount = completedKpiCount;
-        OverdueKpiCount = overdueKpiCount;
-        AverageKpiCompletionPercent = averageKpiCompletionPercent;
-        LearningAssignmentCount = learningAssignmentCount;
-        CompletedLearningAssignmentCount = completedLearningAssignmentCount;
-        AverageLearningProgressPercent = averageLearningProgressPercent;
-        BonusCount = bonusCount;
-        TotalBonusAmount = totalBonusAmount;
+        AverageKpiPercent = averageKpiPercent;
+        TotalKpis = totalKpis;
+        OverdueKpis = overdueKpis;
+        LearningProgressPercent = learningProgressPercent;
+        TotalLearningAssignments = totalLearningAssignments;
+        CompletedLearningAssignments = completedLearningAssignments;
+        PayableBonusAmount = payableBonusAmount;
         PaidBonusAmount = paidBonusAmount;
+        ProblemFlags = problemFlags;
     }
 }
 
-public sealed class AnalyticsInsight
+public sealed class AnalyticsReport
 {
-    public string Title { get; }
+    public AnalyticsSummary Summary { get; }
 
-    public string Value { get; }
+    public IReadOnlyList<EmployeeAnalyticsRow> EmployeeRows { get; }
 
-    public string Caption { get; }
+    public IReadOnlyList<string> Insights { get; }
 
-    public AnalyticsInsight(
-        string title,
-        string value,
-        string caption)
+    public AnalyticsReport(
+        AnalyticsSummary summary,
+        IReadOnlyList<EmployeeAnalyticsRow> employeeRows,
+        IReadOnlyList<string> insights)
     {
-        Title = title;
-        Value = value;
-        Caption = caption;
+        Summary = summary;
+        EmployeeRows = employeeRows;
+        Insights = insights;
     }
 }

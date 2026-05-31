@@ -70,7 +70,6 @@ public static class AppServices
 
     public static AnalyticsService AnalyticsService { get; } = new AnalyticsService(
         EmployeeRepository,
-        UserRepository,
         KpiRepository,
         LearningRepository,
         MotivationBonusRepository,

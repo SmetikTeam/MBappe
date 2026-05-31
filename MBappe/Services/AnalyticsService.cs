@@ -11,7 +11,6 @@ namespace MBappe.Services;
 public class AnalyticsService
 {
     private readonly IEmployeeRepository _employeeRepository;
-    private readonly IUserRepository _userRepository;
     private readonly IKpiRepository _kpiRepository;
     private readonly ILearningRepository _learningRepository;
     private readonly IMotivationBonusRepository _bonusRepository;
@@ -20,7 +19,6 @@ public class AnalyticsService
 
     public AnalyticsService(
         IEmployeeRepository employeeRepository,
-        IUserRepository userRepository,
         IKpiRepository kpiRepository,
         ILearningRepository learningRepository,
         IMotivationBonusRepository bonusRepository,
@@ -28,7 +26,6 @@ public class AnalyticsService
         AuditLogService auditLogService)
     {
         _employeeRepository = employeeRepository;
-        _userRepository = userRepository;
         _kpiRepository = kpiRepository;
         _learningRepository = learningRepository;
         _bonusRepository = bonusRepository;
@@ -36,8 +33,19 @@ public class AnalyticsService
         _auditLogService = auditLogService;
     }
 
-    public async Task<AnalyticsOperationResult> GetReportAsync()
+    public Task<AnalyticsOperationResult> GetReportAsync()
     {
+        return GetDashboardReportAsync(DateTime.Today.AddMonths(-1), DateTime.Today);
+    }
+
+    public async Task<AnalyticsOperationResult> GetDashboardReportAsync(DateTime periodStart, DateTime periodEnd)
+    {
+        periodStart = periodStart.Date;
+        periodEnd = periodEnd.Date;
+
+        if (periodEnd < periodStart)
+            return AnalyticsOperationResult.Fail("Дата окончания периода не может быть раньше даты начала");
+
         var currentUser = _sessionService.CurrentUser;
 
         if (currentUser is null)
@@ -54,48 +62,40 @@ public class AnalyticsService
             .Select(employee => employee.Id)
             .ToHashSet();
 
-        var allUsers = await _userRepository.GetAllAsync();
-        var visibleUsers = GetVisibleUsers(currentUser, allUsers, visibleEmployees);
-
         var kpis = (await _kpiRepository.GetAllAsync())
             .Where(kpi => visibleEmployeeIds.Contains(kpi.EmployeeId))
+            .Where(kpi => DateRangesIntersect(kpi.PeriodStart, kpi.PeriodEnd, periodStart, periodEnd))
             .ToList();
 
-        var allCourses = await _learningRepository.GetAllCoursesAsync();
         var assignments = (await _learningRepository.GetAllAssignmentsAsync())
             .Where(assignment => visibleEmployeeIds.Contains(assignment.EmployeeId))
+            .Where(assignment => AssignmentIntersectsPeriod(assignment, periodStart, periodEnd))
             .ToList();
-
-        var visibleCourses = GetVisibleCourses(currentUser, allCourses, assignments);
 
         var bonuses = (await _bonusRepository.GetAllAsync())
             .Where(bonus => visibleEmployeeIds.Contains(bonus.EmployeeId))
+            .Where(bonus => DateRangesIntersect(bonus.PeriodStart, bonus.PeriodEnd, periodStart, periodEnd))
             .ToList();
 
-        var employeeSummary = BuildEmployeeSummary(visibleEmployees, visibleUsers);
-        var kpiSummary = BuildKpiSummary(kpis);
-        var learningSummary = BuildLearningSummary(visibleCourses, assignments);
-        var motivationSummary = BuildMotivationSummary(bonuses);
-        var departments = BuildDepartmentSummaries(visibleEmployees, kpis, assignments, bonuses);
-        var employeeRows = BuildEmployeeRows(visibleEmployees, kpis, assignments, bonuses);
-        var insights = BuildInsights(employeeSummary, kpiSummary, learningSummary, motivationSummary);
-
-        var report = new AnalyticsReport(
+        var summary = BuildSummary(
+            periodStart,
+            periodEnd,
             DateTime.Now,
             GetScopeTitle(currentUser),
-            employeeSummary,
-            kpiSummary,
-            learningSummary,
-            motivationSummary,
-            departments,
-            employeeRows,
-            insights);
+            visibleEmployees,
+            kpis,
+            assignments,
+            bonuses);
+
+        var employeeRows = BuildEmployeeRows(visibleEmployees, kpis, assignments, bonuses);
+        var insights = BuildInsights(summary, employeeRows);
+        var report = new AnalyticsReport(summary, employeeRows, insights);
 
         await _auditLogService.LogAsync(
-            AuditActionType.DataViewed,
+            AuditActionType.AnalyticsReportGenerated,
             true,
             "Сформирован аналитический отчет",
-            $"Область: {report.ScopeTitle}, сотрудников: {employeeSummary.TotalEmployees}, KPI: {kpiSummary.TotalKpis}",
+            $"Период: {periodStart:dd.MM.yyyy}-{periodEnd:dd.MM.yyyy}; область: {summary.ScopeTitle}; сотрудников: {summary.TotalEmployees}",
             user: currentUser);
 
         return AnalyticsOperationResult.Ok(report, "Аналитический отчет сформирован");
@@ -125,178 +125,59 @@ public class AnalyticsService
         return ([currentEmployee], null);
     }
 
-    private static IReadOnlyList<AppUser> GetVisibleUsers(
-        AppUser currentUser,
-        IReadOnlyList<AppUser> allUsers,
-        IReadOnlyList<EmployeeProfile> visibleEmployees)
-    {
-        if (currentUser.Role is UserRole.Administrator or UserRole.HrSpecialist)
-            return allUsers;
-
-        var visibleUserIds = visibleEmployees
-            .Select(employee => employee.UserId)
-            .ToHashSet();
-
-        return allUsers
-            .Where(user => visibleUserIds.Contains(user.Id))
-            .ToList();
-    }
-
-    private static IReadOnlyList<LearningCourse> GetVisibleCourses(
-        AppUser currentUser,
-        IReadOnlyList<LearningCourse> allCourses,
-        IReadOnlyList<LearningAssignment> visibleAssignments)
-    {
-        if (currentUser.Role is UserRole.Administrator or UserRole.HrSpecialist)
-            return allCourses;
-
-        var visibleCourseIds = visibleAssignments
-            .Select(assignment => assignment.CourseId)
-            .ToHashSet();
-
-        return allCourses
-            .Where(course => visibleCourseIds.Contains(course.Id))
-            .ToList();
-    }
-
-    private static AnalyticsEmployeeSummary BuildEmployeeSummary(
-        IReadOnlyList<EmployeeProfile> employees,
-        IReadOnlyList<AppUser> users)
-    {
-        var departmentCount = employees
-            .Select(employee => NormalizeDepartment(employee.Department))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .Count();
-
-        return new AnalyticsEmployeeSummary(
-            employees.Count,
-            employees.Count(employee => employee.Status == EmployeeStatus.Active),
-            employees.Count(employee => employee.Status == EmployeeStatus.Dismissed),
-            employees.Count(employee => employee.Status == EmployeeStatus.OnVacation),
-            employees.Count(employee => employee.Status == EmployeeStatus.SickLeave),
-            departmentCount,
-            users.Count,
-            users.Count(user => user.IsActive));
-    }
-
-    private static AnalyticsKpiSummary BuildKpiSummary(IReadOnlyList<KpiItem> kpis)
-    {
-        var activeKpis = kpis
-            .Where(kpi => kpi.Status != KpiStatus.Cancelled)
-            .ToList();
-
-        var completedKpis = kpis.Count(kpi => kpi.Status == KpiStatus.Completed);
-
-        return new AnalyticsKpiSummary(
-            kpis.Count,
-            kpis.Count(kpi => kpi.Status == KpiStatus.InProgress),
-            completedKpis,
-            kpis.Count(kpi => kpi.Status == KpiStatus.Overdue),
-            kpis.Count(kpi => kpi.Status == KpiStatus.Cancelled),
-            Average(activeKpis.Select(kpi => kpi.CompletionPercent)),
-            Percent(completedKpis, activeKpis.Count));
-    }
-
-    private static AnalyticsLearningSummary BuildLearningSummary(
-        IReadOnlyList<LearningCourse> courses,
-        IReadOnlyList<LearningAssignment> assignments)
-    {
-        var activeAssignments = assignments.Count(assignment =>
-            assignment.Status is LearningAssignmentStatus.Assigned or LearningAssignmentStatus.InProgress);
-        var completedAssignments = assignments.Count(assignment =>
-            assignment.Status == LearningAssignmentStatus.Completed);
-        var measuredAssignments = assignments
-            .Where(assignment => assignment.Status != LearningAssignmentStatus.Cancelled)
-            .ToList();
-
-        return new AnalyticsLearningSummary(
-            courses.Count,
-            courses.Count(course => course.Status == LearningCourseStatus.Active),
-            assignments.Count,
-            activeAssignments,
-            completedAssignments,
-            assignments.Count(assignment => assignment.Status == LearningAssignmentStatus.Cancelled),
-            Average(measuredAssignments.Select(assignment => assignment.ProgressPercent)),
-            Average(assignments.Where(assignment => assignment.Score is not null).Select(assignment => assignment.Score!.Value)),
-            Percent(completedAssignments, measuredAssignments.Count));
-    }
-
-    private static AnalyticsMotivationSummary BuildMotivationSummary(IReadOnlyList<MotivationBonus> bonuses)
-    {
-        var payableStatuses = new[]
-        {
-            MotivationBonusStatus.PendingApproval,
-            MotivationBonusStatus.Approved
-        };
-
-        var actualBonuses = bonuses
-            .Where(bonus => bonus.Status is not MotivationBonusStatus.Rejected and not MotivationBonusStatus.Cancelled)
-            .ToList();
-
-        return new AnalyticsMotivationSummary(
-            bonuses.Count,
-            bonuses.Count(bonus => bonus.Status == MotivationBonusStatus.PendingApproval),
-            bonuses.Count(bonus => bonus.Status == MotivationBonusStatus.Approved),
-            bonuses.Count(bonus => bonus.Status == MotivationBonusStatus.Paid),
-            bonuses.Count(bonus => bonus.Status == MotivationBonusStatus.Rejected),
-            bonuses.Count(bonus => bonus.Status == MotivationBonusStatus.Cancelled),
-            bonuses.Sum(bonus => bonus.CalculatedAmount),
-            actualBonuses.Sum(bonus => bonus.FinalAmount),
-            bonuses.Where(bonus => payableStatuses.Contains(bonus.Status)).Sum(bonus => bonus.FinalAmount),
-            bonuses.Where(bonus => bonus.Status == MotivationBonusStatus.Paid).Sum(bonus => bonus.FinalAmount),
-            Average(actualBonuses.Select(bonus => bonus.EfficiencyPercent)));
-    }
-
-    private static IReadOnlyList<AnalyticsDepartmentSummary> BuildDepartmentSummaries(
+    private static AnalyticsSummary BuildSummary(
+        DateTime periodStart,
+        DateTime periodEnd,
+        DateTime generatedAt,
+        string scopeTitle,
         IReadOnlyList<EmployeeProfile> employees,
         IReadOnlyList<KpiItem> kpis,
         IReadOnlyList<LearningAssignment> assignments,
         IReadOnlyList<MotivationBonus> bonuses)
     {
-        return employees
-            .GroupBy(employee => NormalizeDepartment(employee.Department), StringComparer.OrdinalIgnoreCase)
-            .OrderBy(group => group.Key)
-            .Select(group =>
-            {
-                var employeeIds = group
-                    .Select(employee => employee.Id)
-                    .ToHashSet();
-                var departmentKpis = kpis
-                    .Where(kpi => employeeIds.Contains(kpi.EmployeeId))
-                    .ToList();
-                var activeKpis = departmentKpis
-                    .Where(kpi => kpi.Status != KpiStatus.Cancelled)
-                    .ToList();
-                var departmentAssignments = assignments
-                    .Where(assignment => employeeIds.Contains(assignment.EmployeeId))
-                    .ToList();
-                var measuredAssignments = departmentAssignments
-                    .Where(assignment => assignment.Status != LearningAssignmentStatus.Cancelled)
-                    .ToList();
-                var departmentBonuses = bonuses
-                    .Where(bonus => employeeIds.Contains(bonus.EmployeeId))
-                    .Where(bonus => bonus.Status is not MotivationBonusStatus.Rejected and not MotivationBonusStatus.Cancelled)
-                    .ToList();
-
-                return new AnalyticsDepartmentSummary(
-                    group.Key,
-                    group.Count(),
-                    group.Count(employee => employee.Status == EmployeeStatus.Active),
-                    departmentKpis.Count,
-                    departmentKpis.Count(kpi => kpi.Status == KpiStatus.Completed),
-                    departmentKpis.Count(kpi => kpi.Status == KpiStatus.Overdue),
-                    Average(activeKpis.Select(kpi => kpi.CompletionPercent)),
-                    departmentAssignments.Count,
-                    departmentAssignments.Count(assignment => assignment.Status == LearningAssignmentStatus.Completed),
-                    Percent(
-                        departmentAssignments.Count(assignment => assignment.Status == LearningAssignmentStatus.Completed),
-                        measuredAssignments.Count),
-                    departmentBonuses.Sum(bonus => bonus.FinalAmount));
-            })
+        var measuredKpis = kpis
+            .Where(kpi => kpi.Status != KpiStatus.Cancelled)
             .ToList();
+        var measuredAssignments = assignments
+            .Where(assignment => assignment.Status != LearningAssignmentStatus.Cancelled)
+            .ToList();
+
+        return new AnalyticsSummary(
+            periodStart,
+            periodEnd,
+            generatedAt,
+            scopeTitle,
+            employees.Count,
+            employees.Count(employee => employee.Status == EmployeeStatus.Active),
+            employees.Count(employee => employee.Status == EmployeeStatus.Dismissed),
+            employees.Count(employee => employee.Status == EmployeeStatus.OnVacation),
+            employees.Count(employee => employee.Status == EmployeeStatus.SickLeave),
+            CountDepartments(employees),
+            kpis.Count,
+            kpis.Count(kpi => kpi.Status == KpiStatus.Completed),
+            kpis.Count(kpi => kpi.Status == KpiStatus.InProgress),
+            kpis.Count(kpi => kpi.Status == KpiStatus.Overdue),
+            kpis.Count(kpi => kpi.Status == KpiStatus.Cancelled),
+            Average(measuredKpis.Select(kpi => kpi.CompletionPercent)),
+            assignments.Count,
+            assignments.Count(assignment => assignment.Status == LearningAssignmentStatus.Completed),
+            assignments.Count(assignment => assignment.Status is LearningAssignmentStatus.Assigned or LearningAssignmentStatus.InProgress),
+            assignments.Count(assignment => assignment.Status == LearningAssignmentStatus.Cancelled),
+            Average(measuredAssignments.Select(assignment => assignment.ProgressPercent)),
+            bonuses.Count,
+            bonuses.Count(bonus => bonus.Status == MotivationBonusStatus.PendingApproval),
+            bonuses.Count(bonus => bonus.Status == MotivationBonusStatus.Approved),
+            bonuses.Count(bonus => bonus.Status == MotivationBonusStatus.Rejected),
+            bonuses.Count(bonus => bonus.Status == MotivationBonusStatus.Paid),
+            bonuses
+                .Where(bonus => bonus.Status is MotivationBonusStatus.PendingApproval or MotivationBonusStatus.Approved)
+                .Sum(bonus => bonus.FinalAmount),
+            bonuses
+                .Where(bonus => bonus.Status == MotivationBonusStatus.Paid)
+                .Sum(bonus => bonus.FinalAmount));
     }
 
-    private static IReadOnlyList<AnalyticsEmployeeReportRow> BuildEmployeeRows(
+    private static IReadOnlyList<EmployeeAnalyticsRow> BuildEmployeeRows(
         IReadOnlyList<EmployeeProfile> employees,
         IReadOnlyList<KpiItem> kpis,
         IReadOnlyList<LearningAssignment> assignments,
@@ -310,7 +191,7 @@ public class AnalyticsService
                 var employeeKpis = kpis
                     .Where(kpi => kpi.EmployeeId == employee.Id)
                     .ToList();
-                var activeKpis = employeeKpis
+                var measuredKpis = employeeKpis
                     .Where(kpi => kpi.Status != KpiStatus.Cancelled)
                     .ToList();
                 var employeeAssignments = assignments
@@ -322,70 +203,134 @@ public class AnalyticsService
                 var employeeBonuses = bonuses
                     .Where(bonus => bonus.EmployeeId == employee.Id)
                     .ToList();
-                var actualBonuses = employeeBonuses
-                    .Where(bonus => bonus.Status is not MotivationBonusStatus.Rejected and not MotivationBonusStatus.Cancelled)
-                    .ToList();
 
-                return new AnalyticsEmployeeReportRow(
+                var averageKpiPercent = Average(measuredKpis.Select(kpi => kpi.CompletionPercent));
+                var learningProgressPercent = Average(measuredAssignments.Select(assignment => assignment.ProgressPercent));
+                var payableBonusAmount = employeeBonuses
+                    .Where(bonus => bonus.Status is MotivationBonusStatus.PendingApproval or MotivationBonusStatus.Approved)
+                    .Sum(bonus => bonus.FinalAmount);
+                var paidBonusAmount = employeeBonuses
+                    .Where(bonus => bonus.Status == MotivationBonusStatus.Paid)
+                    .Sum(bonus => bonus.FinalAmount);
+                var overdueKpis = employeeKpis.Count(kpi => kpi.Status == KpiStatus.Overdue);
+                var problemFlags = BuildProblemFlags(
+                    averageKpiPercent,
+                    measuredKpis.Count,
+                    overdueKpis,
+                    learningProgressPercent,
+                    measuredAssignments.Count,
+                    employeeBonuses.Any(bonus => bonus.Status == MotivationBonusStatus.PendingApproval));
+
+                return new EmployeeAnalyticsRow(
                     employee.Id,
                     employee.FullName,
                     employee.PersonnelNumber,
-                    employee.Position,
                     NormalizeDepartment(employee.Department),
+                    employee.Position,
                     employee.Status,
+                    averageKpiPercent,
                     employeeKpis.Count,
-                    employeeKpis.Count(kpi => kpi.Status == KpiStatus.Completed),
-                    employeeKpis.Count(kpi => kpi.Status == KpiStatus.Overdue),
-                    Average(activeKpis.Select(kpi => kpi.CompletionPercent)),
+                    overdueKpis,
+                    learningProgressPercent,
                     employeeAssignments.Count,
                     employeeAssignments.Count(assignment => assignment.Status == LearningAssignmentStatus.Completed),
-                    Average(measuredAssignments.Select(assignment => assignment.ProgressPercent)),
-                    employeeBonuses.Count,
-                    actualBonuses.Sum(bonus => bonus.FinalAmount),
-                    employeeBonuses
-                        .Where(bonus => bonus.Status == MotivationBonusStatus.Paid)
-                        .Sum(bonus => bonus.FinalAmount));
+                    payableBonusAmount,
+                    paidBonusAmount,
+                    problemFlags);
             })
             .ToList();
     }
 
-    private static IReadOnlyList<AnalyticsInsight> BuildInsights(
-        AnalyticsEmployeeSummary employeeSummary,
-        AnalyticsKpiSummary kpiSummary,
-        AnalyticsLearningSummary learningSummary,
-        AnalyticsMotivationSummary motivationSummary)
+    private static IReadOnlyList<string> BuildProblemFlags(
+        double averageKpiPercent,
+        int measuredKpiCount,
+        int overdueKpis,
+        double learningProgressPercent,
+        int measuredLearningAssignmentCount,
+        bool hasPendingBonus)
     {
+        var flags = new List<string>();
+
+        if (measuredKpiCount > 0 && averageKpiPercent < 70)
+            flags.Add("Низкий KPI");
+
+        if (overdueKpis > 0)
+            flags.Add("Есть просроченные KPI");
+
+        if (measuredLearningAssignmentCount > 0 && learningProgressPercent < 50)
+            flags.Add("Низкий прогресс обучения");
+
+        if (hasPendingBonus)
+            flags.Add("Есть бонусы на утверждении");
+
+        return flags.Count == 0 ? ["Без замечаний"] : flags;
+    }
+
+    private static IReadOnlyList<string> BuildInsights(
+        AnalyticsSummary summary,
+        IReadOnlyList<EmployeeAnalyticsRow> employeeRows)
+    {
+        var problemEmployeeCount = employeeRows.Count(row =>
+            row.ProblemFlags.Any(flag => flag != "Без замечаний"));
+
         return
         [
-            new AnalyticsInsight(
-                "Персонал",
-                $"{employeeSummary.ActiveEmployees}/{employeeSummary.TotalEmployees}",
-                $"Активные сотрудники, отделов: {employeeSummary.DepartmentCount}"),
-            new AnalyticsInsight(
-                "KPI",
-                $"{kpiSummary.AverageCompletionPercent:0.##}%",
-                $"Выполнено: {kpiSummary.CompletedKpis}, просрочено: {kpiSummary.OverdueKpis}"),
-            new AnalyticsInsight(
-                "Обучение",
-                $"{learningSummary.CompletionRatePercent:0.##}%",
-                $"Завершено назначений: {learningSummary.CompletedAssignments}"),
-            new AnalyticsInsight(
-                "Мотивация",
-                $"{motivationSummary.TotalPayableAmount:0.##}",
-                $"К выплате, выплачено: {motivationSummary.TotalPaidAmount:0.##}")
+            $"Период отчета: {summary.PeriodStart:dd.MM.yyyy} - {summary.PeriodEnd:dd.MM.yyyy}.",
+            $"В области отчета сотрудников: {summary.TotalEmployees}, активных: {summary.ActiveEmployees}.",
+            $"Средний KPI: {summary.AverageKpiPercent:0.##}%, просроченных KPI: {summary.OverdueKpis}.",
+            $"Средний прогресс обучения: {summary.AverageLearningProgressPercent:0.##}%, завершено назначений: {summary.CompletedLearningAssignments}.",
+            $"Сумма бонусов к выплате: {summary.PayableBonusAmount:0.##}, уже выплачено: {summary.PaidBonusAmount:0.##}.",
+            $"Сотрудников с замечаниями: {problemEmployeeCount}."
         ];
+    }
+
+    private static int CountDepartments(IReadOnlyList<EmployeeProfile> employees)
+    {
+        return employees
+            .Select(employee => NormalizeDepartment(employee.Department))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Count();
     }
 
     private static string GetScopeTitle(AppUser currentUser)
     {
         return currentUser.Role switch
         {
-            UserRole.Administrator => "Вся система",
-            UserRole.HrSpecialist => "Все сотрудники HR-контура",
-            UserRole.Manager => "Команда руководителя",
-            UserRole.Employee => "Личный отчет сотрудника",
+            UserRole.Administrator => "Все сотрудники",
+            UserRole.HrSpecialist => "Все сотрудники",
+            UserRole.Manager => "Руководитель и подчиненные",
+            UserRole.Employee => "Личная аналитика",
             _ => "Доступная область"
         };
+    }
+
+    private static bool DateRangesIntersect(
+        DateTime itemStart,
+        DateTime itemEnd,
+        DateTime periodStart,
+        DateTime periodEnd)
+    {
+        itemStart = itemStart.Date;
+        itemEnd = itemEnd.Date;
+
+        if (itemEnd < itemStart)
+            (itemStart, itemEnd) = (itemEnd, itemStart);
+
+        return itemStart <= periodEnd && itemEnd >= periodStart;
+    }
+
+    private static bool AssignmentIntersectsPeriod(
+        LearningAssignment assignment,
+        DateTime periodStart,
+        DateTime periodEnd)
+    {
+        var assignmentStart = assignment.AssignedAt.Date;
+        var assignmentEnd = assignment.CompletedAt?.Date ?? assignment.DueDate?.Date;
+
+        if (assignmentEnd is null)
+            return assignmentStart <= periodEnd;
+
+        return DateRangesIntersect(assignmentStart, assignmentEnd.Value, periodStart, periodEnd);
     }
 
     private static string NormalizeDepartment(string department)
@@ -403,14 +348,6 @@ public class AnalyticsService
             return 0;
 
         return Math.Round(list.Average(), 2);
-    }
-
-    private static double Percent(int value, int total)
-    {
-        if (total <= 0)
-            return 0;
-
-        return Math.Round((double)value / total * 100, 2);
     }
 
     private async Task<AnalyticsOperationResult> AccessDeniedAsync(string details, string message)
