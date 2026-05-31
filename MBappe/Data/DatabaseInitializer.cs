@@ -17,7 +17,7 @@ public static class DatabaseInitializer
 
         await SeedUsersAsync(db);
         await SeedMotivationProgramsAsync(db);
-        //await SeedLearningCoursesAsync(db);
+        await SeedLearningCoursesAsync(db);
 
         await db.SaveChangesAsync();
 
@@ -54,38 +54,55 @@ public static class DatabaseInitializer
         });
     }
 
-    //private static async Task SeedLearningCoursesAsync(AppDbContext db)
-    //{
-    //    if (await db.LearningCourses.AnyAsync())
-    //        return;
+    private static async Task SeedLearningCoursesAsync(AppDbContext db)
+    {
+        if (await db.LearningCourses.AnyAsync())
+            return;
 
-    //    db.LearningCourses.Add(new LearningCourse
-    //    {
-    //        Title = "Введение в корпоративную культуру",
-    //        Description = "Базовый курс для новых сотрудников.",
-    //        DurationHours = 2,
-    //        IsActive = true,
-    //        CreatedAt = DateTime.Now
-    //    });
+        db.LearningCourses.Add(new LearningCourse
+        {
+            Title = "Введение в корпоративную культуру",
+            Description = "Базовый курс для новых сотрудников: ценности компании, правила взаимодействия и основные рабочие процессы.",
+            Format = LearningFormat.Online,
+            Provider = "MBappe HR",
+            DurationHours = 2,
+            Status = LearningCourseStatus.Active,
+            CreatedAt = DateTime.Now
+        });
 
-    //    db.LearningCourses.Add(new LearningCourse
-    //    {
-    //        Title = "Основы информационной безопасности",
-    //        Description = "Курс по базовым правилам защиты информации.",
-    //        DurationHours = 3,
-    //        IsActive = true,
-    //        CreatedAt = DateTime.Now
-    //    });
+        db.LearningCourses.Add(new LearningCourse
+        {
+            Title = "Основы информационной безопасности",
+            Description = "Курс по базовым правилам защиты корпоративной информации, паролей и персональных данных.",
+            Format = LearningFormat.Online,
+            Provider = "MBappe Security",
+            DurationHours = 3,
+            Status = LearningCourseStatus.Active,
+            CreatedAt = DateTime.Now
+        });
 
-    //    db.LearningCourses.Add(new LearningCourse
-    //    {
-    //        Title = "Работа с KPI",
-    //        Description = "Курс по пониманию и выполнению показателей эффективности.",
-    //        DurationHours = 1.5,
-    //        IsActive = true,
-    //        CreatedAt = DateTime.Now
-    //    });
-    //}
+        db.LearningCourses.Add(new LearningCourse
+        {
+            Title = "Работа с KPI",
+            Description = "Курс объясняет, как формируются показатели эффективности и как результаты KPI влияют на мотивацию.",
+            Format = LearningFormat.Mixed,
+            Provider = "MBappe Academy",
+            DurationHours = 1.5,
+            Status = LearningCourseStatus.Active,
+            CreatedAt = DateTime.Now
+        });
+
+        db.LearningCourses.Add(new LearningCourse
+        {
+            Title = "Командное взаимодействие",
+            Description = "Практический курс по коммуникации внутри команды и работе с обратной связью.",
+            Format = LearningFormat.Offline,
+            Provider = "MBappe Academy",
+            DurationHours = 4,
+            Status = LearningCourseStatus.Draft,
+            CreatedAt = DateTime.Now
+        });
+    }
 
     private static void AddUser(
         AppDbContext db,
