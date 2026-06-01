@@ -66,11 +66,16 @@
                 <StackPanel Spacing="4">
                     <TextBlock Text="Статусы"
                                Classes="kicker"/>
-                    <TextBlock Text="{Binding InactiveEmployeeSummaryText}"
-                               Foreground="{StaticResource InkBrush}"
-                               FontSize="15"
+                    <TextBlock Foreground="{StaticResource InkBrush}"
+                               FontSize="14"
                                FontWeight="SemiBold"
-                               TextTrimming="CharacterEllipsis"/>
+                               TextWrapping="Wrap">
+                        <Run Text="Отпуск/больничный: "/>
+                        <Run Text="{Binding OnLeaveOrSickEmployeeCount}"/>
+                        <LineBreak/>
+                        <Run Text="Уволены: "/>
+                        <Run Text="{Binding DismissedEmployeeCount}"/>
+                    </TextBlock>
                 </StackPanel>
             </Border>
 
