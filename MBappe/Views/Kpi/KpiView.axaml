@@ -8,12 +8,9 @@
         <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
             <StackPanel Spacing="6">
                 <TextBlock Text="KPI"
-                           Foreground="{StaticResource InkBrush}"
-                           FontSize="28"
-                           FontWeight="SemiBold"/>
+                           Classes="page-title"/>
                 <TextBlock Text="Показатели эффективности сотрудников"
-                           Foreground="{StaticResource MutedTextBrush}"
-                           FontSize="14"/>
+                           Classes="page-subtitle"/>
             </StackPanel>
 
             <Button Grid.Column="1"
@@ -51,18 +48,12 @@
 
         <Grid Grid.Row="1"
               ColumnDefinitions="*,*,*"
+              ColumnSpacing="12"
               Margin="0,24,0,0">
-            <Border Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    CornerRadius="6"
-                    Padding="16"
-                    Margin="0,0,12,0">
+            <Border Classes="metric-card">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Всего KPI"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
+                               Classes="kicker"/>
                     <TextBlock Text="{Binding TotalKpiCount}"
                                Foreground="{StaticResource InkBrush}"
                                FontSize="24"
@@ -71,17 +62,10 @@
             </Border>
 
             <Border Grid.Column="1"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    CornerRadius="6"
-                    Padding="16"
-                    Margin="0,0,12,0">
+                    Classes="metric-card">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Среднее выполнение"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
+                               Classes="kicker"/>
                     <TextBlock Text="{Binding AverageCompletionText}"
                                Foreground="{StaticResource AccentBrush}"
                                FontSize="24"
@@ -90,16 +74,10 @@
             </Border>
 
             <Border Grid.Column="2"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    CornerRadius="6"
-                    Padding="16">
+                    Classes="metric-card">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Выполнено / просрочено"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
+                               Classes="kicker"/>
                     <TextBlock Foreground="{StaticResource InkBrush}"
                                FontSize="24"
                                FontWeight="SemiBold">
@@ -114,10 +92,7 @@
         <Grid Grid.Row="2"
               ColumnDefinitions="*,430"
               Margin="0,24,0,0">
-            <Border Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    CornerRadius="6"
+            <Border Classes="panel"
                     Margin="0,0,18,0">
                 <ListBox ItemsSource="{Binding Kpis}"
                          SelectedItem="{Binding SelectedKpi}"
@@ -216,16 +191,11 @@
 
             <Grid Grid.Column="1"
                   RowDefinitions="Auto,Auto,*">
-                <Border Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
-                        CornerRadius="6"
+                <Border Classes="panel"
                         Padding="18">
                     <StackPanel Spacing="13">
                         <TextBlock Text="Действия"
-                                   Foreground="{StaticResource InkBrush}"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"/>
+                                   Classes="section-title"/>
 
                         <TextBlock Text="{Binding SelectedKpiCaption}"
                                    Foreground="{StaticResource MutedTextBrush}"
@@ -245,16 +215,18 @@
                                    IsVisible="{Binding IsReadOnlyAccess}"/>
 
                         <Grid ColumnDefinitions="*,*"
+                              ColumnSpacing="12"
                               IsVisible="{Binding CanShowKpiActions}">
                             <Button Content="Обновить факт"
                                     Classes="success"
                                     Command="{Binding OpenProgressFormCommand}"
-                                    HorizontalContentAlignment="Center"
-                                    Margin="0,0,8,0"/>
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"/>
                             <Button Grid.Column="1"
                                     Content="Отменить KPI"
                                     Classes="danger"
                                     Command="{Binding CancelSelectedKpiCommand}"
+                                    HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Center"/>
                         </Grid>
 
@@ -274,18 +246,13 @@
                 </Border>
 
                 <Border Grid.Row="1"
-                        Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
-                        CornerRadius="6"
+                        Classes="panel"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding CanShowKpiDetails}">
                     <StackPanel Spacing="13">
                         <TextBlock Text="Карточка KPI"
-                                   Foreground="{StaticResource InkBrush}"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"/>
+                                   Classes="section-title"/>
 
                         <Grid ColumnDefinitions="130,*"
                               RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
@@ -376,19 +343,14 @@
                 </Border>
 
                 <Border Grid.Row="2"
-                        Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
-                        CornerRadius="6"
+                        Classes="panel"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding IsCreateFormVisible}">
                     <ScrollViewer>
                         <StackPanel Spacing="10">
                             <TextBlock Text="Новый KPI"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"/>
+                                       Classes="section-title"/>
 
                             <ComboBox ItemsSource="{Binding EmployeeOptions}"
                                       SelectedItem="{Binding SelectedEmployeeOption}">
@@ -405,11 +367,12 @@
                             <TextBox Watermark="Описание"
                                      Text="{Binding NewDescription}"
                                      AcceptsReturn="True"
-                                     MinHeight="70"/>
+                                     TextWrapping="Wrap"
+                                     MinHeight="96"/>
 
-							<Grid ColumnDefinitions="*,*">
-								<StackPanel Spacing="4"
-											Margin="0,0,8,0">
+							<Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
+								<StackPanel Spacing="4">
 									<TextBlock Text="Плановое значение"
 											   Foreground="{StaticResource MutedTextBrush}"
 											   FontSize="12"
@@ -428,9 +391,9 @@
 								</StackPanel>
 							</Grid>
 
-							<Grid ColumnDefinitions="*,*">
-								<StackPanel Spacing="4"
-											Margin="0,0,8,0">
+							<Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
+								<StackPanel Spacing="4">
 									<TextBlock Text="Единица измерения"
 											   Foreground="{StaticResource MutedTextBrush}"
 											   FontSize="12"
@@ -449,10 +412,10 @@
 								</StackPanel>
 							</Grid>
 
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <TextBox Watermark="Начало периода"
-                                         Text="{Binding NewPeriodStartText}"
-                                         Margin="0,0,8,0"/>
+                                         Text="{Binding NewPeriodStartText}"/>
                                 <TextBox Grid.Column="1"
                                          Watermark="Конец периода"
                                          Text="{Binding NewPeriodEndText}"/>
@@ -471,16 +434,18 @@
                                            TextWrapping="Wrap"/>
                             </Border>
 
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <Button Content="Создать"
                                         Classes="primary"
                                         Command="{Binding CreateKpiCommand}"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"/>
                                 <Button Grid.Column="1"
                                         Content="Отмена"
                                         Classes="subtle"
                                         Command="{Binding CloseFormsCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"/>
                             </Grid>
                         </StackPanel>
@@ -488,19 +453,14 @@
                 </Border>
 
                 <Border Grid.Row="2"
-                        Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
-                        CornerRadius="6"
+                        Classes="panel"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding IsEditFormVisible}">
                     <ScrollViewer>
                         <StackPanel Spacing="10">
                             <TextBlock Text="Редактирование KPI"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"/>
+                                       Classes="section-title"/>
 
                             <TextBox Watermark="Название KPI"
                                      Text="{Binding EditTitle}"/>
@@ -508,11 +468,12 @@
                             <TextBox Watermark="Описание"
                                      Text="{Binding EditDescription}"
                                      AcceptsReturn="True"
-                                     MinHeight="70"/>
+                                     TextWrapping="Wrap"
+                                     MinHeight="96"/>
 
-							<Grid ColumnDefinitions="*,*">
-								<StackPanel Spacing="4"
-											Margin="0,0,8,0">
+							<Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
+								<StackPanel Spacing="4">
 									<TextBlock Text="Плановое значение"
 											   Foreground="{StaticResource MutedTextBrush}"
 											   FontSize="12"
@@ -538,10 +499,10 @@
 								<TextBox Text="{Binding EditWeightPercentText}"/>
 							</StackPanel>
 
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <TextBox Watermark="Начало периода"
-                                         Text="{Binding EditPeriodStartText}"
-                                         Margin="0,0,8,0"/>
+                                         Text="{Binding EditPeriodStartText}"/>
                                 <TextBox Grid.Column="1"
                                          Watermark="Конец периода"
                                          Text="{Binding EditPeriodEndText}"/>
@@ -560,16 +521,18 @@
                                            TextWrapping="Wrap"/>
                             </Border>
 
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <Button Content="Сохранить"
                                         Classes="primary"
                                         Command="{Binding SaveKpiCommand}"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"/>
                                 <Button Grid.Column="1"
                                         Content="Отмена"
                                         Classes="subtle"
                                         Command="{Binding CloseFormsCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"/>
                             </Grid>
                         </StackPanel>
@@ -577,18 +540,13 @@
                 </Border>
 
                 <Border Grid.Row="2"
-                        Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
-                        CornerRadius="6"
+                        Classes="panel"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding IsProgressFormVisible}">
                     <StackPanel Spacing="10">
                         <TextBlock Text="Обновление факта"
-                                   Foreground="{StaticResource InkBrush}"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"/>
+                                   Classes="section-title"/>
 
                         <TextBlock Text="{Binding SelectedKpiCaption}"
                                    Foreground="{StaticResource MutedTextBrush}"
@@ -616,16 +574,18 @@
                                        TextWrapping="Wrap"/>
                         </Border>
 
-                        <Grid ColumnDefinitions="*,*">
+                        <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                             <Button Content="Сохранить"
                                     Classes="primary"
                                     Command="{Binding SaveProgressCommand}"
-                                    HorizontalContentAlignment="Center"
-                                    Margin="0,0,8,0"/>
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"/>
                             <Button Grid.Column="1"
                                     Content="Отмена"
                                     Classes="subtle"
                                     Command="{Binding CloseFormsCommand}"
+                                    HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Center"/>
                         </Grid>
                     </StackPanel>
