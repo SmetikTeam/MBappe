@@ -122,6 +122,26 @@ public partial class EmployeesViewModel : ViewModelBase
 
     public bool HasEditFormMessage => !string.IsNullOrWhiteSpace(EditFormMessage);
 
+    public int TotalEmployeeCount => Employees.Count;
+
+    public int ActiveEmployeeCount => CountEmployeesByStatus(EmployeeStatus.Active);
+
+    public int OnLeaveOrSickEmployeeCount =>
+        CountEmployeesByStatus(EmployeeStatus.OnVacation) + CountEmployeesByStatus(EmployeeStatus.SickLeave);
+
+    public int DismissedEmployeeCount => CountEmployeesByStatus(EmployeeStatus.Dismissed);
+
+    public int DepartmentCount => Employees
+        .Select(employee => employee.Department)
+        .Where(department => !string.IsNullOrWhiteSpace(department))
+        .Distinct(StringComparer.CurrentCultureIgnoreCase)
+        .Count();
+
+    public string ActiveEmployeeRatioText => $"{ActiveEmployeeCount}/{TotalEmployeeCount}";
+
+    public string InactiveEmployeeSummaryText =>
+        $"Отпуск/больничный: {OnLeaveOrSickEmployeeCount}, уволены: {DismissedEmployeeCount}";
+
     public EmployeesViewModel(
         EmployeeService employeeService,
         UserManagementService userManagementService)
@@ -408,6 +428,20 @@ public partial class EmployeesViewModel : ViewModelBase
         CreateFormMessage = string.Empty;
     }
 
+    private int CountEmployeesByStatus(EmployeeStatus status) =>
+        Employees.Count(employee => employee.Employee.Status == status);
+
+    private void NotifyEmployeeSummaryChanged()
+    {
+        OnPropertyChanged(nameof(TotalEmployeeCount));
+        OnPropertyChanged(nameof(ActiveEmployeeCount));
+        OnPropertyChanged(nameof(OnLeaveOrSickEmployeeCount));
+        OnPropertyChanged(nameof(DismissedEmployeeCount));
+        OnPropertyChanged(nameof(DepartmentCount));
+        OnPropertyChanged(nameof(ActiveEmployeeRatioText));
+        OnPropertyChanged(nameof(InactiveEmployeeSummaryText));
+    }
+
     private static bool TryParseDate(string value, out DateTime date)
     {
         return DateTime.TryParseExact(
@@ -440,6 +474,11 @@ public partial class EmployeesViewModel : ViewModelBase
         SelectedStatus = value is null
             ? StatusOptions[0]
             : StatusOptions.First(option => option.Status == value.Employee.Status);
+    }
+
+    partial void OnEmployeesChanged(ObservableCollection<EmployeeRowViewModel> value)
+    {
+        NotifyEmployeeSummaryChanged();
     }
 
     partial void OnIsCreateFormVisibleChanged(bool value)

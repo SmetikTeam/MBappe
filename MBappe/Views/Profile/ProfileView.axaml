@@ -22,6 +22,7 @@
                 <Border Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
+                        CornerRadius="6"
                         Padding="24"
                         Margin="0,0,18,0">
                     <StackPanel Spacing="16"
@@ -59,6 +60,7 @@
                         Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
+                        CornerRadius="6"
                         Padding="24">
                     <StackPanel Spacing="22">
                         <StackPanel Spacing="12">
@@ -70,6 +72,7 @@
                             <Border Background="#FFF4F2"
                                     BorderBrush="{StaticResource ErrorBrush}"
                                     BorderThickness="1"
+                                    CornerRadius="6"
                                     Padding="12"
                                     IsVisible="{Binding HasNoEmployeeProfile}">
                                 <TextBlock Text="{Binding ProfileMessage}"

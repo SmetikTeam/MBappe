@@ -41,10 +41,12 @@
             <Border Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Margin="0,0,18,0">
                 <Grid>
                     <ListBox ItemsSource="{Binding Users}"
                              SelectedItem="{Binding SelectedUser}"
+                             Classes="data-list"
                              BorderThickness="0"
                              Background="Transparent"
                              Margin="12">
@@ -121,6 +123,7 @@
                 <Border Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
+                        CornerRadius="6"
                         Padding="18">
                     <StackPanel Spacing="13">
                         <TextBlock Text="Действия"
@@ -158,6 +161,7 @@
                         <Border Background="{StaticResource SurfaceBrush}"
                                 BorderBrush="{StaticResource BorderBrushSoft}"
                                 BorderThickness="1"
+                                CornerRadius="6"
                                 Padding="18"
                                 IsVisible="{Binding IsEditFormVisible}">
                             <StackPanel Spacing="11">
@@ -202,6 +206,7 @@
                                 <Border Background="#FFF4F2"
                                         BorderBrush="{StaticResource ErrorBrush}"
                                         BorderThickness="1"
+                                        CornerRadius="6"
                                         Padding="10"
                                         IsVisible="{Binding HasEditFormMessage}">
                                     <TextBlock Text="{Binding EditFormMessage}"
@@ -232,6 +237,7 @@
                         <Border Background="{StaticResource SurfaceBrush}"
                                 BorderBrush="{StaticResource BorderBrushSoft}"
                                 BorderThickness="1"
+                                CornerRadius="6"
                                 Padding="18"
                                 IsVisible="{Binding IsCreateFormVisible}">
                             <StackPanel Spacing="11">
@@ -298,6 +304,7 @@
                                 <Border Background="#FFF4F2"
                                         BorderBrush="{StaticResource ErrorBrush}"
                                         BorderThickness="1"
+                                        CornerRadius="6"
                                         Padding="10"
                                         IsVisible="{Binding HasCreateFormMessage}">
                                     <TextBlock Text="{Binding CreateFormMessage}"

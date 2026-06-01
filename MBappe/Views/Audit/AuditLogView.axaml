@@ -26,6 +26,7 @@
                 Background="{StaticResource SurfaceBrush}"
                 BorderBrush="{StaticResource BorderBrushSoft}"
                 BorderThickness="1"
+                CornerRadius="6"
                 Margin="0,24,0,0">
             <Grid RowDefinitions="Auto,*">
                 <Grid ColumnDefinitions="170,150,150,110,*"

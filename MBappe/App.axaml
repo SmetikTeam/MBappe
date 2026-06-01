@@ -30,12 +30,14 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
+            <Setter Property="CornerRadius" Value="6"/>
         </Style>
         <Style Selector="Button">
             <Setter Property="MinHeight" Value="36"/>
             <Setter Property="Padding" Value="14,7"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
+            <Setter Property="CornerRadius" Value="6"/>
         </Style>
         <Style Selector="Button.primary">
             <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
@@ -79,52 +81,52 @@
             <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="CornerRadius" Value="6"/>
         </Style>
         <Style Selector="Border.metric-card">
             <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="Padding" Value="16"/>
         </Style>
         <Style Selector="Border.status-banner">
             <Setter Property="Background" Value="{StaticResource AccentSoftBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="Padding" Value="12"/>
         </Style>
         <Style Selector="Border.error-banner">
             <Setter Property="Background" Value="#FFF4F2"/>
             <Setter Property="BorderBrush" Value="{StaticResource ErrorBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="Padding" Value="12"/>
         </Style>
         <Style Selector="Border.brand-mark">
             <Setter Property="Width" Value="40"/>
             <Setter Property="Height" Value="40"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="Background" Value="{StaticResource AccentSoftBrush}"/>
         </Style>
         <Style Selector="Border.user-avatar">
             <Setter Property="Width" Value="38"/>
             <Setter Property="Height" Value="38"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="Background" Value="{StaticResource SurfaceAltBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
         <Style Selector="Border.nav-item">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="Padding" Value="10,8"/>
         </Style>
         <Style Selector="Border.nav-icon">
             <Setter Property="Width" Value="34"/>
             <Setter Property="Height" Value="34"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="Background" Value="{StaticResource SurfaceAltBrush}"/>
         </Style>
         <Style Selector="ListBox.nav-list">
@@ -135,6 +137,26 @@
             <Setter Property="MinHeight" Value="58"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="0,2"/>
+        </Style>
+        <Style Selector="ListBox.data-list">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style Selector="ListBox.data-list ListBoxItem">
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+        <Style Selector="ListBox.data-list ListBoxItem /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+        <Style Selector="ListBox.data-list ListBoxItem:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource SurfaceAltBrush}"/>
+        </Style>
+        <Style Selector="ListBox.data-list ListBoxItem:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource AccentSoftBrush}"/>
         </Style>
     </Application.Styles>
 </Application>

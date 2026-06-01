@@ -55,6 +55,7 @@
             <Border Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Padding="16"
                     Margin="0,0,12,0">
                 <StackPanel Spacing="4">
@@ -73,6 +74,7 @@
                     Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Padding="16"
                     Margin="0,0,12,0">
                 <StackPanel Spacing="4">
@@ -91,6 +93,7 @@
                     Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Padding="16"
                     Margin="0,0,12,0">
                 <StackPanel Spacing="4">
@@ -109,6 +112,7 @@
                     Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Padding="16">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Завершено"
@@ -129,6 +133,7 @@
             <Border Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Margin="0,0,18,0">
                 <Grid RowDefinitions="Auto,*">
                     <TextBlock Text="Каталог курсов"
@@ -140,6 +145,7 @@
                     <ListBox Grid.Row="1"
                              ItemsSource="{Binding Courses}"
                              SelectedItem="{Binding SelectedCourse}"
+                             Classes="data-list"
                              BorderThickness="0"
                              Background="Transparent"
                              Margin="12,0,12,12">
@@ -195,6 +201,7 @@
                     Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Margin="0,0,18,0">
                 <Grid RowDefinitions="Auto,*">
                     <TextBlock Text="Назначения"
@@ -206,6 +213,7 @@
                     <ListBox Grid.Row="1"
                              ItemsSource="{Binding Assignments}"
                              SelectedItem="{Binding SelectedAssignment}"
+                             Classes="data-list"
                              BorderThickness="0"
                              Background="Transparent"
                              Margin="12,0,12,12">
@@ -259,6 +267,7 @@
                     <Border Background="{StaticResource SurfaceBrush}"
                             BorderBrush="{StaticResource BorderBrushSoft}"
                             BorderThickness="1"
+                            CornerRadius="6"
                             Padding="18">
                         <StackPanel Spacing="13">
                             <TextBlock Text="Действия"
@@ -325,6 +334,7 @@
                             <Border Background="{StaticResource AccentSoftBrush}"
                                     BorderBrush="{StaticResource AccentBrush}"
                                     BorderThickness="1"
+                                    CornerRadius="6"
                                     Padding="10"
                                     IsVisible="{Binding HasStatusMessage}">
                                 <TextBlock Text="{Binding StatusMessage}"
@@ -339,6 +349,7 @@
                     <Border Background="{StaticResource SurfaceBrush}"
                             BorderBrush="{StaticResource BorderBrushSoft}"
                             BorderThickness="1"
+                            CornerRadius="6"
                             Padding="18"
                             IsVisible="{Binding IsAssignFormVisible}">
                         <StackPanel Spacing="10">
@@ -379,6 +390,7 @@
                             <Border Background="{StaticResource AccentSoftBrush}"
                                     BorderBrush="{StaticResource AccentBrush}"
                                     BorderThickness="1"
+                                    CornerRadius="6"
                                     Padding="10"
                                     IsVisible="{Binding HasAssignmentFormMessage}">
                                 <TextBlock Text="{Binding AssignmentFormMessage}"
@@ -408,6 +420,7 @@
                     <Border Background="{StaticResource SurfaceBrush}"
                             BorderBrush="{StaticResource BorderBrushSoft}"
                             BorderThickness="1"
+                            CornerRadius="6"
                             Padding="18"
                             IsVisible="{Binding CanShowCourseDetails}">
                         <StackPanel Spacing="13">
@@ -505,6 +518,7 @@
                     <Border Background="{StaticResource SurfaceBrush}"
                             BorderBrush="{StaticResource BorderBrushSoft}"
                             BorderThickness="1"
+                            CornerRadius="6"
                             Padding="18"
                             IsVisible="{Binding CanShowAssignmentDetails}">
                         <StackPanel Spacing="13">
@@ -612,6 +626,7 @@
                     <Border Background="{StaticResource SurfaceBrush}"
                             BorderBrush="{StaticResource BorderBrushSoft}"
                             BorderThickness="1"
+                            CornerRadius="6"
                             Padding="18"
                             IsVisible="{Binding IsCreateCourseFormVisible}">
                         <StackPanel Spacing="10">
@@ -661,6 +676,7 @@
                             <Border Background="{StaticResource AccentSoftBrush}"
                                     BorderBrush="{StaticResource AccentBrush}"
                                     BorderThickness="1"
+                                    CornerRadius="6"
                                     Padding="10"
                                     IsVisible="{Binding HasCourseFormMessage}">
                                 <TextBlock Text="{Binding CourseFormMessage}"
@@ -690,6 +706,7 @@
                     <Border Background="{StaticResource SurfaceBrush}"
                             BorderBrush="{StaticResource BorderBrushSoft}"
                             BorderThickness="1"
+                            CornerRadius="6"
                             Padding="18"
                             IsVisible="{Binding IsEditCourseFormVisible}">
                         <StackPanel Spacing="10">
@@ -752,6 +769,7 @@
                             <Border Background="{StaticResource AccentSoftBrush}"
                                     BorderBrush="{StaticResource AccentBrush}"
                                     BorderThickness="1"
+                                    CornerRadius="6"
                                     Padding="10"
                                     IsVisible="{Binding HasCourseFormMessage}">
                                 <TextBlock Text="{Binding CourseFormMessage}"
@@ -781,6 +799,7 @@
                     <Border Background="{StaticResource SurfaceBrush}"
                             BorderBrush="{StaticResource BorderBrushSoft}"
                             BorderThickness="1"
+                            CornerRadius="6"
                             Padding="18"
                             IsVisible="{Binding IsProgressFormVisible}">
                         <StackPanel Spacing="10">
@@ -817,6 +836,7 @@
                             <Border Background="{StaticResource AccentSoftBrush}"
                                     BorderBrush="{StaticResource AccentBrush}"
                                     BorderThickness="1"
+                                    CornerRadius="6"
                                     Padding="10"
                                     IsVisible="{Binding HasProgressFormMessage}">
                                 <TextBlock Text="{Binding ProgressFormMessage}"

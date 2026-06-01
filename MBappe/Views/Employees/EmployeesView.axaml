@@ -3,17 +3,14 @@
              xmlns:vm="using:MBappe.ViewModels.Employees"
              x:Class="MBappe.Views.Employees.EmployeesView"
              x:DataType="vm:EmployeesViewModel">
-    <Grid RowDefinitions="Auto,*"
+    <Grid RowDefinitions="Auto,Auto,*"
           Margin="32">
         <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
             <StackPanel Spacing="6">
                 <TextBlock Text="Сотрудники"
-                           Foreground="{StaticResource InkBrush}"
-                           FontSize="28"
-                           FontWeight="SemiBold"/>
+                           Classes="page-title"/>
                 <TextBlock Text="Кадровые профили, должности и подразделения"
-                           Foreground="{StaticResource MutedTextBrush}"
-                           FontSize="14"/>
+                           Classes="page-subtitle"/>
             </StackPanel>
             <Button Grid.Column="1"
                     Content="Новый профиль"
@@ -38,15 +35,67 @@
         </Grid>
 
         <Grid Grid.Row="1"
-              ColumnDefinitions="*,430"
-              Margin="0,24,0,0">
-            <Border Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
+              ColumnDefinitions="*,*,*,*"
+              ColumnSpacing="12"
+              Margin="0,22,0,0">
+            <Border Classes="metric-card">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Всего сотрудников"
+                               Classes="kicker"/>
+                    <TextBlock Text="{Binding TotalEmployeeCount}"
+                               Foreground="{StaticResource InkBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Classes="metric-card">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Активные"
+                               Classes="kicker"/>
+                    <TextBlock Text="{Binding ActiveEmployeeRatioText}"
+                               Foreground="{StaticResource AccentBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2"
+                    Classes="metric-card">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Статусы"
+                               Classes="kicker"/>
+                    <TextBlock Text="{Binding InactiveEmployeeSummaryText}"
+                               Foreground="{StaticResource InkBrush}"
+                               FontSize="15"
+                               FontWeight="SemiBold"
+                               TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="3"
+                    Classes="metric-card">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Отделы"
+                               Classes="kicker"/>
+                    <TextBlock Text="{Binding DepartmentCount}"
+                               Foreground="{StaticResource InkBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="2"
+              ColumnDefinitions="*,390"
+              Margin="0,22,0,0">
+            <Border Classes="panel"
                     Margin="0,0,18,0">
                 <Grid>
                     <ListBox ItemsSource="{Binding Employees}"
                              SelectedItem="{Binding SelectedEmployee}"
+                             Classes="data-list"
                              BorderThickness="0"
                              Background="Transparent"
                              Margin="12">
@@ -54,11 +103,14 @@
                             <DataTemplate x:DataType="vm:EmployeeRowViewModel">
                                 <Border BorderBrush="{StaticResource BorderBrushSoft}"
                                         BorderThickness="0,0,0,1"
-                                        Padding="12">
-                                    <Grid ColumnDefinitions="1.7*,1.35*,0.75*"
-                                          MinHeight="74">
+                                        Padding="12"
+                                        CornerRadius="6">
+                                    <Grid ColumnDefinitions="1.55*,1.25*,0.85*"
+                                          MinHeight="68">
                                         <StackPanel VerticalAlignment="Center"
                                                     Spacing="4">
+                                            <TextBlock Text="Сотрудник"
+                                                       Classes="kicker"/>
                                             <TextBlock Text="{Binding FullName}"
                                                        Foreground="{StaticResource InkBrush}"
                                                        FontSize="15"
@@ -74,6 +126,8 @@
                                                     VerticalAlignment="Center"
                                                     Spacing="3"
                                                     Margin="10,0">
+                                            <TextBlock Text="Позиция"
+                                                       Classes="kicker"/>
                                             <TextBlock Text="{Binding Position}"
                                                        Foreground="{StaticResource InkBrush}"
                                                        TextTrimming="CharacterEllipsis"/>
@@ -86,6 +140,8 @@
                                         <StackPanel Grid.Column="2"
                                                     VerticalAlignment="Center"
                                                     Spacing="3">
+                                            <TextBlock Text="Статус"
+                                                       Classes="kicker"/>
                                             <TextBlock Text="{Binding StatusTitle}"
                                                        Foreground="{StaticResource AccentBrush}"
                                                        FontWeight="SemiBold"
@@ -104,15 +160,11 @@
 
             <Grid Grid.Column="1"
                   RowDefinitions="Auto,Auto,*">
-                <Border Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
+                <Border Classes="panel"
                         Padding="18">
                     <StackPanel Spacing="13">
                         <TextBlock Text="Действия"
-                                   Foreground="{StaticResource InkBrush}"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"/>
+                                   Classes="section-title"/>
                         <TextBlock Text="{Binding SelectedEmployeeCaption}"
                                    Foreground="{StaticResource MutedTextBrush}"
                                    FontSize="13"
@@ -149,6 +201,7 @@
                         <Border Background="{StaticResource AccentSoftBrush}"
                                 BorderBrush="{StaticResource AccentBrush}"
                                 BorderThickness="1"
+                                CornerRadius="6"
                                 Padding="10"
                                 IsVisible="{Binding HasStatusMessage}">
                             <TextBlock Text="{Binding StatusMessage}"
@@ -161,19 +214,15 @@
                 </Border>
 
                 <Border Grid.Row="1"
-                        Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
+                        Classes="panel"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding CanShowEmployeeDetails}">
                     <StackPanel Spacing="13">
                         <TextBlock Text="Карточка сотрудника"
-                                   Foreground="{StaticResource InkBrush}"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"/>
+                                   Classes="section-title"/>
 
-                        <Grid ColumnDefinitions="130,*"
+                        <Grid ColumnDefinitions="118,*"
                               RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                             <TextBlock Text="ФИО"
                                        Foreground="{StaticResource MutedTextBrush}"/>
@@ -299,6 +348,7 @@
                         <Border Background="{StaticResource SurfaceBrush}"
                                 BorderBrush="{StaticResource BorderBrushSoft}"
                                 BorderThickness="1"
+                                CornerRadius="6"
                                 Padding="18"
                                 IsVisible="{Binding IsEditFormVisible}">
                             <StackPanel Spacing="11">
@@ -371,6 +421,7 @@
                                 <Border Background="#FFF4F2"
                                         BorderBrush="{StaticResource ErrorBrush}"
                                         BorderThickness="1"
+                                        CornerRadius="6"
                                         Padding="10"
                                         IsVisible="{Binding HasEditFormMessage}">
                                     <TextBlock Text="{Binding EditFormMessage}"
@@ -401,6 +452,7 @@
                         <Border Background="{StaticResource SurfaceBrush}"
                                 BorderBrush="{StaticResource BorderBrushSoft}"
                                 BorderThickness="1"
+                                CornerRadius="6"
                                 Padding="18"
                                 IsVisible="{Binding IsCreateFormVisible}">
                             <StackPanel Spacing="11">
@@ -502,6 +554,7 @@
                                 <Border Background="#FFF4F2"
                                         BorderBrush="{StaticResource ErrorBrush}"
                                         BorderThickness="1"
+                                        CornerRadius="6"
                                         Padding="10"
                                         IsVisible="{Binding HasCreateFormMessage}">
                                     <TextBlock Text="{Binding CreateFormMessage}"

@@ -55,6 +55,7 @@
             <Border Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Padding="16"
                     Margin="0,0,12,0">
                 <StackPanel Spacing="4">
@@ -73,6 +74,7 @@
                     Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Padding="16"
                     Margin="0,0,12,0">
                 <StackPanel Spacing="4">
@@ -91,6 +93,7 @@
                     Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Padding="16">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Выполнено / просрочено"
@@ -114,9 +117,11 @@
             <Border Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Margin="0,0,18,0">
                 <ListBox ItemsSource="{Binding Kpis}"
                          SelectedItem="{Binding SelectedKpi}"
+                         Classes="data-list"
                          BorderThickness="0"
                          Background="Transparent"
                          Margin="12">
@@ -214,6 +219,7 @@
                 <Border Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
+                        CornerRadius="6"
                         Padding="18">
                     <StackPanel Spacing="13">
                         <TextBlock Text="Действия"
@@ -255,6 +261,7 @@
                         <Border Background="{StaticResource AccentSoftBrush}"
                                 BorderBrush="{StaticResource AccentBrush}"
                                 BorderThickness="1"
+                                CornerRadius="6"
                                 Padding="10"
                                 IsVisible="{Binding HasStatusMessage}">
                             <TextBlock Text="{Binding StatusMessage}"
@@ -270,6 +277,7 @@
                         Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
+                        CornerRadius="6"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding CanShowKpiDetails}">
@@ -371,6 +379,7 @@
                         Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
+                        CornerRadius="6"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding IsCreateFormVisible}">
@@ -452,6 +461,7 @@
                             <Border Background="{StaticResource AccentSoftBrush}"
                                     BorderBrush="{StaticResource AccentBrush}"
                                     BorderThickness="1"
+                                    CornerRadius="6"
                                     Padding="10"
                                     IsVisible="{Binding HasCreateFormMessage}">
                                 <TextBlock Text="{Binding CreateFormMessage}"
@@ -481,6 +491,7 @@
                         Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
+                        CornerRadius="6"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding IsEditFormVisible}">
@@ -539,6 +550,7 @@
                             <Border Background="{StaticResource AccentSoftBrush}"
                                     BorderBrush="{StaticResource AccentBrush}"
                                     BorderThickness="1"
+                                    CornerRadius="6"
                                     Padding="10"
                                     IsVisible="{Binding HasEditFormMessage}">
                                 <TextBlock Text="{Binding EditFormMessage}"
@@ -568,6 +580,7 @@
                         Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
+                        CornerRadius="6"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding IsProgressFormVisible}">
@@ -593,6 +606,7 @@
                         <Border Background="{StaticResource AccentSoftBrush}"
                                 BorderBrush="{StaticResource AccentBrush}"
                                 BorderThickness="1"
+                                CornerRadius="6"
                                 Padding="10"
                                 IsVisible="{Binding HasProgressFormMessage}">
                             <TextBlock Text="{Binding ProgressFormMessage}"

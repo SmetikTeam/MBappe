@@ -45,6 +45,7 @@
             <Border Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Padding="16"
                     Margin="0,0,12,0">
                 <StackPanel Spacing="4">
@@ -63,6 +64,7 @@
                     Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Padding="16"
                     Margin="0,0,12,0">
                 <StackPanel Spacing="4">
@@ -81,6 +83,7 @@
                     Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Padding="16"
                     Margin="0,0,12,0">
                 <StackPanel Spacing="4">
@@ -99,6 +102,7 @@
                     Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Padding="16"
                     Margin="0,0,12,0">
                 <StackPanel Spacing="4">
@@ -117,6 +121,7 @@
                     Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Padding="16">
                 <StackPanel Spacing="4">
                     <TextBlock Text="К выплате"
@@ -137,9 +142,11 @@
             <Border Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="1"
+                    CornerRadius="6"
                     Margin="0,0,18,0">
                 <ListBox ItemsSource="{Binding Bonuses}"
                          SelectedItem="{Binding SelectedBonus}"
+                         Classes="data-list"
                          BorderThickness="0"
                          Background="Transparent"
                          Margin="12">
@@ -235,6 +242,7 @@
                 <Border Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
+                        CornerRadius="6"
                         Padding="18">
                     <StackPanel Spacing="13">
                         <TextBlock Text="Действия"
@@ -298,6 +306,7 @@
                         <Border Background="{StaticResource AccentSoftBrush}"
                                 BorderBrush="{StaticResource AccentBrush}"
                                 BorderThickness="1"
+                                CornerRadius="6"
                                 Padding="10"
                                 IsVisible="{Binding HasStatusMessage}">
                             <TextBlock Text="{Binding StatusMessage}"
@@ -313,6 +322,7 @@
                         Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
+                        CornerRadius="6"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding CanShowBonusDetails}">
@@ -415,6 +425,7 @@
                         Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
+                        CornerRadius="6"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding IsCalculateFormVisible}">
@@ -478,6 +489,7 @@
                             <Border Background="{StaticResource AccentSoftBrush}"
                                     BorderBrush="{StaticResource AccentBrush}"
                                     BorderThickness="1"
+                                    CornerRadius="6"
                                     Padding="10"
                                     IsVisible="{Binding HasCalculateFormMessage}">
                                 <TextBlock Text="{Binding CalculateFormMessage}"
@@ -507,6 +519,7 @@
                         Background="{StaticResource SurfaceBrush}"
                         BorderBrush="{StaticResource BorderBrushSoft}"
                         BorderThickness="1"
+                        CornerRadius="6"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding IsProgramFormVisible}">
@@ -556,6 +569,7 @@
                             <Border Background="{StaticResource AccentSoftBrush}"
                                     BorderBrush="{StaticResource AccentBrush}"
                                     BorderThickness="1"
+                                    CornerRadius="6"
                                     Padding="10"
                                     IsVisible="{Binding HasProgramFormMessage}">
                                 <TextBlock Text="{Binding ProgramFormMessage}"
