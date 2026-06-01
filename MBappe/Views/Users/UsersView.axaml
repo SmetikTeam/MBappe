@@ -5,29 +5,25 @@
              x:DataType="vm:UsersViewModel">
     <Grid RowDefinitions="Auto,*"
           Margin="32">
-        <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto"
+              ColumnSpacing="10">
             <StackPanel Spacing="6">
                 <TextBlock Text="Пользователи"
-                           Foreground="{StaticResource InkBrush}"
-                           FontSize="28"
-                           FontWeight="SemiBold"/>
+                           Classes="page-title"/>
                 <TextBlock Text="Учетные записи, роли и доступ к системе"
-                           Foreground="{StaticResource MutedTextBrush}"
-                           FontSize="14"/>
+                           Classes="page-subtitle"/>
             </StackPanel>
             <Button Grid.Column="1"
                     Content="Новый пользователь"
                     Classes="primary"
                     Command="{Binding OpenCreateFormCommand}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
             <Button Grid.Column="2"
                     Content="Редактировать"
                     Classes="subtle"
                     Command="{Binding OpenEditFormCommand}"
                     IsEnabled="{Binding HasSelectedUser}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
             <Button Grid.Column="3"
                     Content="Обновить"
                     Classes="subtle"
@@ -38,10 +34,7 @@
         <Grid Grid.Row="1"
               ColumnDefinitions="*,360"
               Margin="0,24,0,0">
-            <Border Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    CornerRadius="6"
+            <Border Classes="panel"
                     Margin="0,0,18,0">
                 <Grid>
                     <ListBox ItemsSource="{Binding Users}"
@@ -120,33 +113,31 @@
 
             <Grid Grid.Column="1"
                   RowDefinitions="Auto,*">
-                <Border Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
-                        CornerRadius="6"
+                <Border Classes="panel"
                         Padding="18">
                     <StackPanel Spacing="13">
                         <TextBlock Text="Действия"
-                                   Foreground="{StaticResource InkBrush}"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"/>
+                                   Classes="section-title"/>
                         <TextBlock Text="{Binding SelectedUserCaption}"
                                    Foreground="{StaticResource MutedTextBrush}"
                                    FontSize="13"
                                    TextWrapping="Wrap"/>
 
-                        <Grid ColumnDefinitions="*,*">
+                        <Grid ColumnDefinitions="*,*"
+                              ColumnSpacing="12">
                             <Button Content="Заблокировать"
                                     Classes="subtle"
                                     Command="{Binding BlockSelectedCommand}"
                                     IsEnabled="{Binding HasSelectedUser}"
-                                    Margin="0,0,6,0"/>
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"/>
                             <Button Grid.Column="1"
                                     Content="Разблокировать"
                                     Classes="subtle"
                                     Command="{Binding UnblockSelectedCommand}"
                                     IsEnabled="{Binding HasSelectedUser}"
-                                    Margin="6,0,0,0"/>
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"/>
                         </Grid>
                         <TextBlock Text="{Binding StatusMessage}"
                                    Foreground="{StaticResource MutedTextBrush}"
@@ -158,17 +149,12 @@
                 <ScrollViewer Grid.Row="1"
                               Margin="0,18,0,0">
                     <StackPanel Spacing="18">
-                        <Border Background="{StaticResource SurfaceBrush}"
-                                BorderBrush="{StaticResource BorderBrushSoft}"
-                                BorderThickness="1"
-                                CornerRadius="6"
+                        <Border Classes="panel"
                                 Padding="18"
                                 IsVisible="{Binding IsEditFormVisible}">
                             <StackPanel Spacing="11">
                                 <TextBlock Text="Редактирование"
-                                           Foreground="{StaticResource InkBrush}"
-                                           FontSize="18"
-                                           FontWeight="SemiBold"/>
+                                           Classes="section-title"/>
                                 <TextBlock Text="{Binding SelectedUserCaption}"
                                            Foreground="{StaticResource MutedTextBrush}"
                                            FontSize="13"
@@ -203,10 +189,7 @@
                                     </ComboBox>
                                 </StackPanel>
 
-                                <Border Background="#FFF4F2"
-                                        BorderBrush="{StaticResource ErrorBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="6"
+                                <Border Classes="error-banner"
                                         Padding="10"
                                         IsVisible="{Binding HasEditFormMessage}">
                                     <TextBlock Text="{Binding EditFormMessage}"
@@ -216,35 +199,29 @@
                                                TextWrapping="Wrap"/>
                                 </Border>
 
-                                <Grid ColumnDefinitions="*,*">
+                                <Grid ColumnDefinitions="*,*"
+                                      ColumnSpacing="12">
                                     <Button Content="Сохранить"
                                             Classes="primary"
                                             Command="{Binding SaveSelectedCommand}"
                                             HorizontalAlignment="Stretch"
-                                            HorizontalContentAlignment="Center"
-                                            Margin="0,0,6,0"/>
+                                            HorizontalContentAlignment="Center"/>
                                     <Button Grid.Column="1"
                                             Content="Отмена"
                                             Classes="subtle"
                                             Command="{Binding CloseUserFormCommand}"
                                             HorizontalAlignment="Stretch"
-                                            HorizontalContentAlignment="Center"
-                                            Margin="6,0,0,0"/>
+                                            HorizontalContentAlignment="Center"/>
                                 </Grid>
                             </StackPanel>
                         </Border>
 
-                        <Border Background="{StaticResource SurfaceBrush}"
-                                BorderBrush="{StaticResource BorderBrushSoft}"
-                                BorderThickness="1"
-                                CornerRadius="6"
+                        <Border Classes="panel"
                                 Padding="18"
                                 IsVisible="{Binding IsCreateFormVisible}">
                             <StackPanel Spacing="11">
                                 <TextBlock Text="Новый пользователь"
-                                           Foreground="{StaticResource InkBrush}"
-                                           FontSize="18"
-                                           FontWeight="SemiBold"/>
+                                           Classes="section-title"/>
 
                                 <StackPanel Spacing="6">
                                     <TextBlock Text="ФИО"
@@ -281,9 +258,9 @@
                                     </ComboBox>
                                 </StackPanel>
 
-                                <Grid ColumnDefinitions="*,*">
-                                    <StackPanel Spacing="6"
-                                                Margin="0,0,6,0">
+                                <Grid ColumnDefinitions="*,*"
+                                      ColumnSpacing="12">
+                                    <StackPanel Spacing="6">
                                         <TextBlock Text="Пароль"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
@@ -291,8 +268,7 @@
                                                  PasswordChar="*"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1"
-                                                Spacing="6"
-                                                Margin="6,0,0,0">
+                                                Spacing="6">
                                         <TextBlock Text="Повтор"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
@@ -301,10 +277,7 @@
                                     </StackPanel>
                                 </Grid>
 
-                                <Border Background="#FFF4F2"
-                                        BorderBrush="{StaticResource ErrorBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="6"
+                                <Border Classes="error-banner"
                                         Padding="10"
                                         IsVisible="{Binding HasCreateFormMessage}">
                                     <TextBlock Text="{Binding CreateFormMessage}"
@@ -314,20 +287,19 @@
                                                TextWrapping="Wrap"/>
                                 </Border>
 
-                                <Grid ColumnDefinitions="*,*">
+                                <Grid ColumnDefinitions="*,*"
+                                      ColumnSpacing="12">
                                     <Button Content="Создать"
                                             Classes="primary"
                                             Command="{Binding CreateUserCommand}"
                                             HorizontalAlignment="Stretch"
-                                            HorizontalContentAlignment="Center"
-                                            Margin="0,0,6,0"/>
+                                            HorizontalContentAlignment="Center"/>
                                     <Button Grid.Column="1"
                                             Content="Отмена"
                                             Classes="subtle"
                                             Command="{Binding CloseUserFormCommand}"
                                             HorizontalAlignment="Stretch"
-                                            HorizontalContentAlignment="Center"
-                                            Margin="6,0,0,0"/>
+                                            HorizontalContentAlignment="Center"/>
                                 </Grid>
                             </StackPanel>
                         </Border>

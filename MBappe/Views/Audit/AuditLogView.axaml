@@ -8,12 +8,9 @@
         <Grid ColumnDefinitions="*,Auto">
             <StackPanel Spacing="6">
                 <TextBlock Text="Журнал действий"
-                           Foreground="{StaticResource InkBrush}"
-                           FontSize="28"
-                           FontWeight="SemiBold"/>
+                           Classes="page-title"/>
                 <TextBlock Text="События авторизации, доступа и администрирования"
-                           Foreground="{StaticResource MutedTextBrush}"
-                           FontSize="14"/>
+                           Classes="page-subtitle"/>
             </StackPanel>
             <Button Grid.Column="1"
                     Content="Обновить"
@@ -23,40 +20,30 @@
         </Grid>
 
         <Border Grid.Row="1"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrushSoft}"
-                BorderThickness="1"
-                CornerRadius="6"
+                Classes="panel"
                 Margin="0,24,0,0">
             <Grid RowDefinitions="Auto,*">
-                <Grid ColumnDefinitions="170,150,150,110,*"
-                      Background="{StaticResource SurfaceAltBrush}"
-                      Margin="16,12">
-                    <TextBlock Text="Время"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
-                    <TextBlock Grid.Column="1"
-                               Text="Пользователь"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
-                    <TextBlock Grid.Column="2"
-                               Text="Событие"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
-                    <TextBlock Grid.Column="3"
-                               Text="Статус"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
-                    <TextBlock Grid.Column="4"
-                               Text="Описание"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
-                </Grid>
+                <Border Background="{StaticResource SurfaceAltBrush}"
+                        CornerRadius="6"
+                        Padding="10,8"
+                        Margin="16,12">
+                    <Grid ColumnDefinitions="170,150,150,110,*">
+                        <TextBlock Text="Время"
+                                   Classes="kicker"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="Пользователь"
+                                   Classes="kicker"/>
+                        <TextBlock Grid.Column="2"
+                                   Text="Событие"
+                                   Classes="kicker"/>
+                        <TextBlock Grid.Column="3"
+                                   Text="Статус"
+                                   Classes="kicker"/>
+                        <TextBlock Grid.Column="4"
+                                   Text="Описание"
+                                   Classes="kicker"/>
+                    </Grid>
+                </Border>
 
                 <ListBox Grid.Row="1"
                          ItemsSource="{Binding Entries}"
