@@ -3,7 +3,7 @@
              xmlns:vm="using:MBappe.ViewModels.Audit"
              x:Class="MBappe.Views.Audit.AuditLogView"
              x:DataType="vm:AuditLogViewModel">
-    <Grid RowDefinitions="Auto,*"
+    <Grid RowDefinitions="Auto,Auto,Auto,*"
           Margin="32">
         <Grid ColumnDefinitions="*,Auto">
             <StackPanel Spacing="6">
@@ -19,15 +19,117 @@
                     VerticalAlignment="Center"/>
         </Grid>
 
-        <Border Grid.Row="1"
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,*,*,*"
+              ColumnSpacing="12"
+              Margin="0,22,0,0">
+            <Border Classes="metric-card">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Всего записей"
+                               Classes="kicker"/>
+                    <TextBlock Text="{Binding TotalEntryCount}"
+                               Foreground="{StaticResource InkBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Classes="metric-card">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Успешно"
+                               Classes="kicker"/>
+                    <TextBlock Text="{Binding SuccessEntryCount}"
+                               Foreground="{StaticResource AccentBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2"
+                    Classes="metric-card">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Ошибки"
+                               Classes="kicker"/>
+                    <TextBlock Text="{Binding FailedEntryCount}"
+                               Foreground="{StaticResource ErrorBrush}"
+                               FontSize="24"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="3"
+                    Classes="metric-card">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Последнее событие"
+                               Classes="kicker"/>
+                    <TextBlock Text="{Binding LastEntryText}"
+                               Foreground="{StaticResource InkBrush}"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding LastEntryActionText}"
+                               Foreground="{StaticResource MutedTextBrush}"
+                               FontSize="12"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2"
                 Classes="panel"
-                Margin="0,24,0,0">
+                Padding="16"
+                Margin="0,18,0,0">
+            <Grid ColumnDefinitions="*,190,Auto"
+                  RowDefinitions="Auto,Auto"
+                  ColumnSpacing="12">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Поиск"
+                               Classes="kicker"/>
+                    <TextBox Watermark="Логин, роль, событие, сообщение или детали"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Spacing="6">
+                    <TextBlock Text="Результат"
+                               Classes="kicker"/>
+                    <ComboBox ItemsSource="{Binding ResultFilterOptions}"
+                              SelectedItem="{Binding SelectedResultFilter}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:AuditResultFilterOption">
+                                <TextBlock Text="{Binding Title}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <Button Grid.Column="2"
+                        Content="Сбросить"
+                        Classes="subtle"
+                        Command="{Binding ClearFiltersCommand}"
+                        VerticalAlignment="Bottom"/>
+
+                <TextBlock Grid.Row="1"
+                           Grid.ColumnSpan="3"
+                           Text="{Binding StatusMessage}"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           FontSize="13"
+                           Margin="0,10,0,0"
+                           TextWrapping="Wrap"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="3"
+                Classes="panel"
+                Margin="0,18,0,0">
             <Grid RowDefinitions="Auto,*">
                 <Border Background="{StaticResource SurfaceAltBrush}"
                         CornerRadius="6"
                         Padding="10,8"
                         Margin="16,12">
-                    <Grid ColumnDefinitions="170,150,150,110,*">
+                    <Grid ColumnDefinitions="1.05*,0.95*,1.05*,0.7*,2.25*"
+                          ColumnSpacing="12">
                         <TextBlock Text="Время"
                                    Classes="kicker"/>
                         <TextBlock Grid.Column="1"
@@ -47,49 +149,83 @@
 
                 <ListBox Grid.Row="1"
                          ItemsSource="{Binding Entries}"
+                         Classes="data-list"
                          BorderThickness="0"
-                         Background="Transparent">
+                         Background="Transparent"
+                         Margin="12,0,12,12"
+                         IsVisible="{Binding HasEntries}">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="vm:AuditLogRowViewModel">
-                            <Grid ColumnDefinitions="170,150,150,110,*"
-                                  MinHeight="62"
-                                  Margin="16,9">
-                                <TextBlock Text="{Binding CreatedAtText}"
-                                           Foreground="{StaticResource InkBrush}"
-                                           VerticalAlignment="Center"/>
-                                <StackPanel Grid.Column="1"
-                                            VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding UserText}"
+                            <Border Padding="12">
+                                <Grid ColumnDefinitions="1.05*,0.95*,1.05*,0.7*,2.25*"
+                                      ColumnSpacing="12"
+                                      MinHeight="66">
+                                    <TextBlock Text="{Binding CreatedAtText}"
                                                Foreground="{StaticResource InkBrush}"
-                                               FontWeight="SemiBold"/>
-                                    <TextBlock Text="{Binding RoleText}"
-                                               Foreground="{StaticResource MutedTextBrush}"
-                                               FontSize="12"/>
-                                </StackPanel>
-                                <TextBlock Grid.Column="2"
-                                           Text="{Binding ActionText}"
-                                           Foreground="{StaticResource InkBrush}"
-                                           VerticalAlignment="Center"
-                                           TextWrapping="Wrap"/>
-                                <TextBlock Grid.Column="3"
-                                           Text="{Binding ResultText}"
-                                           Foreground="{StaticResource AccentBrush}"
-                                           FontWeight="SemiBold"
-                                           VerticalAlignment="Center"/>
-                                <StackPanel Grid.Column="4"
-                                            VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Message}"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+
+                                    <StackPanel Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Spacing="3">
+                                        <TextBlock Text="{Binding UserText}"
+                                                   Foreground="{StaticResource InkBrush}"
+                                                   FontWeight="SemiBold"
+                                                   TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding RoleText}"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding ActionText}"
                                                Foreground="{StaticResource InkBrush}"
+                                               VerticalAlignment="Center"
                                                TextWrapping="Wrap"/>
-                                    <TextBlock Text="{Binding Details}"
-                                               Foreground="{StaticResource MutedTextBrush}"
-                                               FontSize="12"
-                                               TextWrapping="Wrap"/>
-                                </StackPanel>
-                            </Grid>
+
+                                    <StackPanel Grid.Column="3"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding ResultText}"
+                                                   Foreground="{StaticResource AccentBrush}"
+                                                   FontWeight="SemiBold"
+                                                   IsVisible="{Binding IsSuccess}"
+                                                   TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding ResultText}"
+                                                   Foreground="{StaticResource ErrorBrush}"
+                                                   FontWeight="SemiBold"
+                                                   IsVisible="{Binding IsFailure}"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="4"
+                                                VerticalAlignment="Center"
+                                                Spacing="3">
+                                        <TextBlock Text="{Binding Message}"
+                                                   Foreground="{StaticResource InkBrush}"
+                                                   FontWeight="SemiBold"
+                                                   TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding Details}"
+                                                   Foreground="{StaticResource MutedTextBrush}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+
+                <Border Grid.Row="1"
+                        Classes="status-banner"
+                        Margin="16,0,16,16"
+                        IsVisible="{Binding HasNoEntries}">
+                    <TextBlock Text="{Binding EmptyStateText}"
+                               Foreground="{StaticResource AccentBrush}"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap"/>
+                </Border>
             </Grid>
         </Border>
     </Grid>
