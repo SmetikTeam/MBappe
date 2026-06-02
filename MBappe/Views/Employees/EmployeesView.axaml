@@ -350,17 +350,12 @@
                 <ScrollViewer Grid.Row="2"
                               Margin="0,18,0,0">
                     <StackPanel Spacing="18">
-                        <Border Background="{StaticResource SurfaceBrush}"
-                                BorderBrush="{StaticResource BorderBrushSoft}"
-                                BorderThickness="1"
-                                CornerRadius="6"
+                        <Border Classes="panel"
                                 Padding="18"
                                 IsVisible="{Binding IsEditFormVisible}">
                             <StackPanel Spacing="11">
                                 <TextBlock Text="Редактирование профиля"
-                                           Foreground="{StaticResource InkBrush}"
-                                           FontSize="18"
-                                           FontWeight="SemiBold"/>
+                                           Classes="section-title"/>
                                 <TextBlock Text="{Binding SelectedEmployeeCaption}"
                                            Foreground="{StaticResource MutedTextBrush}"
                                            FontSize="13"
@@ -373,17 +368,16 @@
                                     <TextBox Text="{Binding EditFullName}"/>
                                 </StackPanel>
 
-                                <Grid ColumnDefinitions="*,*">
-                                    <StackPanel Spacing="6"
-                                                Margin="0,0,6,0">
+                                <Grid ColumnDefinitions="*,*"
+                                      ColumnSpacing="12">
+                                    <StackPanel Spacing="6">
                                         <TextBlock Text="Должность"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
                                         <TextBox Text="{Binding EditPosition}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1"
-                                                Spacing="6"
-                                                Margin="6,0,0,0">
+                                                Spacing="6">
                                         <TextBlock Text="Отдел"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
@@ -391,17 +385,16 @@
                                     </StackPanel>
                                 </Grid>
 
-                                <Grid ColumnDefinitions="*,*">
-                                    <StackPanel Spacing="6"
-                                                Margin="0,0,6,0">
+                                <Grid ColumnDefinitions="*,*"
+                                      ColumnSpacing="12">
+                                    <StackPanel Spacing="6">
                                         <TextBlock Text="Почта"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
                                         <TextBox Text="{Binding EditEmail}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1"
-                                                Spacing="6"
-                                                Margin="6,0,0,0">
+                                                Spacing="6">
                                         <TextBlock Text="Телефон"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
@@ -423,10 +416,7 @@
                                     </ComboBox>
                                 </StackPanel>
 
-                                <Border Background="#FFF4F2"
-                                        BorderBrush="{StaticResource ErrorBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="6"
+                                <Border Classes="error-banner"
                                         Padding="10"
                                         IsVisible="{Binding HasEditFormMessage}">
                                     <TextBlock Text="{Binding EditFormMessage}"
@@ -436,35 +426,29 @@
                                                TextWrapping="Wrap"/>
                                 </Border>
 
-                                <Grid ColumnDefinitions="*,*">
+                                <Grid ColumnDefinitions="*,*"
+                                      ColumnSpacing="12">
                                     <Button Content="Сохранить"
                                             Classes="primary"
                                             Command="{Binding SaveEmployeeCommand}"
                                             HorizontalAlignment="Stretch"
-                                            HorizontalContentAlignment="Center"
-                                            Margin="0,0,6,0"/>
+                                            HorizontalContentAlignment="Center"/>
                                     <Button Grid.Column="1"
                                             Content="Отмена"
                                             Classes="subtle"
                                             Command="{Binding CloseEmployeeFormCommand}"
                                             HorizontalAlignment="Stretch"
-                                            HorizontalContentAlignment="Center"
-                                            Margin="6,0,0,0"/>
+                                            HorizontalContentAlignment="Center"/>
                                 </Grid>
                             </StackPanel>
                         </Border>
 
-                        <Border Background="{StaticResource SurfaceBrush}"
-                                BorderBrush="{StaticResource BorderBrushSoft}"
-                                BorderThickness="1"
-                                CornerRadius="6"
+                        <Border Classes="panel"
                                 Padding="18"
                                 IsVisible="{Binding IsCreateFormVisible}">
                             <StackPanel Spacing="11">
                                 <TextBlock Text="Новый сотрудник"
-                                           Foreground="{StaticResource InkBrush}"
-                                           FontSize="18"
-                                           FontWeight="SemiBold"/>
+                                           Classes="section-title"/>
 
                                 <StackPanel Spacing="6">
                                     <TextBlock Text="Учетная запись"
@@ -480,17 +464,16 @@
                                     </ComboBox>
                                 </StackPanel>
 
-                                <Grid ColumnDefinitions="*,*">
-                                    <StackPanel Spacing="6"
-                                                Margin="0,0,6,0">
+                                <Grid ColumnDefinitions="*,*"
+                                      ColumnSpacing="12">
+                                    <StackPanel Spacing="6">
                                         <TextBlock Text="Табельный номер"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
                                         <TextBox Text="{Binding NewPersonnelNumber}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1"
-                                                Spacing="6"
-                                                Margin="6,0,0,0">
+                                                Spacing="6">
                                         <TextBlock Text="Дата приема"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
@@ -506,17 +489,16 @@
                                     <TextBox Text="{Binding NewFullName}"/>
                                 </StackPanel>
 
-                                <Grid ColumnDefinitions="*,*">
-                                    <StackPanel Spacing="6"
-                                                Margin="0,0,6,0">
+                                <Grid ColumnDefinitions="*,*"
+                                      ColumnSpacing="12">
+                                    <StackPanel Spacing="6">
                                         <TextBlock Text="Должность"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
                                         <TextBox Text="{Binding NewPosition}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1"
-                                                Spacing="6"
-                                                Margin="6,0,0,0">
+                                                Spacing="6">
                                         <TextBlock Text="Отдел"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
@@ -524,17 +506,16 @@
                                     </StackPanel>
                                 </Grid>
 
-                                <Grid ColumnDefinitions="*,*">
-                                    <StackPanel Spacing="6"
-                                                Margin="0,0,6,0">
+                                <Grid ColumnDefinitions="*,*"
+                                      ColumnSpacing="12">
+                                    <StackPanel Spacing="6">
                                         <TextBlock Text="Почта"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
                                         <TextBox Text="{Binding NewEmail}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1"
-                                                Spacing="6"
-                                                Margin="6,0,0,0">
+                                                Spacing="6">
                                         <TextBlock Text="Телефон"
                                                    Foreground="{StaticResource MutedTextBrush}"
                                                    FontSize="12"/>
@@ -556,10 +537,7 @@
                                     </ComboBox>
                                 </StackPanel>
 
-                                <Border Background="#FFF4F2"
-                                        BorderBrush="{StaticResource ErrorBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="6"
+                                <Border Classes="error-banner"
                                         Padding="10"
                                         IsVisible="{Binding HasCreateFormMessage}">
                                     <TextBlock Text="{Binding CreateFormMessage}"
@@ -569,20 +547,19 @@
                                                TextWrapping="Wrap"/>
                                 </Border>
 
-                                <Grid ColumnDefinitions="*,*">
+                                <Grid ColumnDefinitions="*,*"
+                                      ColumnSpacing="12">
                                     <Button Content="Создать"
                                             Classes="primary"
                                             Command="{Binding CreateEmployeeCommand}"
                                             HorizontalAlignment="Stretch"
-                                            HorizontalContentAlignment="Center"
-                                            Margin="0,0,6,0"/>
+                                            HorizontalContentAlignment="Center"/>
                                     <Button Grid.Column="1"
                                             Content="Отмена"
                                             Classes="subtle"
                                             Command="{Binding CloseEmployeeFormCommand}"
                                             HorizontalAlignment="Stretch"
-                                            HorizontalContentAlignment="Center"
-                                            Margin="6,0,0,0"/>
+                                            HorizontalContentAlignment="Center"/>
                                 </Grid>
                             </StackPanel>
                         </Border>
