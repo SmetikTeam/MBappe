@@ -115,9 +115,7 @@
                              Margin="12,0,12,12">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="vm:LearningCourseRowViewModel">
-                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
-                                        BorderThickness="0,0,0,1"
-                                        Padding="12">
+                                <Border Padding="12">
                                     <Grid ColumnDefinitions="*,95"
                                           MinHeight="74">
                                         <StackPanel VerticalAlignment="Center"
@@ -178,9 +176,7 @@
                              Margin="12,0,12,12">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="vm:LearningAssignmentRowViewModel">
-                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
-                                        BorderThickness="0,0,0,1"
-                                        Padding="12">
+                                <Border Padding="12">
                                     <Grid ColumnDefinitions="*,105"
                                           MinHeight="74">
                                         <StackPanel VerticalAlignment="Center"

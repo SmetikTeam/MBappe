@@ -5,7 +5,8 @@
              x:DataType="vm:EmployeesViewModel">
     <Grid RowDefinitions="Auto,Auto,*"
           Margin="32">
-        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto"
+              ColumnSpacing="10">
             <StackPanel Spacing="6">
                 <TextBlock Text="Сотрудники"
                            Classes="page-title"/>
@@ -17,16 +18,14 @@
                     Classes="primary"
                     Command="{Binding OpenCreateFormCommand}"
                     IsVisible="{Binding CanManageEmployees}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
             <Button Grid.Column="2"
                     Content="Редактировать"
                     Classes="subtle"
                     Command="{Binding OpenEditFormCommand}"
                     IsEnabled="{Binding HasSelectedEmployee}"
                     IsVisible="{Binding CanManageEmployees}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
             <Button Grid.Column="3"
                     Content="Обновить"
                     Classes="subtle"
@@ -106,9 +105,7 @@
                              Margin="12">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="vm:EmployeeRowViewModel">
-                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
-                                        BorderThickness="0,0,0,1"
-                                        Padding="12"
+                                <Border Padding="12"
                                         CornerRadius="6">
                                     <Grid ColumnDefinitions="1.55*,1.25*,0.85*"
                                           MinHeight="68">
@@ -185,11 +182,11 @@
                                    TextWrapping="Wrap"
                                    IsVisible="{Binding IsReadOnlyEmployeeAccess}"/>
 
-                        <Grid ColumnDefinitions="*,Auto"
+                        <Grid ColumnDefinitions="*,132"
+                              ColumnSpacing="10"
                               IsVisible="{Binding CanShowEmployeeActions}">
                             <ComboBox ItemsSource="{Binding StatusOptions}"
-                                      SelectedItem="{Binding SelectedStatus}"
-                                      Margin="0,0,10,0">
+                                      SelectedItem="{Binding SelectedStatus}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate x:DataType="vm:EmployeeStatusOption">
                                         <TextBlock Text="{Binding Title}"/>
@@ -200,14 +197,10 @@
                                     Content="Применить"
                                     Classes="success"
                                     Command="{Binding ApplyStatusCommand}"
-                                    HorizontalContentAlignment="Center"
-                                    Width="132"/>
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"/>
                         </Grid>
-                        <Border Background="{StaticResource AccentSoftBrush}"
-                                BorderBrush="{StaticResource AccentBrush}"
-                                BorderThickness="1"
-                                CornerRadius="6"
-                                Padding="10"
+                        <Border Classes="status-banner"
                                 IsVisible="{Binding HasStatusMessage}">
                             <TextBlock Text="{Binding StatusMessage}"
                                        Foreground="{StaticResource AccentBrush}"

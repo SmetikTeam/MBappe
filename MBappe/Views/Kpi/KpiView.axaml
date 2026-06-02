@@ -100,9 +100,7 @@
                          Margin="12">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="vm:KpiRowViewModel">
-                            <Border BorderBrush="{StaticResource BorderBrushSoft}"
-                                    BorderThickness="0,0,0,1"
-                                    Padding="12">
+                            <Border Padding="12">
                                 <Grid ColumnDefinitions="1.6*,1.4*,0.85*,0.85*,0.75*,0.7*"
                                       MinHeight="78">
                                     <StackPanel VerticalAlignment="Center"

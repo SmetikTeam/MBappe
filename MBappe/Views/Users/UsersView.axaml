@@ -45,9 +45,7 @@
                              Margin="12">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="vm:UserRowViewModel">
-                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
-                                        BorderThickness="0,0,0,1"
-                                        Padding="12">
+                                <Border Padding="12">
                                     <Grid ColumnDefinitions="1.35*,1.1*,1.35*,0.8*"
                                           MinHeight="72">
                                         <StackPanel VerticalAlignment="Center"

@@ -15,10 +15,10 @@
 
             <Grid Grid.Row="1"
                   ColumnDefinitions="280,*"
+                  ColumnSpacing="18"
                   Margin="0,26,0,0">
                 <Border Classes="panel"
-                        Padding="24"
-                        Margin="0,0,18,0">
+                        Padding="24">
                     <StackPanel Spacing="16"
                                 HorizontalAlignment="Stretch">
                         <Border Width="96"
@@ -67,7 +67,9 @@
                                            TextWrapping="Wrap"/>
                             </Border>
 
-                            <Grid ColumnDefinitions="180,*"
+                            <Grid ColumnDefinitions="150,*"
+                                  ColumnSpacing="18"
+                                  RowSpacing="10"
                                   RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
                                   IsVisible="{Binding HasEmployeeProfile}">
                                 <TextBlock Text="ФИО"
@@ -80,56 +82,46 @@
 
                                 <TextBlock Grid.Row="1"
                                            Text="Должность"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource MutedTextBrush}"/>
                                 <TextBlock Grid.Row="1"
                                            Grid.Column="1"
                                            Text="{Binding Position}"
                                            Foreground="{StaticResource InkBrush}"
-                                           Margin="0,14,0,0"
                                            TextWrapping="Wrap"/>
 
                                 <TextBlock Grid.Row="2"
                                            Text="Отдел"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource MutedTextBrush}"/>
                                 <TextBlock Grid.Row="2"
                                            Grid.Column="1"
                                            Text="{Binding Department}"
                                            Foreground="{StaticResource InkBrush}"
-                                           Margin="0,14,0,0"
                                            TextWrapping="Wrap"/>
 
                                 <TextBlock Grid.Row="3"
                                            Text="Табельный номер"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource MutedTextBrush}"/>
                                 <TextBlock Grid.Row="3"
                                            Grid.Column="1"
                                            Text="{Binding PersonnelNumber}"
-                                           Foreground="{StaticResource InkBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource InkBrush}"/>
 
                                 <TextBlock Grid.Row="4"
                                            Text="Статус"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource MutedTextBrush}"/>
                                 <TextBlock Grid.Row="4"
                                            Grid.Column="1"
                                            Text="{Binding EmployeeStatusTitle}"
                                            Foreground="{StaticResource AccentBrush}"
-                                           FontWeight="SemiBold"
-                                           Margin="0,14,0,0"/>
+                                           FontWeight="SemiBold"/>
 
                                 <TextBlock Grid.Row="5"
                                            Text="Контакты"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource MutedTextBrush}"/>
                                 <TextBlock Grid.Row="5"
                                            Grid.Column="1"
                                            Text="{Binding EmployeeEmail}"
                                            Foreground="{StaticResource InkBrush}"
-                                           Margin="0,14,0,0"
                                            TextWrapping="Wrap"/>
                             </Grid>
                         </StackPanel>
@@ -137,7 +129,9 @@
                         <StackPanel Spacing="12">
                             <TextBlock Text="Учетная запись"
                                        Classes="section-title"/>
-                            <Grid ColumnDefinitions="180,*"
+                            <Grid ColumnDefinitions="150,*"
+                                  ColumnSpacing="18"
+                                  RowSpacing="10"
                                   RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                                 <TextBlock Text="Логин"
                                            Foreground="{StaticResource MutedTextBrush}"/>
@@ -148,44 +142,36 @@
 
                                 <TextBlock Grid.Row="1"
                                            Text="Почта"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource MutedTextBrush}"/>
                                 <TextBlock Grid.Row="1"
                                            Grid.Column="1"
                                            Text="{Binding User.Email}"
                                            Foreground="{StaticResource InkBrush}"
-                                           Margin="0,14,0,0"
                                            TextWrapping="Wrap"/>
 
                                 <TextBlock Grid.Row="2"
                                            Text="Роль"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource MutedTextBrush}"/>
                                 <TextBlock Grid.Row="2"
                                            Grid.Column="1"
                                            Text="{Binding RoleTitle}"
-                                           Foreground="{StaticResource InkBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource InkBrush}"/>
 
                                 <TextBlock Grid.Row="3"
                                            Text="Создана"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource MutedTextBrush}"/>
                                 <TextBlock Grid.Row="3"
                                            Grid.Column="1"
                                            Text="{Binding CreatedAtText}"
-                                           Foreground="{StaticResource InkBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource InkBrush}"/>
 
                                 <TextBlock Grid.Row="4"
                                            Text="Последний вход"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource MutedTextBrush}"/>
                                 <TextBlock Grid.Row="4"
                                            Grid.Column="1"
                                            Text="{Binding LastLoginText}"
-                                           Foreground="{StaticResource InkBrush}"
-                                           Margin="0,14,0,0"/>
+                                           Foreground="{StaticResource InkBrush}"/>
                             </Grid>
                         </StackPanel>
                     </StackPanel>

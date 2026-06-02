@@ -151,6 +151,7 @@
         <Style Selector="ListBox.data-list ListBoxItem /template/ ContentPresenter">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="ClipToBounds" Value="True"/>
         </Style>
         <Style Selector="ListBox.data-list ListBoxItem:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="{StaticResource SurfaceAltBrush}"/>

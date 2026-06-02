@@ -112,9 +112,7 @@
                          Margin="12">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="vm:MotivationBonusRowViewModel">
-                            <Border BorderBrush="{StaticResource BorderBrushSoft}"
-                                    BorderThickness="0,0,0,1"
-                                    Padding="12">
+                            <Border Padding="12">
                                 <Grid ColumnDefinitions="1.4*,1.2*,0.95*,0.75*,0.8*,0.9*"
                                       MinHeight="78">
                                     <StackPanel VerticalAlignment="Center"
