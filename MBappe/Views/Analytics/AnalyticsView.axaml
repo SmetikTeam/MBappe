@@ -74,9 +74,9 @@
                            Foreground="{StaticResource MutedTextBrush}"/>
             </Border>
 
-            <Grid ColumnDefinitions="*,*,*,*">
-                <Border Classes="metric-card"
-                        Margin="0,0,12,0">
+            <Grid ColumnDefinitions="*,*,*,*"
+                  ColumnSpacing="12">
+                <Border Classes="metric-card">
                     <StackPanel Spacing="4">
                         <TextBlock Text="Активные сотрудники"
                                    Classes="kicker"/>
@@ -88,8 +88,7 @@
                 </Border>
 
                 <Border Grid.Column="1"
-                        Classes="metric-card"
-                        Margin="0,0,12,0">
+                        Classes="metric-card">
                     <StackPanel Spacing="4">
                         <TextBlock Text="Средний KPI"
                                    Classes="kicker"/>
@@ -101,8 +100,7 @@
                 </Border>
 
                 <Border Grid.Column="2"
-                        Classes="metric-card"
-                        Margin="0,0,12,0">
+                        Classes="metric-card">
                     <StackPanel Spacing="4">
                         <TextBlock Text="Прогресс обучения"
                                    Classes="kicker"/>
@@ -161,14 +159,14 @@
                                        Foreground="{StaticResource InkBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="1"
                                        Text="{Binding PersonnelPrimaryText}"
                                        Foreground="{StaticResource AccentBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
                                        Margin="10,0"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="2"
                                        Text="{Binding PersonnelSecondaryText}"
                                        Foreground="{StaticResource MutedTextBrush}"
@@ -189,14 +187,14 @@
                                        Foreground="{StaticResource InkBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="1"
                                        Text="{Binding KpiPrimaryText}"
                                        Foreground="{StaticResource AccentBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
                                        Margin="10,0"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="2"
                                        Text="{Binding KpiSecondaryText}"
                                        Foreground="{StaticResource MutedTextBrush}"
@@ -217,14 +215,14 @@
                                        Foreground="{StaticResource InkBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="1"
                                        Text="{Binding LearningPrimaryText}"
                                        Foreground="{StaticResource AccentBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
                                        Margin="10,0"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="2"
                                        Text="{Binding LearningSecondaryText}"
                                        Foreground="{StaticResource MutedTextBrush}"
@@ -243,14 +241,14 @@
                                        Foreground="{StaticResource InkBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="1"
                                        Text="{Binding MotivationPrimaryText}"
                                        Foreground="{StaticResource AccentBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
                                        Margin="10,0"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="2"
                                        Text="{Binding MotivationSecondaryText}"
                                        Foreground="{StaticResource MutedTextBrush}"
