@@ -10,9 +10,16 @@ namespace MBappe.Repositories;
 
 public class EfUserRepository : IUserRepository
 {
+    private readonly Func<AppDbContext> _dbFactory;
+
+    public EfUserRepository(Func<AppDbContext>? dbFactory = null)
+    {
+        _dbFactory = dbFactory ?? (() => new AppDbContext());
+    }
+
     public async Task<AppUser?> GetByIdAsync(Guid id)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.Users
             .AsNoTracking()
@@ -21,7 +28,7 @@ public class EfUserRepository : IUserRepository
 
     public async Task<AppUser?> GetByLoginAsync(string login)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.Users
             .AsNoTracking()
@@ -30,7 +37,7 @@ public class EfUserRepository : IUserRepository
 
     public async Task<AppUser?> GetByEmailAsync(string email)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.Users
             .AsNoTracking()
@@ -39,7 +46,7 @@ public class EfUserRepository : IUserRepository
 
     public async Task AddAsync(AppUser user)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         db.Users.Add(user);
 
@@ -48,7 +55,7 @@ public class EfUserRepository : IUserRepository
 
     public async Task UpdateAsync(AppUser user)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         db.Users.Update(user);
 
@@ -57,7 +64,7 @@ public class EfUserRepository : IUserRepository
 
     public async Task<IReadOnlyList<AppUser>> GetAllAsync()
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.Users
             .AsNoTracking()
