@@ -5,15 +5,13 @@
              x:DataType="vm:LearningViewModel">
     <Grid RowDefinitions="Auto,Auto,*"
           Margin="32">
-        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto"
+              ColumnSpacing="10">
             <StackPanel Spacing="6">
                 <TextBlock Text="Обучение"
-                           Foreground="{StaticResource InkBrush}"
-                           FontSize="28"
-                           FontWeight="SemiBold"/>
+                           Classes="page-title"/>
                 <TextBlock Text="Курсы, назначения и прогресс сотрудников"
-                           Foreground="{StaticResource MutedTextBrush}"
-                           FontSize="14"/>
+                           Classes="page-subtitle"/>
             </StackPanel>
 
             <Button Grid.Column="1"
@@ -21,8 +19,7 @@
                     Classes="primary"
                     Command="{Binding OpenCreateCourseFormCommand}"
                     IsVisible="{Binding CanManageCourses}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="2"
                     Content="Редактировать"
@@ -30,8 +27,7 @@
                     Command="{Binding OpenEditCourseFormCommand}"
                     IsEnabled="{Binding HasSelectedCourse}"
                     IsVisible="{Binding CanManageCourses}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="3"
                     Content="Назначить"
@@ -39,8 +35,7 @@
                     Command="{Binding OpenAssignFormCommand}"
                     IsEnabled="{Binding HasSelectedCourse}"
                     IsVisible="{Binding CanAssignLearning}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="4"
                     Content="Обновить"
@@ -51,17 +46,12 @@
 
         <Grid Grid.Row="1"
               ColumnDefinitions="*,*,*,*"
+              ColumnSpacing="12"
               Margin="0,24,0,0">
-            <Border Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    Padding="16"
-                    Margin="0,0,12,0">
+            <Border Classes="metric-card">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Курсы"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
+                               Classes="kicker"/>
                     <TextBlock Text="{Binding TotalCourseCount}"
                                Foreground="{StaticResource InkBrush}"
                                FontSize="24"
@@ -70,16 +60,10 @@
             </Border>
 
             <Border Grid.Column="1"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    Padding="16"
-                    Margin="0,0,12,0">
+                    Classes="metric-card">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Активные курсы"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
+                               Classes="kicker"/>
                     <TextBlock Text="{Binding ActiveCourseCount}"
                                Foreground="{StaticResource AccentBrush}"
                                FontSize="24"
@@ -88,16 +72,10 @@
             </Border>
 
             <Border Grid.Column="2"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    Padding="16"
-                    Margin="0,0,12,0">
+                    Classes="metric-card">
                 <StackPanel Spacing="4">
                     <TextBlock Text="В обучении"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
+                               Classes="kicker"/>
                     <TextBlock Text="{Binding ActiveAssignmentCount}"
                                Foreground="{StaticResource InkBrush}"
                                FontSize="24"
@@ -106,15 +84,10 @@
             </Border>
 
             <Border Grid.Column="3"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    Padding="16">
+                    Classes="metric-card">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Завершено"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
+                               Classes="kicker"/>
                     <TextBlock Text="{Binding CompletedAssignmentCount}"
                                Foreground="{StaticResource AccentBrush}"
                                FontSize="24"
@@ -126,28 +99,23 @@
         <Grid Grid.Row="2"
               ColumnDefinitions="1.05*,1.15*,430"
               Margin="0,24,0,0">
-            <Border Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
+            <Border Classes="panel"
                     Margin="0,0,18,0">
                 <Grid RowDefinitions="Auto,*">
                     <TextBlock Text="Каталог курсов"
-                               Foreground="{StaticResource InkBrush}"
-                               FontSize="18"
-                               FontWeight="SemiBold"
+                               Classes="section-title"
                                Margin="18,16,18,8"/>
 
                     <ListBox Grid.Row="1"
                              ItemsSource="{Binding Courses}"
                              SelectedItem="{Binding SelectedCourse}"
+                             Classes="data-list"
                              BorderThickness="0"
                              Background="Transparent"
                              Margin="12,0,12,12">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="vm:LearningCourseRowViewModel">
-                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
-                                        BorderThickness="0,0,0,1"
-                                        Padding="12">
+                                <Border Padding="12">
                                     <Grid ColumnDefinitions="*,95"
                                           MinHeight="74">
                                         <StackPanel VerticalAlignment="Center"
@@ -192,28 +160,23 @@
             </Border>
 
             <Border Grid.Column="1"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
+                    Classes="panel"
                     Margin="0,0,18,0">
                 <Grid RowDefinitions="Auto,*">
                     <TextBlock Text="Назначения"
-                               Foreground="{StaticResource InkBrush}"
-                               FontSize="18"
-                               FontWeight="SemiBold"
+                               Classes="section-title"
                                Margin="18,16,18,8"/>
 
                     <ListBox Grid.Row="1"
                              ItemsSource="{Binding Assignments}"
                              SelectedItem="{Binding SelectedAssignment}"
+                             Classes="data-list"
                              BorderThickness="0"
                              Background="Transparent"
                              Margin="12,0,12,12">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="vm:LearningAssignmentRowViewModel">
-                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
-                                        BorderThickness="0,0,0,1"
-                                        Padding="12">
+                                <Border Padding="12">
                                     <Grid ColumnDefinitions="*,105"
                                           MinHeight="74">
                                         <StackPanel VerticalAlignment="Center"
@@ -256,15 +219,11 @@
 
             <ScrollViewer Grid.Column="2">
                 <StackPanel Spacing="18">
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrushSoft}"
-                            BorderThickness="1"
+                    <Border Classes="panel"
                             Padding="18">
                         <StackPanel Spacing="13">
                             <TextBlock Text="Действия"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"/>
+                                       Classes="section-title"/>
 
                             <TextBlock Text="{Binding SelectedCourseCaption}"
                                        Foreground="{StaticResource MutedTextBrush}"
@@ -278,13 +237,13 @@
                                        IsVisible="{Binding CanShowCoursePrompt}"/>
 
                             <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12"
                                   IsVisible="{Binding CanShowCourseActions}">
                                 <Button Content="Редактировать"
                                         Classes="subtle"
                                         Command="{Binding OpenEditCourseFormCommand}"
                                         HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
+                                        HorizontalContentAlignment="Center"/>
                                 <Button Grid.Column="1"
                                         Content="Назначить"
                                         Classes="success"
@@ -306,13 +265,13 @@
                                        IsVisible="{Binding CanShowAssignmentPrompt}"/>
 
                             <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12"
                                   IsVisible="{Binding CanShowAssignmentActions}">
                                 <Button Content="Прогресс"
                                         Classes="success"
                                         Command="{Binding OpenProgressFormCommand}"
                                         HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
+                                        HorizontalContentAlignment="Center"/>
                                 <Button Grid.Column="1"
                                         Content="Отменить"
                                         Classes="danger"
@@ -322,10 +281,7 @@
                                         IsVisible="{Binding CanAssignLearning}"/>
                             </Grid>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasStatusMessage}">
                                 <TextBlock Text="{Binding StatusMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -336,16 +292,12 @@
                         </StackPanel>
                     </Border>
 
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrushSoft}"
-                            BorderThickness="1"
+                    <Border Classes="panel"
                             Padding="18"
                             IsVisible="{Binding IsAssignFormVisible}">
                         <StackPanel Spacing="10">
                             <TextBlock Text="Назначить обучение"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"/>
+                                       Classes="section-title"/>
 
                             <TextBlock Text="{Binding SelectedCourseCaption}"
                                        Foreground="{StaticResource MutedTextBrush}"
@@ -376,10 +328,7 @@
                                          Watermark="дд.мм.гггг"/>
                             </StackPanel>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasAssignmentFormMessage}">
                                 <TextBlock Text="{Binding AssignmentFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -388,13 +337,13 @@
                                            TextWrapping="Wrap"/>
                             </Border>
 
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <Button Content="Назначить"
                                         Classes="primary"
                                         Command="{Binding AssignCourseCommand}"
                                         HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
+                                        HorizontalContentAlignment="Center"/>
                                 <Button Grid.Column="1"
                                         Content="Отмена"
                                         Classes="subtle"
@@ -405,16 +354,12 @@
                         </StackPanel>
                     </Border>
 
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrushSoft}"
-                            BorderThickness="1"
+                    <Border Classes="panel"
                             Padding="18"
                             IsVisible="{Binding CanShowCourseDetails}">
                         <StackPanel Spacing="13">
                             <TextBlock Text="Карточка курса"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"/>
+                                       Classes="section-title"/>
 
                             <Grid ColumnDefinitions="130,*"
                                   RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
@@ -502,16 +447,12 @@
                         </StackPanel>
                     </Border>
 
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrushSoft}"
-                            BorderThickness="1"
+                    <Border Classes="panel"
                             Padding="18"
                             IsVisible="{Binding CanShowAssignmentDetails}">
                         <StackPanel Spacing="13">
                             <TextBlock Text="Карточка назначения"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"/>
+                                       Classes="section-title"/>
 
                             <Grid ColumnDefinitions="130,*"
                                   RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
@@ -609,16 +550,12 @@
                         </StackPanel>
                     </Border>
 
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrushSoft}"
-                            BorderThickness="1"
+                    <Border Classes="panel"
                             Padding="18"
                             IsVisible="{Binding IsCreateCourseFormVisible}">
                         <StackPanel Spacing="10">
                             <TextBlock Text="Новый курс"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"/>
+                                       Classes="section-title"/>
 
                             <TextBox Watermark="Название курса"
                                      Text="{Binding NewCourseTitle}"/>
@@ -626,11 +563,12 @@
                             <TextBox Watermark="Описание"
                                      Text="{Binding NewCourseDescription}"
                                      AcceptsReturn="True"
-                                     MinHeight="72"/>
+                                     TextWrapping="Wrap"
+                                     MinHeight="96"/>
 
-                            <Grid ColumnDefinitions="*,*">
-                                <StackPanel Spacing="4"
-                                            Margin="0,0,8,0">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
+                                <StackPanel Spacing="4">
                                     <TextBlock Text="Формат"
                                                Foreground="{StaticResource MutedTextBrush}"
                                                FontSize="12"
@@ -658,10 +596,7 @@
                             <TextBox Watermark="Провайдер"
                                      Text="{Binding NewCourseProvider}"/>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasCourseFormMessage}">
                                 <TextBlock Text="{Binding CourseFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -670,13 +605,13 @@
                                            TextWrapping="Wrap"/>
                             </Border>
 
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <Button Content="Создать"
                                         Classes="primary"
                                         Command="{Binding CreateCourseCommand}"
                                         HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
+                                        HorizontalContentAlignment="Center"/>
                                 <Button Grid.Column="1"
                                         Content="Отмена"
                                         Classes="subtle"
@@ -687,16 +622,12 @@
                         </StackPanel>
                     </Border>
 
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrushSoft}"
-                            BorderThickness="1"
+                    <Border Classes="panel"
                             Padding="18"
                             IsVisible="{Binding IsEditCourseFormVisible}">
                         <StackPanel Spacing="10">
                             <TextBlock Text="Редактирование курса"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"/>
+                                       Classes="section-title"/>
 
                             <TextBox Watermark="Название курса"
                                      Text="{Binding EditCourseTitle}"/>
@@ -704,11 +635,12 @@
                             <TextBox Watermark="Описание"
                                      Text="{Binding EditCourseDescription}"
                                      AcceptsReturn="True"
-                                     MinHeight="72"/>
+                                     TextWrapping="Wrap"
+                                     MinHeight="96"/>
 
-                            <Grid ColumnDefinitions="*,*">
-                                <StackPanel Spacing="4"
-                                            Margin="0,0,8,0">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
+                                <StackPanel Spacing="4">
                                     <TextBlock Text="Формат"
                                                Foreground="{StaticResource MutedTextBrush}"
                                                FontSize="12"
@@ -740,19 +672,16 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <TextBox Watermark="Провайдер"
-                                         Text="{Binding EditCourseProvider}"
-                                         Margin="0,0,8,0"/>
+                                         Text="{Binding EditCourseProvider}"/>
                                 <TextBox Grid.Column="1"
                                          Watermark="Длительность, часов"
                                          Text="{Binding EditCourseDurationText}"/>
                             </Grid>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasCourseFormMessage}">
                                 <TextBlock Text="{Binding CourseFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -761,13 +690,13 @@
                                            TextWrapping="Wrap"/>
                             </Border>
 
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <Button Content="Сохранить"
                                         Classes="primary"
                                         Command="{Binding SaveCourseCommand}"
                                         HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
+                                        HorizontalContentAlignment="Center"/>
                                 <Button Grid.Column="1"
                                         Content="Отмена"
                                         Classes="subtle"
@@ -778,25 +707,21 @@
                         </StackPanel>
                     </Border>
 
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrushSoft}"
-                            BorderThickness="1"
+                    <Border Classes="panel"
                             Padding="18"
                             IsVisible="{Binding IsProgressFormVisible}">
                         <StackPanel Spacing="10">
                             <TextBlock Text="Прогресс обучения"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"/>
+                                       Classes="section-title"/>
 
                             <TextBlock Text="{Binding SelectedAssignmentCaption}"
                                        Foreground="{StaticResource MutedTextBrush}"
                                        FontSize="13"
                                        TextWrapping="Wrap"/>
 
-                            <Grid ColumnDefinitions="*,*">
-                                <StackPanel Spacing="4"
-                                            Margin="0,0,8,0">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
+                                <StackPanel Spacing="4">
                                     <TextBlock Text="Прогресс, %"
                                                Foreground="{StaticResource MutedTextBrush}"
                                                FontSize="12"
@@ -814,10 +739,7 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasProgressFormMessage}">
                                 <TextBlock Text="{Binding ProgressFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -826,13 +748,13 @@
                                            TextWrapping="Wrap"/>
                             </Border>
 
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <Button Content="Сохранить"
                                         Classes="primary"
                                         Command="{Binding SaveProgressCommand}"
                                         HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
+                                        HorizontalContentAlignment="Center"/>
                                 <Button Grid.Column="1"
                                         Content="Отмена"
                                         Classes="subtle"

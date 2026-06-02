@@ -9,13 +9,11 @@
                 BorderBrush="{StaticResource BorderBrushSoft}"
                 BorderThickness="0,0,0,1">
             <Grid ColumnDefinitions="Auto,*,Auto"
-                  Margin="26,16">
+                  Margin="28,14">
                 <StackPanel Orientation="Horizontal"
                             Spacing="12"
                             VerticalAlignment="Center">
-                    <Border Width="38"
-                            Height="38"
-                            Background="{StaticResource AccentSoftBrush}">
+                    <Border Classes="brand-mark">
                         <TextBlock Text="MB"
                                    Foreground="{StaticResource AccentBrush}"
                                    FontWeight="SemiBold"
@@ -25,7 +23,7 @@
                     <StackPanel>
                         <TextBlock Text="MBappe"
                                    Foreground="{StaticResource InkBrush}"
-                                   FontSize="20"
+                                   FontSize="19"
                                    FontWeight="SemiBold"/>
                         <TextBlock Text="Управление персоналом"
                                    Foreground="{StaticResource MutedTextBrush}"
@@ -35,11 +33,9 @@
 
                 <StackPanel Grid.Column="2"
                             Orientation="Horizontal"
-                            Spacing="14"
+                            Spacing="12"
                             VerticalAlignment="Center">
-                    <Border Width="38"
-                            Height="38"
-                            Background="{StaticResource SurfaceAltBrush}">
+                    <Border Classes="user-avatar">
                         <TextBlock Text="{Binding UserInitials}"
                                    Foreground="{StaticResource InkBrush}"
                                    FontWeight="SemiBold"
@@ -50,7 +46,8 @@
                                 VerticalAlignment="Center">
                         <TextBlock Text="{Binding CurrentUserName}"
                                    Foreground="{StaticResource InkBrush}"
-                                   FontWeight="SemiBold"/>
+                                   FontWeight="SemiBold"
+                                   TextTrimming="CharacterEllipsis"/>
                         <TextBlock Text="{Binding CurrentUserRole}"
                                    Foreground="{StaticResource MutedTextBrush}"
                                    FontSize="12"/>
@@ -67,46 +64,64 @@
             <Border Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrushSoft}"
                     BorderThickness="0,0,1,0"
-                    Padding="14">
+                    Padding="16,14">
                 <Grid RowDefinitions="Auto,*">
                     <TextBlock Text="Разделы"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"
-                               Margin="10,4,0,12"/>
+                               Classes="kicker"
+                               Margin="10,4,0,10"/>
                     <ListBox Grid.Row="1"
                              ItemsSource="{Binding NavigationItems}"
                              SelectedItem="{Binding SelectedNavigationItem}"
-                             Background="Transparent"
-                             BorderThickness="0">
+                             Classes="nav-list">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="vm:NavigationItemViewModel">
-                                <Grid ColumnDefinitions="42,*"
-                                      Margin="0,3"
-                                      MinHeight="58">
-                                    <Border Background="{StaticResource SurfaceAltBrush}"
-                                            Width="34"
-                                            Height="34"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Code}"
-                                                   Foreground="{StaticResource InkBrush}"
-                                                   FontSize="12"
-                                                   FontWeight="SemiBold"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"/>
-                                    </Border>
-                                    <StackPanel Grid.Column="1"
+                                <Border Classes="nav-item">
+                                    <Grid ColumnDefinitions="42,*"
+                                          MinHeight="42">
+                                        <Border Classes="nav-icon"
+                                                HorizontalAlignment="Center"
                                                 VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Title}"
-                                                   Foreground="{StaticResource InkBrush}"
-                                                   FontWeight="SemiBold"/>
-                                        <TextBlock Text="{Binding Description}"
-                                                   Foreground="{StaticResource MutedTextBrush}"
-                                                   FontSize="12"
-                                                   TextWrapping="Wrap"/>
-                                    </StackPanel>
-                                </Grid>
+                                            <Grid>
+                                                <PathIcon Classes="nav-path-icon"
+                                                          Data="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm0 2c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4z"
+                                                          IsVisible="{Binding IsProfileIcon}"/>
+                                                <PathIcon Classes="nav-path-icon"
+                                                          Data="M16 11c1.7 0 3-1.3 3-3s-1.3-3-3-3-3 1.3-3 3 1.3 3 3 3zm-8 0c1.7 0 3-1.3 3-3S9.7 5 8 5 5 6.3 5 8s1.3 3 3 3zm0 2c-2.3 0-7 1.2-7 3.5V19h14v-2.5C15 14.2 10.3 13 8 13zm8 0c-.3 0-.7 0-1.1.1 1.2.8 2.1 1.8 2.1 3.4V19h6v-2.5c0-2.3-4.7-3.5-7-3.5z"
+                                                          IsVisible="{Binding IsUsersIcon}"/>
+                                                <PathIcon Classes="nav-path-icon"
+                                                          Data="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-10 3c1.7 0 3 1.3 3 3s-1.3 3-3 3-3-1.3-3-3 1.3-3 3-3zm6 10H4v-.7c0-2 4-3.1 6-3.1s6 1.1 6 3.1V17zm4-7h-5V8h5v2zm0 4h-5v-2h5v2z"
+                                                          IsVisible="{Binding IsEmployeesIcon}"/>
+                                                <PathIcon Classes="nav-path-icon"
+                                                          Data="M3 3h2v16h17v2H3V3zm4 10h3v5H7v-5zm5-5h3v10h-3V8zm5-3h3v13h-3V5z"
+                                                          IsVisible="{Binding IsKpiIcon}"/>
+                                                <PathIcon Classes="nav-path-icon"
+                                                          Data="M6 3h13c.6 0 1 .4 1 1v15c0 .6-.4 1-1 1H6c-1.7 0-3-1.3-3-3V6c0-1.7 1.3-3 3-3zm0 2c-.6 0-1 .4-1 1v11c0 .6.4 1 1 1h12V5H6zm1 3h10v2H7V8zm0 4h8v2H7v-2z"
+                                                          IsVisible="{Binding IsLearningIcon}"/>
+                                                <PathIcon Classes="nav-path-icon"
+                                                          Data="M12 2C6.5 2 2 4 2 6.5v11C2 20 6.5 22 12 22s10-2 10-4.5v-11C22 4 17.5 2 12 2zm0 2c4.4 0 8 1.1 8 2.5S16.4 9 12 9 4 7.9 4 6.5 7.6 4 12 4zm0 7c3.3 0 6.2-.7 8-2.1V11c0 1.4-3.6 2.5-8 2.5S4 12.4 4 11V8.9C5.8 10.3 8.7 11 12 11zm0 8.5c-4.4 0-8-1.1-8-2.5v-2.1c1.8 1.4 4.7 2.1 8 2.1s6.2-.7 8-2.1V17c0 1.4-3.6 2.5-8 2.5z"
+                                                          IsVisible="{Binding IsMotivationIcon}"/>
+                                                <PathIcon Classes="nav-path-icon"
+                                                          Data="M3 3h2v16h17v2H3V3zm4 12.5 3.2-3.2 3.5 3.5L20 7l1.6 1.2-7.4 10.4-3.5-3.5L8.4 17.5 7 15.5z"
+                                                          IsVisible="{Binding IsAnalyticsIcon}"/>
+                                                <PathIcon Classes="nav-path-icon"
+                                                          Data="M12 1 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-4zm0 2.2L18 6v5c0 3.9-2.5 7.6-6 8.8C8.5 18.6 6 14.9 6 11V6l6-2.8zm-3 6.3h6v2H9v-2zm0 4h6v2H9v-2z"
+                                                          IsVisible="{Binding IsAuditIcon}"/>
+                                            </Grid>
+                                        </Border>
+                                        <StackPanel Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                    Spacing="2">
+                                            <TextBlock Text="{Binding Title}"
+                                                       Foreground="{StaticResource InkBrush}"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding Description}"
+                                                       Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="12"
+                                                       TextWrapping="Wrap"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

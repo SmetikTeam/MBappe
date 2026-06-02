@@ -24,6 +24,9 @@
                     <Grid RowDefinitions="Auto"
                           Margin="0,24,0,0">
                         <Border Background="#1C2A35"
+                                BorderBrush="#304250"
+                                BorderThickness="1"
+                                CornerRadius="6"
                                 Padding="18">
                             <StackPanel Spacing="6">
                                 <TextBlock Text="Нет аккаунта?"
@@ -43,17 +46,16 @@
         <Grid Grid.Column="1"
               Margin="64">
             <Border MaxWidth="440"
+                    Classes="panel"
+                    Padding="32"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
                 <StackPanel Spacing="16">
                     <StackPanel Spacing="6">
                         <TextBlock Text="Вход в систему"
-                                   Foreground="{StaticResource InkBrush}"
-                                   FontSize="30"
-                                   FontWeight="SemiBold"/>
+                                   Classes="page-title"/>
                         <TextBlock Text="Введите учетные данные, чтобы открыть рабочий кабинет."
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="14"
+                                   Classes="page-subtitle"
                                    TextWrapping="Wrap"/>
                     </StackPanel>
 
@@ -74,19 +76,25 @@
                                  Watermark="12345"/>
                     </StackPanel>
 
-                    <TextBlock Text="{Binding StatusMessage}"
-                               Foreground="{StaticResource AccentBrush}"
-                               FontSize="13"
-                               FontWeight="SemiBold"
-                               TextWrapping="Wrap"
-                               IsVisible="{Binding IsStatusSuccess}"/>
+                    <Border Classes="status-banner"
+                            Padding="10"
+                            IsVisible="{Binding IsStatusSuccess}">
+                        <TextBlock Text="{Binding StatusMessage}"
+                                   Foreground="{StaticResource AccentBrush}"
+                                   FontSize="13"
+                                   FontWeight="SemiBold"
+                                   TextWrapping="Wrap"/>
+                    </Border>
 
-                    <TextBlock Text="{Binding StatusMessage}"
-                               Foreground="{StaticResource ErrorBrush}"
-                               FontSize="13"
-                               FontWeight="SemiBold"
-                               TextWrapping="Wrap"
-                               IsVisible="{Binding IsStatusError}"/>
+                    <Border Classes="error-banner"
+                            Padding="10"
+                            IsVisible="{Binding IsStatusError}">
+                        <TextBlock Text="{Binding StatusMessage}"
+                                   Foreground="{StaticResource ErrorBrush}"
+                                   FontSize="13"
+                                   FontWeight="SemiBold"
+                                   TextWrapping="Wrap"/>
+                    </Border>
 
                     <Button Content="Войти"
                             Classes="primary"

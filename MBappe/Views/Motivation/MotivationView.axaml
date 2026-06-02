@@ -5,15 +5,13 @@
              x:DataType="vm:MotivationViewModel">
     <Grid RowDefinitions="Auto,Auto,*"
           Margin="32">
-        <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto"
+              ColumnSpacing="10">
             <StackPanel Spacing="6">
                 <TextBlock Text="Мотивация"
-                           Foreground="{StaticResource InkBrush}"
-                           FontSize="28"
-                           FontWeight="SemiBold"/>
+                           Classes="page-title"/>
                 <TextBlock Text="Расчет бонусов и премий на основе KPI"
-                           Foreground="{StaticResource MutedTextBrush}"
-                           FontSize="14"/>
+                           Classes="page-subtitle"/>
             </StackPanel>
 
             <Button Grid.Column="1"
@@ -21,16 +19,14 @@
                     Classes="primary"
                     Command="{Binding OpenCalculateFormCommand}"
                     IsVisible="{Binding CanCalculateBonuses}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="2"
                     Content="Новая программа"
                     Classes="subtle"
                     Command="{Binding OpenProgramFormCommand}"
                     IsVisible="{Binding CanManageMotivation}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="3"
                     Content="Обновить"
@@ -41,17 +37,12 @@
 
         <Grid Grid.Row="1"
               ColumnDefinitions="*,*,*,*,*"
+              ColumnSpacing="12"
               Margin="0,24,0,0">
-            <Border Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    Padding="16"
-                    Margin="0,0,12,0">
+            <Border Classes="metric-card">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Всего бонусов"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
+                               Classes="kicker"/>
                     <TextBlock Text="{Binding TotalBonusCount}"
                                Foreground="{StaticResource InkBrush}"
                                FontSize="24"
@@ -60,16 +51,10 @@
             </Border>
 
             <Border Grid.Column="1"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    Padding="16"
-                    Margin="0,0,12,0">
+                    Classes="metric-card">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Ожидают"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
+                               Classes="kicker"/>
                     <TextBlock Text="{Binding PendingBonusCount}"
                                Foreground="{StaticResource AccentBrush}"
                                FontSize="24"
@@ -78,16 +63,10 @@
             </Border>
 
             <Border Grid.Column="2"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    Padding="16"
-                    Margin="0,0,12,0">
+                    Classes="metric-card">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Утверждено"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
+                               Classes="kicker"/>
                     <TextBlock Text="{Binding ApprovedBonusCount}"
                                Foreground="{StaticResource InkBrush}"
                                FontSize="24"
@@ -96,16 +75,10 @@
             </Border>
 
             <Border Grid.Column="3"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    Padding="16"
-                    Margin="0,0,12,0">
+                    Classes="metric-card">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Выплачено"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
+                               Classes="kicker"/>
                     <TextBlock Text="{Binding PaidBonusCount}"
                                Foreground="{StaticResource InkBrush}"
                                FontSize="24"
@@ -114,15 +87,10 @@
             </Border>
 
             <Border Grid.Column="4"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
-                    Padding="16">
+                    Classes="metric-card">
                 <StackPanel Spacing="4">
                     <TextBlock Text="К выплате"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"
-                               FontWeight="SemiBold"/>
+                               Classes="kicker"/>
                     <TextBlock Text="{Binding TotalPayableAmountText}"
                                Foreground="{StaticResource AccentBrush}"
                                FontSize="24"
@@ -134,20 +102,17 @@
         <Grid Grid.Row="2"
               ColumnDefinitions="*,430"
               Margin="0,24,0,0">
-            <Border Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
+            <Border Classes="panel"
                     Margin="0,0,18,0">
                 <ListBox ItemsSource="{Binding Bonuses}"
                          SelectedItem="{Binding SelectedBonus}"
+                         Classes="data-list"
                          BorderThickness="0"
                          Background="Transparent"
                          Margin="12">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="vm:MotivationBonusRowViewModel">
-                            <Border BorderBrush="{StaticResource BorderBrushSoft}"
-                                    BorderThickness="0,0,0,1"
-                                    Padding="12">
+                            <Border Padding="12">
                                 <Grid ColumnDefinitions="1.4*,1.2*,0.95*,0.75*,0.8*,0.9*"
                                       MinHeight="78">
                                     <StackPanel VerticalAlignment="Center"
@@ -232,15 +197,11 @@
 
             <Grid Grid.Column="1"
                   RowDefinitions="Auto,Auto,*">
-                <Border Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
+                <Border Classes="panel"
                         Padding="18">
                     <StackPanel Spacing="13">
                         <TextBlock Text="Действия"
-                                   Foreground="{StaticResource InkBrush}"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"/>
+                                   Classes="section-title"/>
 
                         <TextBlock Text="{Binding SelectedBonusCaption}"
                                    Foreground="{StaticResource MutedTextBrush}"
@@ -261,44 +222,45 @@
 
                         <StackPanel Spacing="8"
                                     IsVisible="{Binding CanShowBonusActions}">
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <Button Content="Утвердить"
                                         Classes="success"
                                         Command="{Binding ApproveSelectedBonusCommand}"
                                         IsEnabled="{Binding CanApproveSelectedBonus}"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"/>
                                 <Button Grid.Column="1"
                                         Content="Выплатить"
                                         Classes="primary"
                                         Command="{Binding PaySelectedBonusCommand}"
                                         IsEnabled="{Binding CanPaySelectedBonus}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"/>
                             </Grid>
 
                             <TextBox Watermark="Комментарий при отклонении"
                                      Text="{Binding RejectComment}"/>
 
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <Button Content="Отклонить"
                                         Classes="danger"
                                         Command="{Binding RejectSelectedBonusCommand}"
                                         IsEnabled="{Binding CanRejectSelectedBonus}"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"/>
                                 <Button Grid.Column="1"
                                         Content="Отменить"
                                         Classes="subtle"
                                         Command="{Binding CancelSelectedBonusCommand}"
                                         IsEnabled="{Binding CanCancelSelectedBonus}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"/>
                             </Grid>
                         </StackPanel>
 
-                        <Border Background="{StaticResource AccentSoftBrush}"
-                                BorderBrush="{StaticResource AccentBrush}"
-                                BorderThickness="1"
-                                Padding="10"
+                        <Border Classes="status-banner"
                                 IsVisible="{Binding HasStatusMessage}">
                             <TextBlock Text="{Binding StatusMessage}"
                                        Foreground="{StaticResource AccentBrush}"
@@ -310,17 +272,13 @@
                 </Border>
 
                 <Border Grid.Row="1"
-                        Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
+                        Classes="panel"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding CanShowBonusDetails}">
                     <StackPanel Spacing="13">
                         <TextBlock Text="Карточка бонуса"
-                                   Foreground="{StaticResource InkBrush}"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"/>
+                                   Classes="section-title"/>
 
                         <Grid ColumnDefinitions="140,*"
                               RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
@@ -412,18 +370,14 @@
                 </Border>
 
                 <Border Grid.Row="2"
-                        Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
+                        Classes="panel"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding IsCalculateFormVisible}">
                     <ScrollViewer>
                         <StackPanel Spacing="10">
                             <TextBlock Text="Расчет бонуса"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"/>
+                                       Classes="section-title"/>
 
                             <StackPanel Spacing="4">
                                 <TextBlock Text="Сотрудник"
@@ -455,9 +409,9 @@
                                 </ComboBox>
                             </StackPanel>
 
-                            <Grid ColumnDefinitions="*,*">
-                                <StackPanel Spacing="4"
-                                            Margin="0,0,8,0">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
+                                <StackPanel Spacing="4">
                                     <TextBlock Text="Начало периода"
                                                Foreground="{StaticResource MutedTextBrush}"
                                                FontSize="12"
@@ -475,10 +429,7 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasCalculateFormMessage}">
                                 <TextBlock Text="{Binding CalculateFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -487,16 +438,18 @@
                                            TextWrapping="Wrap"/>
                             </Border>
 
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <Button Content="Рассчитать"
                                         Classes="primary"
                                         Command="{Binding CalculateBonusCommand}"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"/>
                                 <Button Grid.Column="1"
                                         Content="Отмена"
                                         Classes="subtle"
                                         Command="{Binding CloseFormsCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"/>
                             </Grid>
                         </StackPanel>
@@ -504,18 +457,14 @@
                 </Border>
 
                 <Border Grid.Row="2"
-                        Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
+                        Classes="panel"
                         Padding="18"
                         Margin="0,18,0,0"
                         IsVisible="{Binding IsProgramFormVisible}">
                     <ScrollViewer>
                         <StackPanel Spacing="10">
                             <TextBlock Text="Новая программа"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"/>
+                                       Classes="section-title"/>
 
                             <TextBox Watermark="Название программы"
                                      Text="{Binding NewProgramTitle}"/>
@@ -523,7 +472,8 @@
                             <TextBox Watermark="Описание"
                                      Text="{Binding NewProgramDescription}"
                                      AcceptsReturn="True"
-                                     MinHeight="70"/>
+                                     TextWrapping="Wrap"
+                                     MinHeight="96"/>
 
                             <StackPanel Spacing="4">
                                 <TextBlock Text="Базовая сумма"
@@ -533,10 +483,10 @@
                                 <TextBox Text="{Binding NewProgramBaseAmountText}"/>
                             </StackPanel>
 
-                            <Grid ColumnDefinitions="*,*">
-                                <StackPanel Spacing="4"
-                                            Margin="0,0,8,0">
-                                    <TextBlock Text="Минимальная эффективность, %"
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Мин. эффективность, %"
                                                Foreground="{StaticResource MutedTextBrush}"
                                                FontSize="12"
                                                FontWeight="SemiBold"/>
@@ -545,7 +495,7 @@
 
                                 <StackPanel Grid.Column="1"
                                             Spacing="4">
-                                    <TextBlock Text="Максимальная эффективность, %"
+                                    <TextBlock Text="Макс. эффективность, %"
                                                Foreground="{StaticResource MutedTextBrush}"
                                                FontSize="12"
                                                FontWeight="SemiBold"/>
@@ -553,10 +503,7 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasProgramFormMessage}">
                                 <TextBlock Text="{Binding ProgramFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -565,16 +512,18 @@
                                            TextWrapping="Wrap"/>
                             </Border>
 
-                            <Grid ColumnDefinitions="*,*">
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
                                 <Button Content="Создать"
                                         Classes="primary"
                                         Command="{Binding CreateProgramCommand}"
-                                        HorizontalContentAlignment="Center"
-                                        Margin="0,0,8,0"/>
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"/>
                                 <Button Grid.Column="1"
                                         Content="Отмена"
                                         Classes="subtle"
                                         Command="{Binding CloseFormsCommand}"
+                                        HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"/>
                             </Grid>
                         </StackPanel>

@@ -6,55 +6,52 @@
              x:DataType="vm:AnalyticsViewModel">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                   VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="32"
-                    Spacing="22">
-            <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Margin="24"
+                    Spacing="14">
+            <Grid ColumnDefinitions="*,Auto"
+                  ColumnSpacing="18">
                 <StackPanel Spacing="6">
                     <TextBlock Text="Аналитика"
-                               Foreground="{StaticResource InkBrush}"
-                               FontSize="28"
-                               FontWeight="SemiBold"/>
+                               Classes="page-title"/>
                     <TextBlock Text="Сводные показатели по персоналу, KPI, обучению и мотивации"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="14"/>
+                               Classes="page-subtitle"
+                               TextWrapping="Wrap"/>
                     <TextBlock Text="{Binding ScopeText}"
-                               Foreground="{StaticResource MutedTextBrush}"
-                               FontSize="12"/>
+                               Classes="kicker"/>
                 </StackPanel>
 
-                <StackPanel Grid.Column="1"
-                            Orientation="Horizontal"
-                            Spacing="10"
-                            VerticalAlignment="Center">
-                    <StackPanel Spacing="4">
-                        <TextBlock Text="Начало периода"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                        <TextBox Text="{Binding PeriodStartText}"
-                                 Width="132"
-                                 Watermark="дд.мм.гггг"/>
-                    </StackPanel>
-                    <StackPanel Spacing="4">
-                        <TextBlock Text="Конец периода"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
-                        <TextBox Text="{Binding PeriodEndText}"
-                                 Width="132"
-                                 Watermark="дд.мм.гггг"/>
-                    </StackPanel>
-                    <Button Content="Сформировать"
-                            Classes="primary"
-                            Command="{Binding GenerateReportCommand}"
-                            VerticalAlignment="Bottom"/>
-                </StackPanel>
+                <Border Grid.Column="1"
+                        Classes="panel"
+                        Padding="12"
+                        VerticalAlignment="Center">
+                    <WrapPanel>
+                        <StackPanel Spacing="4"
+                                    Width="140"
+                                    Margin="0,0,8,0">
+                            <TextBlock Text="Начало периода"
+                                       Classes="kicker"/>
+                            <TextBox Text="{Binding PeriodStartText}"
+                                     Watermark="дд.мм.гггг"/>
+                        </StackPanel>
+                        <StackPanel Spacing="4"
+                                    Width="140"
+                                    Margin="0,0,8,0">
+                            <TextBlock Text="Конец периода"
+                                       Classes="kicker"/>
+                            <TextBox Text="{Binding PeriodEndText}"
+                                     Watermark="дд.мм.гггг"/>
+                        </StackPanel>
+                        <Button Content="Сформировать"
+                                Classes="primary"
+                                Command="{Binding GenerateReportCommand}"
+                                VerticalAlignment="Bottom"
+                                Margin="0,16,0,0"/>
+                    </WrapPanel>
+                </Border>
             </Grid>
 
-            <Border Background="{StaticResource AccentSoftBrush}"
-                    BorderBrush="{StaticResource AccentBrush}"
-                    BorderThickness="1"
-                    Padding="12"
+            <Border Classes="status-banner"
+                    Padding="10,8"
                     IsVisible="{Binding HasStatusMessage}">
                 <Grid ColumnDefinitions="*,Auto">
                     <TextBlock Text="{Binding StatusMessage}"
@@ -70,26 +67,19 @@
                 </Grid>
             </Border>
 
-            <Border Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
+            <Border Classes="panel"
                     Padding="18"
                     IsVisible="{Binding HasNoReport}">
                 <TextBlock Text="Отчет пока не сформирован."
                            Foreground="{StaticResource MutedTextBrush}"/>
             </Border>
 
-            <Grid ColumnDefinitions="*,*,*,*">
-                <Border Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
-                        Padding="16"
-                        Margin="0,0,12,0">
+            <Grid ColumnDefinitions="*,*,*,*"
+                  ColumnSpacing="12">
+                <Border Classes="metric-card">
                     <StackPanel Spacing="4">
                         <TextBlock Text="Активные сотрудники"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
+                                   Classes="kicker"/>
                         <TextBlock Text="{Binding ActiveEmployeesText}"
                                    Foreground="{StaticResource InkBrush}"
                                    FontSize="24"
@@ -98,16 +88,10 @@
                 </Border>
 
                 <Border Grid.Column="1"
-                        Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
-                        Padding="16"
-                        Margin="0,0,12,0">
+                        Classes="metric-card">
                     <StackPanel Spacing="4">
                         <TextBlock Text="Средний KPI"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
+                                   Classes="kicker"/>
                         <TextBlock Text="{Binding AverageKpiText}"
                                    Foreground="{StaticResource AccentBrush}"
                                    FontSize="24"
@@ -116,16 +100,10 @@
                 </Border>
 
                 <Border Grid.Column="2"
-                        Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
-                        Padding="16"
-                        Margin="0,0,12,0">
+                        Classes="metric-card">
                     <StackPanel Spacing="4">
                         <TextBlock Text="Прогресс обучения"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
+                                   Classes="kicker"/>
                         <TextBlock Text="{Binding LearningProgressText}"
                                    Foreground="{StaticResource AccentBrush}"
                                    FontSize="24"
@@ -134,15 +112,10 @@
                 </Border>
 
                 <Border Grid.Column="3"
-                        Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrushSoft}"
-                        BorderThickness="1"
-                        Padding="16">
+                        Classes="metric-card">
                     <StackPanel Spacing="4">
                         <TextBlock Text="К выплате"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"/>
+                                   Classes="kicker"/>
                         <TextBlock Text="{Binding PayableBonusText}"
                                    Foreground="{StaticResource AccentBrush}"
                                    FontSize="24"
@@ -151,34 +124,30 @@
                 </Border>
             </Grid>
 
-            <Border Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
+            <Border Classes="panel"
                     Padding="18">
                 <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock Text="Детализация по направлениям"
-                               Foreground="{StaticResource InkBrush}"
-                               FontSize="18"
-                               FontWeight="SemiBold"/>
+                               Classes="section-title"/>
 
-                    <Grid Grid.Row="1"
-                          ColumnDefinitions="1.05*,1.25*,2.25*"
-                          Margin="0,14,0,6">
-                        <TextBlock Text="Направление"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="11"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="1"
-                                   Text="Показатель"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="11"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="2"
-                                   Text="Детали"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="11"
-                                   FontWeight="SemiBold"/>
-                    </Grid>
+                    <Border Grid.Row="1"
+                            Background="{StaticResource SurfaceAltBrush}"
+                            CornerRadius="6"
+                            Padding="10,8"
+                            Margin="0,14,0,4">
+                        <Grid ColumnDefinitions="1.05*,1.25*,2.25*">
+                            <TextBlock Text="Направление"
+                                       Classes="kicker"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="Показатель"
+                                       Classes="kicker"
+                                       Margin="10,0"/>
+                            <TextBlock Grid.Column="2"
+                                       Text="Детали"
+                                       Classes="kicker"
+                                       Margin="10,0,0,0"/>
+                        </Grid>
+                    </Border>
 
                     <Border Grid.Row="2"
                             BorderBrush="{StaticResource BorderBrushSoft}"
@@ -190,14 +159,14 @@
                                        Foreground="{StaticResource InkBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="1"
                                        Text="{Binding PersonnelPrimaryText}"
                                        Foreground="{StaticResource AccentBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
                                        Margin="10,0"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="2"
                                        Text="{Binding PersonnelSecondaryText}"
                                        Foreground="{StaticResource MutedTextBrush}"
@@ -218,14 +187,14 @@
                                        Foreground="{StaticResource InkBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="1"
                                        Text="{Binding KpiPrimaryText}"
                                        Foreground="{StaticResource AccentBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
                                        Margin="10,0"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="2"
                                        Text="{Binding KpiSecondaryText}"
                                        Foreground="{StaticResource MutedTextBrush}"
@@ -246,14 +215,14 @@
                                        Foreground="{StaticResource InkBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="1"
                                        Text="{Binding LearningPrimaryText}"
                                        Foreground="{StaticResource AccentBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
                                        Margin="10,0"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="2"
                                        Text="{Binding LearningSecondaryText}"
                                        Foreground="{StaticResource MutedTextBrush}"
@@ -272,14 +241,14 @@
                                        Foreground="{StaticResource InkBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="1"
                                        Text="{Binding MotivationPrimaryText}"
                                        Foreground="{StaticResource AccentBrush}"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
                                        Margin="10,0"
-                                       TextTrimming="CharacterEllipsis"/>
+                                       TextWrapping="Wrap"/>
                             <TextBlock Grid.Column="2"
                                        Text="{Binding MotivationSecondaryText}"
                                        Foreground="{StaticResource MutedTextBrush}"
@@ -292,101 +261,86 @@
                 </Grid>
             </Border>
 
-            <Border Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
+            <Border Classes="panel"
                     Padding="18">
                 <Grid RowDefinitions="Auto,Auto,*">
                     <TextBlock Text="Сотрудники"
-                               Foreground="{StaticResource InkBrush}"
-                               FontSize="18"
-                               FontWeight="SemiBold"/>
+                               Classes="section-title"/>
 
-                    <Grid Grid.Row="1"
-                          ColumnDefinitions="1.45*,1.05*,1.15*,0.85*,0.95*,0.95*,1.35*"
-                          Margin="0,14,0,6">
-                        <TextBlock Text="Сотрудник"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="11"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="1"
-                                   Text="Отдел"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="11"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="2"
-                                   Text="Должность"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="11"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="3"
-                                   Text="KPI"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="11"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="4"
-                                   Text="Обучение"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="11"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="5"
-                                   Text="К выплате"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="11"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="6"
-                                   Text="Замечания"
-                                   Foreground="{StaticResource MutedTextBrush}"
-                                   FontSize="11"
-                                   FontWeight="SemiBold"/>
-                    </Grid>
+                    <Border Grid.Row="1"
+                            Background="{StaticResource SurfaceAltBrush}"
+                            CornerRadius="6"
+                            Padding="10,8"
+                            Margin="0,14,0,4">
+                        <Grid ColumnDefinitions="1.45*,1.05*,1.15*,0.85*,0.95*,0.95*,1.35*"
+                              ColumnSpacing="12">
+                            <TextBlock Text="Сотрудник"
+                                       Classes="kicker"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="Отдел"
+                                       Classes="kicker"/>
+                            <TextBlock Grid.Column="2"
+                                       Text="Должность"
+                                       Classes="kicker"/>
+                            <TextBlock Grid.Column="3"
+                                       Text="KPI"
+                                       Classes="kicker"/>
+                            <TextBlock Grid.Column="4"
+                                       Text="Обучение"
+                                       Classes="kicker"/>
+                            <TextBlock Grid.Column="5"
+                                       Text="К выплате"
+                                       Classes="kicker"/>
+                            <TextBlock Grid.Column="6"
+                                       Text="Замечания"
+                                       Classes="kicker"/>
+                        </Grid>
+                    </Border>
 
                     <ListBox Grid.Row="2"
                              ItemsSource="{Binding EmployeeRows}"
+                             Classes="data-list"
                              BorderThickness="0"
                              Background="Transparent"
                              MaxHeight="420">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="vm:EmployeeAnalyticsRowViewModel">
-                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
-                                        BorderThickness="0,0,0,1"
-                                        Padding="0,10">
+                                <Border Padding="12,12,22,12">
                                     <Grid ColumnDefinitions="1.45*,1.05*,1.15*,0.85*,0.95*,0.95*,1.35*"
-                                          MinHeight="68">
+                                          MinHeight="76"
+                                          ColumnSpacing="12">
                                         <StackPanel VerticalAlignment="Center"
                                                     Spacing="3">
                                             <TextBlock Text="{Binding FullName}"
                                                        Foreground="{StaticResource InkBrush}"
                                                        FontSize="14"
                                                        FontWeight="SemiBold"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                                       TextWrapping="Wrap"/>
                                             <TextBlock Text="{Binding PersonnelNumber}"
                                                        Foreground="{StaticResource MutedTextBrush}"
                                                        FontSize="12"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                                       TextWrapping="Wrap"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="1"
                                                     VerticalAlignment="Center"
-                                                    Spacing="3"
-                                                    Margin="10,0">
+                                                    Spacing="3">
                                             <TextBlock Text="{Binding Department}"
                                                        Foreground="{StaticResource InkBrush}"
                                                        FontSize="13"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                                       TextWrapping="Wrap"/>
                                             <TextBlock Text="{Binding StatusTitle}"
                                                        Foreground="{StaticResource MutedTextBrush}"
                                                        FontSize="12"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                                       TextWrapping="Wrap"/>
                                         </StackPanel>
 
                                         <TextBlock Grid.Column="2"
                                                    Text="{Binding Position}"
                                                    Foreground="{StaticResource InkBrush}"
                                                    FontSize="13"
-                                                   TextTrimming="CharacterEllipsis"
-                                                   VerticalAlignment="Center"
-                                                   Margin="10,0"/>
+                                                   TextWrapping="Wrap"
+                                                   VerticalAlignment="Center"/>
 
                                         <StackPanel Grid.Column="3"
                                                     VerticalAlignment="Center"
@@ -402,8 +356,7 @@
 
                                         <StackPanel Grid.Column="4"
                                                     VerticalAlignment="Center"
-                                                    Spacing="3"
-                                                    Margin="10,0">
+                                                    Spacing="3">
                                             <TextBlock Text="{Binding LearningProgressText}"
                                                        Foreground="{StaticResource AccentBrush}"
                                                        FontWeight="SemiBold"/>
@@ -415,16 +368,15 @@
 
                                         <StackPanel Grid.Column="5"
                                                     VerticalAlignment="Center"
-                                                    Spacing="3"
-                                                    Margin="10,0">
+                                                    Spacing="3">
                                             <TextBlock Text="{Binding PayableBonusText}"
                                                        Foreground="{StaticResource AccentBrush}"
                                                        FontWeight="SemiBold"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                                       TextWrapping="Wrap"/>
                                             <TextBlock Text="{Binding PaidBonusText}"
                                                        Foreground="{StaticResource MutedTextBrush}"
                                                        FontSize="11"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                                       TextWrapping="Wrap"/>
                                         </StackPanel>
 
                                         <TextBlock Grid.Column="6"
@@ -432,8 +384,7 @@
                                                    Foreground="{StaticResource InkBrush}"
                                                    FontSize="13"
                                                    TextWrapping="Wrap"
-                                                   VerticalAlignment="Center"
-                                                   Margin="10,0,0,0"/>
+                                                   VerticalAlignment="Center"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
@@ -442,15 +393,11 @@
                 </Grid>
             </Border>
 
-            <Border Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrushSoft}"
-                    BorderThickness="1"
+            <Border Classes="panel"
                     Padding="18">
                 <Grid RowDefinitions="Auto,*">
                     <TextBlock Text="Выводы"
-                               Foreground="{StaticResource InkBrush}"
-                               FontSize="18"
-                               FontWeight="SemiBold"/>
+                               Classes="section-title"/>
                     <ItemsControl Grid.Row="1"
                                   ItemsSource="{Binding Insights}"
                                   Margin="0,10,0,0">
