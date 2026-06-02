@@ -22,6 +22,15 @@ public class AppDbContext : DbContext
     public DbSet<MotivationProgram> MotivationPrograms => Set<MotivationProgram>();
 
     public DbSet<MotivationBonus> MotivationBonuses => Set<MotivationBonus>();
+    
+    public AppDbContext()
+    {
+    }
+
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
+    {
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
