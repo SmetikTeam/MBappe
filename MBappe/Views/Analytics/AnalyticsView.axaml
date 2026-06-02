@@ -272,81 +272,72 @@
                             CornerRadius="6"
                             Padding="10,8"
                             Margin="0,14,0,4">
-                        <Grid ColumnDefinitions="1.45*,1.05*,1.15*,0.85*,0.95*,0.95*,1.35*">
+                        <Grid ColumnDefinitions="1.45*,1.05*,1.15*,0.85*,0.95*,0.95*,1.35*"
+                              ColumnSpacing="12">
                             <TextBlock Text="Сотрудник"
                                        Classes="kicker"/>
                             <TextBlock Grid.Column="1"
                                        Text="Отдел"
-                                       Classes="kicker"
-                                       Margin="10,0"/>
+                                       Classes="kicker"/>
                             <TextBlock Grid.Column="2"
                                        Text="Должность"
-                                       Classes="kicker"
-                                       Margin="10,0"/>
+                                       Classes="kicker"/>
                             <TextBlock Grid.Column="3"
                                        Text="KPI"
                                        Classes="kicker"/>
                             <TextBlock Grid.Column="4"
                                        Text="Обучение"
-                                       Classes="kicker"
-                                       Margin="10,0"/>
+                                       Classes="kicker"/>
                             <TextBlock Grid.Column="5"
                                        Text="К выплате"
-                                       Classes="kicker"
-                                       Margin="10,0"/>
+                                       Classes="kicker"/>
                             <TextBlock Grid.Column="6"
                                        Text="Замечания"
-                                       Classes="kicker"
-                                       Margin="10,0,0,0"/>
+                                       Classes="kicker"/>
                         </Grid>
                     </Border>
 
-                    <ListBox Grid.Row="2"
-                             ItemsSource="{Binding EmployeeRows}"
-                             BorderThickness="0"
-                             Background="Transparent"
-                             MaxHeight="420">
-                        <ListBox.ItemTemplate>
+                    <ScrollViewer Grid.Row="2"
+                                  MaxHeight="420">
+                        <ItemsControl ItemsSource="{Binding EmployeeRows}">
+                            <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="vm:EmployeeAnalyticsRowViewModel">
-                                <Border BorderBrush="{StaticResource BorderBrushSoft}"
-                                        BorderThickness="0,0,0,1"
-                                        Padding="0,10">
+                                <Border Padding="0,12">
                                     <Grid ColumnDefinitions="1.45*,1.05*,1.15*,0.85*,0.95*,0.95*,1.35*"
-                                          MinHeight="68">
+                                          MinHeight="76"
+                                          ColumnSpacing="12">
                                         <StackPanel VerticalAlignment="Center"
                                                     Spacing="3">
                                             <TextBlock Text="{Binding FullName}"
                                                        Foreground="{StaticResource InkBrush}"
                                                        FontSize="14"
                                                        FontWeight="SemiBold"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                                       TextWrapping="Wrap"/>
                                             <TextBlock Text="{Binding PersonnelNumber}"
                                                        Foreground="{StaticResource MutedTextBrush}"
                                                        FontSize="12"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                                       TextWrapping="Wrap"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="1"
                                                     VerticalAlignment="Center"
-                                                    Spacing="3"
-                                                    Margin="10,0">
+                                                    Spacing="3">
                                             <TextBlock Text="{Binding Department}"
                                                        Foreground="{StaticResource InkBrush}"
                                                        FontSize="13"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                                       TextWrapping="Wrap"/>
                                             <TextBlock Text="{Binding StatusTitle}"
                                                        Foreground="{StaticResource MutedTextBrush}"
                                                        FontSize="12"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                                       TextWrapping="Wrap"/>
                                         </StackPanel>
 
                                         <TextBlock Grid.Column="2"
                                                    Text="{Binding Position}"
                                                    Foreground="{StaticResource InkBrush}"
                                                    FontSize="13"
-                                                   TextTrimming="CharacterEllipsis"
-                                                   VerticalAlignment="Center"
-                                                   Margin="10,0"/>
+                                                   TextWrapping="Wrap"
+                                                   VerticalAlignment="Center"/>
 
                                         <StackPanel Grid.Column="3"
                                                     VerticalAlignment="Center"
@@ -362,8 +353,7 @@
 
                                         <StackPanel Grid.Column="4"
                                                     VerticalAlignment="Center"
-                                                    Spacing="3"
-                                                    Margin="10,0">
+                                                    Spacing="3">
                                             <TextBlock Text="{Binding LearningProgressText}"
                                                        Foreground="{StaticResource AccentBrush}"
                                                        FontWeight="SemiBold"/>
@@ -375,16 +365,15 @@
 
                                         <StackPanel Grid.Column="5"
                                                     VerticalAlignment="Center"
-                                                    Spacing="3"
-                                                    Margin="10,0">
+                                                    Spacing="3">
                                             <TextBlock Text="{Binding PayableBonusText}"
                                                        Foreground="{StaticResource AccentBrush}"
                                                        FontWeight="SemiBold"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                                       TextWrapping="Wrap"/>
                                             <TextBlock Text="{Binding PaidBonusText}"
                                                        Foreground="{StaticResource MutedTextBrush}"
                                                        FontSize="11"
-                                                       TextTrimming="CharacterEllipsis"/>
+                                                       TextWrapping="Wrap"/>
                                         </StackPanel>
 
                                         <TextBlock Grid.Column="6"
@@ -392,13 +381,13 @@
                                                    Foreground="{StaticResource InkBrush}"
                                                    FontSize="13"
                                                    TextWrapping="Wrap"
-                                                   VerticalAlignment="Center"
-                                                   Margin="10,0,0,0"/>
+                                                   VerticalAlignment="Center"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
                 </Grid>
             </Border>
 
