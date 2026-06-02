@@ -10,9 +10,16 @@ namespace MBappe.Repositories;
 
 public class EfMotivationProgramRepository : IMotivationProgramRepository
 {
+    private readonly Func<AppDbContext> _dbFactory;
+
+    public EfMotivationProgramRepository(Func<AppDbContext>? dbFactory = null)
+    {
+        _dbFactory = dbFactory ?? (() => new AppDbContext());
+    }
+    
     public async Task<MotivationProgram?> GetByIdAsync(Guid id)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.MotivationPrograms
             .AsNoTracking()
@@ -21,7 +28,7 @@ public class EfMotivationProgramRepository : IMotivationProgramRepository
 
     public async Task<IReadOnlyList<MotivationProgram>> GetAllAsync()
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.MotivationPrograms
             .AsNoTracking()
@@ -32,7 +39,7 @@ public class EfMotivationProgramRepository : IMotivationProgramRepository
 
     public async Task AddAsync(MotivationProgram program)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         db.MotivationPrograms.Add(program);
 
@@ -41,7 +48,7 @@ public class EfMotivationProgramRepository : IMotivationProgramRepository
 
     public async Task UpdateAsync(MotivationProgram program)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         db.MotivationPrograms.Update(program);
 

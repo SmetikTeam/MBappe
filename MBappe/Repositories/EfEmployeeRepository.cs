@@ -10,9 +10,16 @@ namespace MBappe.Repositories;
 
 public class EfEmployeeRepository : IEmployeeRepository
 {
+    private readonly Func<AppDbContext> _dbFactory;
+
+    public EfEmployeeRepository(Func<AppDbContext>? dbFactory = null)
+    {
+        _dbFactory = dbFactory ?? (() => new AppDbContext());
+    }
+    
     public async Task<EmployeeProfile?> GetByIdAsync(Guid id)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.Employees
             .AsNoTracking()
@@ -21,7 +28,7 @@ public class EfEmployeeRepository : IEmployeeRepository
 
     public async Task<EmployeeProfile?> GetByUserIdAsync(Guid userId)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.Employees
             .AsNoTracking()
@@ -30,7 +37,7 @@ public class EfEmployeeRepository : IEmployeeRepository
 
     public async Task<EmployeeProfile?> GetByPersonnelNumberAsync(string personnelNumber)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.Employees
             .AsNoTracking()
@@ -40,7 +47,7 @@ public class EfEmployeeRepository : IEmployeeRepository
 
     public async Task<IReadOnlyList<EmployeeProfile>> GetAllAsync()
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.Employees
             .AsNoTracking()
@@ -50,7 +57,7 @@ public class EfEmployeeRepository : IEmployeeRepository
 
     public async Task AddAsync(EmployeeProfile employee)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         db.Employees.Add(employee);
 
@@ -59,7 +66,7 @@ public class EfEmployeeRepository : IEmployeeRepository
 
     public async Task UpdateAsync(EmployeeProfile employee)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         db.Employees.Update(employee);
 

@@ -4,14 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace MBappe.Repositories;
 
 public class EfAuditLogRepository : IAuditLogRepository
 {
+    private readonly Func<AppDbContext> _dbFactory;
+
+    public EfAuditLogRepository(Func<AppDbContext>? dbFactory = null)
+    {
+        _dbFactory = dbFactory ?? (() => new AppDbContext());
+    }
+    
     public async Task AddAsync(AuditLogEntry entry)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         db.AuditLogs.Add(entry);
 
@@ -20,7 +28,7 @@ public class EfAuditLogRepository : IAuditLogRepository
 
     public async Task<IReadOnlyList<AuditLogEntry>> GetAllAsync()
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.AuditLogs
             .AsNoTracking()
@@ -30,7 +38,7 @@ public class EfAuditLogRepository : IAuditLogRepository
 
     public async Task<IReadOnlyList<AuditLogEntry>> GetByUserLoginAsync(string login)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.AuditLogs
             .AsNoTracking()
@@ -41,7 +49,7 @@ public class EfAuditLogRepository : IAuditLogRepository
 
     public async Task<IReadOnlyList<AuditLogEntry>> GetByActionTypeAsync(AuditActionType actionType)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.AuditLogs
             .AsNoTracking()

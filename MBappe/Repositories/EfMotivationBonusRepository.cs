@@ -10,9 +10,16 @@ namespace MBappe.Repositories;
 
 public class EfMotivationBonusRepository : IMotivationBonusRepository
 {
+    private readonly Func<AppDbContext> _dbFactory;
+
+    public EfMotivationBonusRepository(Func<AppDbContext>? dbFactory = null)
+    {
+        _dbFactory = dbFactory ?? (() => new AppDbContext());
+    }
+    
     public async Task<MotivationBonus?> GetByIdAsync(Guid id)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.MotivationBonuses
             .AsNoTracking()
@@ -21,7 +28,7 @@ public class EfMotivationBonusRepository : IMotivationBonusRepository
 
     public async Task<IReadOnlyList<MotivationBonus>> GetAllAsync()
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.MotivationBonuses
             .AsNoTracking()
@@ -31,7 +38,7 @@ public class EfMotivationBonusRepository : IMotivationBonusRepository
 
     public async Task<IReadOnlyList<MotivationBonus>> GetByEmployeeIdAsync(Guid employeeId)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.MotivationBonuses
             .AsNoTracking()
@@ -46,7 +53,7 @@ public class EfMotivationBonusRepository : IMotivationBonusRepository
         DateTime periodStart,
         DateTime periodEnd)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         var start = periodStart.Date;
         var end = periodEnd.Date;
@@ -63,7 +70,7 @@ public class EfMotivationBonusRepository : IMotivationBonusRepository
 
     public async Task AddAsync(MotivationBonus bonus)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         db.MotivationBonuses.Add(bonus);
 
@@ -72,7 +79,7 @@ public class EfMotivationBonusRepository : IMotivationBonusRepository
 
     public async Task UpdateAsync(MotivationBonus bonus)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         db.MotivationBonuses.Update(bonus);
 

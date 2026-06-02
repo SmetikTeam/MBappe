@@ -10,9 +10,16 @@ namespace MBappe.Repositories;
 
 public class EfKpiRepository : IKpiRepository
 {
+    private readonly Func<AppDbContext> _dbFactory;
+
+    public EfKpiRepository(Func<AppDbContext>? dbFactory = null)
+    {
+        _dbFactory = dbFactory ?? (() => new AppDbContext());
+    }
+    
     public async Task<KpiItem?> GetByIdAsync(Guid id)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.Kpis
             .AsNoTracking()
@@ -21,7 +28,7 @@ public class EfKpiRepository : IKpiRepository
 
     public async Task<IReadOnlyList<KpiItem>> GetAllAsync()
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.Kpis
             .AsNoTracking()
@@ -31,7 +38,7 @@ public class EfKpiRepository : IKpiRepository
 
     public async Task<IReadOnlyList<KpiItem>> GetByEmployeeIdAsync(Guid employeeId)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         return await db.Kpis
             .AsNoTracking()
@@ -42,7 +49,7 @@ public class EfKpiRepository : IKpiRepository
 
     public async Task<IReadOnlyList<KpiItem>> GetByPeriodAsync(DateTime periodStart, DateTime periodEnd)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         var start = periodStart.Date;
         var end = periodEnd.Date;
@@ -56,7 +63,7 @@ public class EfKpiRepository : IKpiRepository
 
     public async Task AddAsync(KpiItem kpi)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         db.Kpis.Add(kpi);
 
@@ -65,7 +72,7 @@ public class EfKpiRepository : IKpiRepository
 
     public async Task UpdateAsync(KpiItem kpi)
     {
-        await using var db = new AppDbContext();
+        await using var db = _dbFactory();
 
         db.Kpis.Update(kpi);
 
