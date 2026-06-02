@@ -28,7 +28,7 @@ public class MainShellViewModelTests
         {
             Assert.That(shell.CurrentUser, Is.SameAs(user));
             Assert.That(shell.CurrentUserRole, Is.EqualTo(DisplayNames.ForRole(expectedRole)));
-            Assert.That(analyticsItem.Code, Is.EqualTo("АН"));
+            Assert.That(analyticsItem.IconKey, Is.EqualTo(NavigationIconPack.Analytics));
             Assert.That(analyticsItem.Description, Is.EqualTo("Отчеты по персоналу"));
             Assert.That(analyticsPage, Is.TypeOf<AnalyticsViewModel>());
         });

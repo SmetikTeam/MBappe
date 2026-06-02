@@ -129,6 +129,13 @@
             <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="Background" Value="{StaticResource SurfaceAltBrush}"/>
         </Style>
+        <Style Selector="PathIcon.nav-path-icon">
+            <Setter Property="Width" Value="18"/>
+            <Setter Property="Height" Value="18"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
         <Style Selector="ListBox.nav-list">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>

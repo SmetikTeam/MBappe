@@ -95,7 +95,7 @@ public partial class MainShellViewModel : ViewModelBase
         {
             NavigationItems.Add(new NavigationItemViewModel(
                 "Профиль",
-                "ПР",
+                NavigationIconPack.Profile,
                 "Личный кадровый профиль",
                 () => new ProfileViewModel(CurrentUser, _employeeService)));
 
@@ -129,7 +129,7 @@ public partial class MainShellViewModel : ViewModelBase
     {
         NavigationItems.Add(new NavigationItemViewModel(
             "Мотивация",
-            "₽",
+            NavigationIconPack.Motivation,
             "Бонусы и премии",
             () => new MotivationViewModel(_motivationService, _employeeService)));
     }
@@ -138,7 +138,7 @@ public partial class MainShellViewModel : ViewModelBase
     {
         NavigationItems.Add(new NavigationItemViewModel(
             "KPI",
-            "KPI",
+            NavigationIconPack.Kpi,
             "Показатели эффективности",
             () => new KpiViewModel(_kpiService, _employeeService)));
     }
@@ -147,7 +147,7 @@ public partial class MainShellViewModel : ViewModelBase
     {
         NavigationItems.Add(new NavigationItemViewModel(
             "Обучение",
-            "ОБ",
+            NavigationIconPack.Learning,
             "Программы развития",
             () => new LearningViewModel(_learningService, _employeeService)));
     }
@@ -156,7 +156,7 @@ public partial class MainShellViewModel : ViewModelBase
     {
         NavigationItems.Add(new NavigationItemViewModel(
             "Пользователи",
-            "ПЛ",
+            NavigationIconPack.Users,
             "Учетные записи и роли",
             () => new UsersViewModel(_userManagementService)));
     }
@@ -165,7 +165,7 @@ public partial class MainShellViewModel : ViewModelBase
     {
         NavigationItems.Add(new NavigationItemViewModel(
             "Сотрудники",
-            "СТ",
+            NavigationIconPack.Employees,
             "Кадровые профили",
             () => new EmployeesViewModel(_employeeService, _userManagementService)));
     }
@@ -174,7 +174,7 @@ public partial class MainShellViewModel : ViewModelBase
     {
         NavigationItems.Add(new NavigationItemViewModel(
             "Аналитика",
-            "АН",
+            NavigationIconPack.Analytics,
             "Отчеты по персоналу",
             () => new AnalyticsViewModel(_analyticsService)));
     }
@@ -183,7 +183,7 @@ public partial class MainShellViewModel : ViewModelBase
     {
         NavigationItems.Add(new NavigationItemViewModel(
             "Журнал",
-            "ЖР",
+            NavigationIconPack.Audit,
             "Аудит безопасности",
             () => new AuditLogViewModel(_auditLogService)));
     }
