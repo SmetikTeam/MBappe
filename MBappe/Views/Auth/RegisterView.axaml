@@ -20,6 +20,9 @@
                            LineHeight="26"
                            TextWrapping="Wrap"/>
                 <Border Background="#23313D"
+                        BorderBrush="#304250"
+                        BorderThickness="1"
+                        CornerRadius="6"
                         Padding="18"
                         Margin="0,24,0,0">
                     <StackPanel Spacing="6">
@@ -32,6 +35,9 @@
                     </StackPanel>
                 </Border>
                 <Border Background="#1C2A35"
+                        BorderBrush="#304250"
+                        BorderThickness="1"
+                        CornerRadius="6"
                         Padding="18">
                     <StackPanel Spacing="6">
                         <TextBlock Text="После создания"
@@ -48,17 +54,16 @@
         <ScrollViewer Grid.Column="1">
             <Grid Margin="64">
                 <Border MaxWidth="460"
+                        Classes="panel"
+                        Padding="32"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                     <StackPanel Spacing="14">
                         <StackPanel Spacing="6">
                             <TextBlock Text="Новый аккаунт"
-                                       Foreground="{StaticResource InkBrush}"
-                                       FontSize="30"
-                                       FontWeight="SemiBold"/>
+                                       Classes="page-title"/>
                             <TextBlock Text="Укажите данные для создания учетной записи."
-                                       Foreground="{StaticResource MutedTextBrush}"
-                                       FontSize="14"
+                                       Classes="page-subtitle"
                                        TextWrapping="Wrap"/>
                         </StackPanel>
 
@@ -70,9 +75,9 @@
                                      Watermark="Иван Петров"/>
                         </StackPanel>
 
-                        <Grid ColumnDefinitions="*,*">
-                            <StackPanel Spacing="7"
-                                        Margin="0,0,8,0">
+                        <Grid ColumnDefinitions="*,*"
+                              ColumnSpacing="12">
+                            <StackPanel Spacing="7">
                                 <TextBlock Text="Логин"
                                            Foreground="{StaticResource MutedTextBrush}"
                                            FontSize="13"/>
@@ -80,8 +85,7 @@
                                          Watermark="employee"/>
                             </StackPanel>
                             <StackPanel Grid.Column="1"
-                                        Spacing="7"
-                                        Margin="8,0,0,0">
+                                        Spacing="7">
                                 <TextBlock Text="Почта"
                                            Foreground="{StaticResource MutedTextBrush}"
                                            FontSize="13"/>
@@ -90,9 +94,9 @@
                             </StackPanel>
                         </Grid>
 
-                        <Grid ColumnDefinitions="*,*">
-                            <StackPanel Spacing="7"
-                                        Margin="0,0,8,0">
+                        <Grid ColumnDefinitions="*,*"
+                              ColumnSpacing="12">
+                            <StackPanel Spacing="7">
                                 <TextBlock Text="Пароль"
                                            Foreground="{StaticResource MutedTextBrush}"
                                            FontSize="13"/>
@@ -100,8 +104,7 @@
                                          PasswordChar="*"/>
                             </StackPanel>
                             <StackPanel Grid.Column="1"
-                                        Spacing="7"
-                                        Margin="8,0,0,0">
+                                        Spacing="7">
                                 <TextBlock Text="Подтверждение"
                                            Foreground="{StaticResource MutedTextBrush}"
                                            FontSize="13"/>
@@ -110,10 +113,15 @@
                             </StackPanel>
                         </Grid>
 
-                        <TextBlock Text="{Binding StatusMessage}"
-                                   Foreground="{StaticResource ErrorBrush}"
-                                   FontSize="13"
-                                   TextWrapping="Wrap"/>
+                        <Border Classes="error-banner"
+                                Padding="10"
+                                IsVisible="{Binding HasStatusMessage}">
+                            <TextBlock Text="{Binding StatusMessage}"
+                                       Foreground="{StaticResource ErrorBrush}"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       TextWrapping="Wrap"/>
+                        </Border>
 
                         <Button Content="Зарегистрировать"
                                 Classes="primary"

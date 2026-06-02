@@ -34,6 +34,8 @@ public partial class RegisterViewModel : ViewModelBase
     [ObservableProperty]
     private bool isBusy;
 
+    public bool HasStatusMessage => !string.IsNullOrWhiteSpace(StatusMessage);
+
     public RegisterViewModel(AuthService authService, Action<string?> openLogin)
     {
         _authService = authService;
@@ -76,5 +78,10 @@ public partial class RegisterViewModel : ViewModelBase
     private void BackToLogin()
     {
         _openLogin(null);
+    }
+
+    partial void OnStatusMessageChanged(string value)
+    {
+        OnPropertyChanged(nameof(HasStatusMessage));
     }
 }
