@@ -5,7 +5,8 @@
              x:DataType="vm:LearningViewModel">
     <Grid RowDefinitions="Auto,Auto,*"
           Margin="32">
-        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto"
+              ColumnSpacing="10">
             <StackPanel Spacing="6">
                 <TextBlock Text="Обучение"
                            Classes="page-title"/>
@@ -18,8 +19,7 @@
                     Classes="primary"
                     Command="{Binding OpenCreateCourseFormCommand}"
                     IsVisible="{Binding CanManageCourses}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="2"
                     Content="Редактировать"
@@ -27,8 +27,7 @@
                     Command="{Binding OpenEditCourseFormCommand}"
                     IsEnabled="{Binding HasSelectedCourse}"
                     IsVisible="{Binding CanManageCourses}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="3"
                     Content="Назначить"
@@ -36,8 +35,7 @@
                     Command="{Binding OpenAssignFormCommand}"
                     IsEnabled="{Binding HasSelectedCourse}"
                     IsVisible="{Binding CanAssignLearning}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="4"
                     Content="Обновить"
@@ -287,11 +285,7 @@
                                         IsVisible="{Binding CanAssignLearning}"/>
                             </Grid>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="6"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasStatusMessage}">
                                 <TextBlock Text="{Binding StatusMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -338,11 +332,7 @@
                                          Watermark="дд.мм.гггг"/>
                             </StackPanel>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="6"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasAssignmentFormMessage}">
                                 <TextBlock Text="{Binding AssignmentFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -610,11 +600,7 @@
                             <TextBox Watermark="Провайдер"
                                      Text="{Binding NewCourseProvider}"/>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="6"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasCourseFormMessage}">
                                 <TextBlock Text="{Binding CourseFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -699,11 +685,7 @@
                                          Text="{Binding EditCourseDurationText}"/>
                             </Grid>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="6"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasCourseFormMessage}">
                                 <TextBlock Text="{Binding CourseFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -761,11 +743,7 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="6"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasProgressFormMessage}">
                                 <TextBlock Text="{Binding ProgressFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"

@@ -5,7 +5,8 @@
              x:DataType="vm:MotivationViewModel">
     <Grid RowDefinitions="Auto,Auto,*"
           Margin="32">
-        <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto"
+              ColumnSpacing="10">
             <StackPanel Spacing="6">
                 <TextBlock Text="Мотивация"
                            Classes="page-title"/>
@@ -18,16 +19,14 @@
                     Classes="primary"
                     Command="{Binding OpenCalculateFormCommand}"
                     IsVisible="{Binding CanCalculateBonuses}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="2"
                     Content="Новая программа"
                     Classes="subtle"
                     Command="{Binding OpenProgramFormCommand}"
                     IsVisible="{Binding CanManageMotivation}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="3"
                     Content="Обновить"
@@ -263,11 +262,7 @@
                             </Grid>
                         </StackPanel>
 
-                        <Border Background="{StaticResource AccentSoftBrush}"
-                                BorderBrush="{StaticResource AccentBrush}"
-                                BorderThickness="1"
-                                CornerRadius="6"
-                                Padding="10"
+                        <Border Classes="status-banner"
                                 IsVisible="{Binding HasStatusMessage}">
                             <TextBlock Text="{Binding StatusMessage}"
                                        Foreground="{StaticResource AccentBrush}"
@@ -436,11 +431,7 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="6"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasCalculateFormMessage}">
                                 <TextBlock Text="{Binding CalculateFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -514,11 +505,7 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="6"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasProgramFormMessage}">
                                 <TextBlock Text="{Binding ProgramFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"

@@ -5,7 +5,8 @@
              x:DataType="vm:KpiViewModel">
     <Grid RowDefinitions="Auto,Auto,*"
           Margin="32">
-        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto"
+              ColumnSpacing="10">
             <StackPanel Spacing="6">
                 <TextBlock Text="KPI"
                            Classes="page-title"/>
@@ -18,8 +19,7 @@
                     Classes="primary"
                     Command="{Binding OpenCreateFormCommand}"
                     IsVisible="{Binding CanManageKpis}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="2"
                     Content="Редактировать"
@@ -27,8 +27,7 @@
                     Command="{Binding OpenEditFormCommand}"
                     IsEnabled="{Binding HasSelectedKpi}"
                     IsVisible="{Binding CanManageKpis}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="3"
                     Content="Обновить факт"
@@ -36,8 +35,7 @@
                     Command="{Binding OpenProgressFormCommand}"
                     IsEnabled="{Binding HasSelectedKpi}"
                     IsVisible="{Binding CanManageKpis}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,10,0"/>
+                    VerticalAlignment="Center"/>
 
             <Button Grid.Column="4"
                     Content="Обновить"
@@ -230,11 +228,7 @@
                                     HorizontalContentAlignment="Center"/>
                         </Grid>
 
-                        <Border Background="{StaticResource AccentSoftBrush}"
-                                BorderBrush="{StaticResource AccentBrush}"
-                                BorderThickness="1"
-                                CornerRadius="6"
-                                Padding="10"
+                        <Border Classes="status-banner"
                                 IsVisible="{Binding HasStatusMessage}">
                             <TextBlock Text="{Binding StatusMessage}"
                                        Foreground="{StaticResource AccentBrush}"
@@ -421,11 +415,7 @@
                                          Text="{Binding NewPeriodEndText}"/>
                             </Grid>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="6"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasCreateFormMessage}">
                                 <TextBlock Text="{Binding CreateFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -508,11 +498,7 @@
                                          Text="{Binding EditPeriodEndText}"/>
                             </Grid>
 
-                            <Border Background="{StaticResource AccentSoftBrush}"
-                                    BorderBrush="{StaticResource AccentBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="6"
-                                    Padding="10"
+                            <Border Classes="status-banner"
                                     IsVisible="{Binding HasEditFormMessage}">
                                 <TextBlock Text="{Binding EditFormMessage}"
                                            Foreground="{StaticResource AccentBrush}"
@@ -561,11 +547,7 @@
 							<TextBox Text="{Binding ProgressActualValueText}"/>
 						</StackPanel>
 
-                        <Border Background="{StaticResource AccentSoftBrush}"
-                                BorderBrush="{StaticResource AccentBrush}"
-                                BorderThickness="1"
-                                CornerRadius="6"
-                                Padding="10"
+                        <Border Classes="status-banner"
                                 IsVisible="{Binding HasProgressFormMessage}">
                             <TextBlock Text="{Binding ProgressFormMessage}"
                                        Foreground="{StaticResource AccentBrush}"
