@@ -297,12 +297,15 @@
                         </Grid>
                     </Border>
 
-                    <ScrollViewer Grid.Row="2"
-                                  MaxHeight="420">
-                        <ItemsControl ItemsSource="{Binding EmployeeRows}">
-                            <ItemsControl.ItemTemplate>
+                    <ListBox Grid.Row="2"
+                             ItemsSource="{Binding EmployeeRows}"
+                             Classes="data-list"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             MaxHeight="420">
+                        <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="vm:EmployeeAnalyticsRowViewModel">
-                                <Border Padding="0,12">
+                                <Border Padding="12,12,22,12">
                                     <Grid ColumnDefinitions="1.45*,1.05*,1.15*,0.85*,0.95*,0.95*,1.35*"
                                           MinHeight="76"
                                           ColumnSpacing="12">
@@ -385,9 +388,8 @@
                                     </Grid>
                                 </Border>
                             </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Grid>
             </Border>
 
